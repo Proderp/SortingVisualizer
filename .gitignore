@@ -1,1 +1,8 @@
+# Ignore executable files
 *.exe
+
+# Ignore .vscode directory and contents
+.vscode/
+
+# Ignore README.md
+README.md
