@@ -1,6 +1,9 @@
 # Ignore executable files
 *.exe
 
+# Ignore powershell scripts
+*.ps1 
+
 # Ignore the CMake build directory
 build/
 
