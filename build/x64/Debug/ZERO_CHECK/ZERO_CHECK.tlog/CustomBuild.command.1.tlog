@@ -1,0 +1,10 @@
+^C:\SOURCE\REPOS\PERSONALPROJECTS\SORTINGALGORITHM\BUILD\CMAKEFILES\9249F99030EAAE7F3750D952FEA960D6\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/source/repos/PersonalProjects/SortingAlgorithm -BC:/source/repos/PersonalProjects/SortingAlgorithm/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/source/repos/PersonalProjects/SortingAlgorithm/build/SortingVisualizer.slnx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
