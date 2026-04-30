@@ -2,6 +2,7 @@
 #include "includes.hpp"
 #include "render.hpp"
 #include "sort-engine.hpp"
+#include "ui.hpp"
 
 class App {
 private:
