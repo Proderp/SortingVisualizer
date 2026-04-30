@@ -21,7 +21,8 @@ private:
     sf::Vector2f windowSize;
 
 public:
-    
+    UI(sf::RenderWindow& window, const sf::Vector2f windowSize);    
+
     void updateUI(sf::Vector2f newWindowSize);
     void updateView();
     void updateArrayDimensions();

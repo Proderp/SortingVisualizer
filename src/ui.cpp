@@ -1,5 +1,12 @@
 #include "ui.hpp"
 
+UI::UI(sf::RenderWindow& window, const sf::Vector2f windowSize) :
+    window(window),
+    windowSize(windowSize)
+{
+
+}
+
 void UI::updateUI(sf::Vector2f newWindowSize) {
     setWindowSize(newWindowSize);
     updateView();
