@@ -9,13 +9,13 @@ struct ArrayDimensions {
     float barHeightUnit;
 
     float barSpacing;
-}
+};
 
 class UIContainer {
 private:
     ArrayDimensions arrayDimensions;
 
 public:
-    
 
-}
+
+};
