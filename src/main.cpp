@@ -1,6 +1,9 @@
 #include "includes.hpp"
+#include "app.hpp"
 
 int main() {
-    std::cout << "Hello World!" << std::endl;
+    App app;
+    app.run();
+
     return 0;
 }
