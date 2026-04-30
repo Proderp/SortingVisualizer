@@ -3,7 +3,11 @@
 SortEngine::SortEngine() :
     twister(rd()),
     distribution(1, 100)
-{}
+{
+    for (uint16_t i{0}; i < 100; i++) {
+        array.push_back(distribution(twister));
+    }
+}
 
 const std::vector<uint16_t>& SortEngine::getArray() const {
     return array;
