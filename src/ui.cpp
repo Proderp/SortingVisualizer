@@ -1,14 +1,13 @@
 #include "ui.hpp"
 
-UI::UI(sf::RenderWindow& window, const sf::Vector2f windowSize) :
+UI::UI(sf::RenderWindow& window, const sf::Vector2f& windowSize) :
     window(window),
     windowSize(windowSize)
 {
-
+    updateUI();
 }
 
-void UI::updateUI(sf::Vector2f newWindowSize) {
-    setWindowSize(newWindowSize);
+void UI::updateUI() {
     updateView();
 }
 
@@ -21,10 +20,6 @@ void UI::updateView() {
 
 void UI::updateArrayDimensions() {
 
-}
-
-void UI::setWindowSize(sf::Vector2f newWindowSize) {
-    windowSize = newWindowSize;
 }
 
 const ArrayDimensions& UI::getArrayDimensions() const {

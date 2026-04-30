@@ -18,16 +18,14 @@ private:
     sf::RenderWindow& window;
     sf::View view;
 
-    sf::Vector2f windowSize;
+    const sf::Vector2f& windowSize;
 
 public:
-    UI(sf::RenderWindow& window, const sf::Vector2f windowSize);    
+    UI(sf::RenderWindow& window, const sf::Vector2f& windowSize);    
 
-    void updateUI(sf::Vector2f newWindowSize);
+    void updateUI();
     void updateView();
     void updateArrayDimensions();
-
-    void setWindowSize(sf::Vector2f newWindowSize);
 
     const ArrayDimensions& getArrayDimensions() const;
 };
