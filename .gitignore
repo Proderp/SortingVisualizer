@@ -6,6 +6,3 @@
 
 # Ignore the CMake build directory
 build/
-
-# Ignore .vscode directory and contents
-.vscode/

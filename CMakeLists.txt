@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 4.3)
 project(SortingVisualizer)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -12,6 +12,14 @@ find_package(
     REQUIRED
 )
 
-add_executable(app main.cpp)
+# set(SOURCE_FILES 
+
+# )
+
+# add_library(lib ${SOURCE_FILES})
+
+# target_include_directories(lib PUBLIC includes/)
+
+add_executable(app src/main.cpp)
 
 target_link_libraries(app PRIVATE SFML::Graphics SFML::Window SFML::System SFML::Main)
