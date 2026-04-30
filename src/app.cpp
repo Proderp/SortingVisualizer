@@ -24,6 +24,7 @@ void App::eventLoop() {
 
         if (const sf::Event::Resized* resizeEvent = event->getIf<sf::Event::Resized>()) {
             windowSize = static_cast<sf::Vector2f>(resizeEvent->size);
+            ui.updateUI();
         }
     }
 }
