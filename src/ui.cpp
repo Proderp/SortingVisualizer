@@ -19,7 +19,11 @@ void UI::updateView() {
 }
 
 void UI::updateArrayDimensions() {
+    arrayDimensions.offsetX = windowSize.x * 0.1f;
+    arrayDimensions.offsetY = windowSize.y * 0.1f;
 
+    arrayDimensions.barWidth = (windowSize.x - arrayDimensions.offsetX * 2 - arrayDimensions.barSpacing * 99) / 100;
+    arrayDimensions.barHeightUnit = (windowSize.y - arrayDimensions.offsetY * 2) / 100;
 }
 
 const ArrayDimensions& UI::getArrayDimensions() const {

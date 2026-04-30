@@ -8,7 +8,7 @@ struct ArrayDimensions {
     float barWidth;
     float barHeightUnit;
 
-    float barSpacing;
+    float barSpacing{1.f};
 };
 
 class UI {
