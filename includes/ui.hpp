@@ -22,9 +22,11 @@ private:
 
 public:
     
-    void updateUI();
+    void updateUI(sf::Vector2f newWindowSize);
     void updateView();
     void updateArrayDimensions();
+
+    void setWindowSize(sf::Vector2f newWindowSize);
 
     const ArrayDimensions& getArrayDimensions() const;
 };
