@@ -17,9 +17,9 @@ set(SOURCE_FILES
 )
 
 add_library(lib ${SOURCE_FILES})
-
 target_include_directories(lib PUBLIC includes/)
+target_link_libraries(lib PUBLIC SFML::Graphics SFML::Window SFML::System)
 
 add_executable(app src/main.cpp)
 
-target_link_libraries(app PRIVATE lib SFML::Graphics SFML::Window SFML::System SFML::Main)
+target_link_libraries(app PRIVATE lib SFML::Main)
