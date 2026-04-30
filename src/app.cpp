@@ -5,7 +5,7 @@ App::App() :
     renderer(window),
     windowSize(static_cast<sf::Vector2f>(window.getSize()))
 {
-    resetView();
+    
 }
 
 void App::run() {
@@ -23,16 +23,8 @@ void App::eventLoop() {
 
         if (const sf::Event::Resized* resizeEvent = event->getIf<sf::Event::Resized>()) {
             windowSize = static_cast<sf::Vector2f>(resizeEvent->size);
-            resetView();
         }
     }
-}
-
-void App::resetView() {
-    view.setSize(windowSize);
-    view.setCenter({windowSize.x / 2.f, windowSize.y / 2.f});
-
-    window.setView(view);
 }
 
 void App::render() {

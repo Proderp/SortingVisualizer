@@ -7,7 +7,6 @@
 class App {
 private:
     sf::RenderWindow window;
-    sf::View view;
 
     Render renderer;
     SortEngine sortingEngine;
@@ -15,7 +14,6 @@ private:
     sf::Vector2f windowSize;
 
     void eventLoop();
-    void resetView();
     
     void render();
 public:
