@@ -2,6 +2,7 @@
 
 App::App() : 
     window(sf::VideoMode({800u, 600u}), "Sorting Visualizer"),
+    renderer(window),
     windowSize(static_cast<sf::Vector2f>(window.getSize()))
 {
     resetView();
@@ -20,8 +21,8 @@ void App::eventLoop() {
             window.close();
         }
 
-        if (const sf::Event::Resized* resizedEvent = event->getIf<sf::Event::Resized>()) {
-            windowSize = static_cast<sf::Vector2f>(resizedEvent->size);
+        if (const sf::Event::Resized* resizeEvent = event->getIf<sf::Event::Resized>()) {
+            windowSize = static_cast<sf::Vector2f>(resizeEvent->size);
             resetView();
         }
     }

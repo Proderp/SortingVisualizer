@@ -14,6 +14,7 @@ find_package(
 
 set(SOURCE_FILES 
     src/app.cpp
+    src/render.cpp
 )
 
 add_library(lib ${SOURCE_FILES})
