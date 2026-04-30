@@ -1,7 +1,7 @@
 #include "app.hpp"
 
 App::App() : 
-    window(sf::VideoMode({800u, 600u}), "Sorting Visualizer"),
+    window(sf::VideoMode({DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT}), "Sorting Visualizer"),
     renderer(window),
     windowSize(static_cast<sf::Vector2f>(window.getSize()))
 {
