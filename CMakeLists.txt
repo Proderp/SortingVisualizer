@@ -12,14 +12,14 @@ find_package(
     REQUIRED
 )
 
-# set(SOURCE_FILES 
+set(SOURCE_FILES 
+    src/app.cpp
+)
 
-# )
+add_library(lib ${SOURCE_FILES})
 
-# add_library(lib ${SOURCE_FILES})
-
-# target_include_directories(lib PUBLIC includes/)
+target_include_directories(lib PUBLIC includes/)
 
 add_executable(app src/main.cpp)
 
-target_link_libraries(app PRIVATE SFML::Graphics SFML::Window SFML::System SFML::Main)
+target_link_libraries(app PRIVATE lib SFML::Graphics SFML::Window SFML::System SFML::Main)
