@@ -1,6 +1,7 @@
 #pragma once
 #include "includes.hpp"
 #include "render.hpp"
+#include "sort-engine.hpp"
 
 class App {
 private:
@@ -8,6 +9,7 @@ private:
     sf::View view;
 
     Render renderer;
+    SortEngine sortingEngine;
 
     sf::Vector2f windowSize;
 

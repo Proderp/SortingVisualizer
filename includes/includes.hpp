@@ -3,6 +3,7 @@
 #include <iostream>
 #include <optional>
 #include <vector>
+#include <random>
 
 constexpr uint32_t DEFAULT_WINDOW_WIDTH = 800;
 constexpr uint32_t DEFAULT_WINDOW_HEIGHT = 600;
