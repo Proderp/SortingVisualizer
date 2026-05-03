@@ -27,7 +27,7 @@ void UI::updateArrayDimensions() {
     arrayDimensions.barWidth = allocatedBarArea / ARRAY_SIZE;
 
     const float maxBarHeight = arrayDimensions.offsetY - (windowSize.y * 0.1f);
-    arrayDimensions.barHeightUnit = maxBarHeight / 100;
+    arrayDimensions.barHeightUnit = maxBarHeight / RANGE;
 }
 
 const ArrayDimensions& UI::getArrayDimensions() const {
