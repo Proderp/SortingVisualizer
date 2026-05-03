@@ -9,9 +9,9 @@ private:
     sf::RenderWindow window;
     sf::Vector2f windowSize;
 
+    UI ui;
     Render renderer;
     SortEngine sortingEngine;
-    UI ui;
 
     void eventLoop();
     

@@ -3,8 +3,12 @@
 #include "ui.hpp"
 
 class Render {
-public:
+private:
     sf::RenderWindow& window;
 
-    Render(sf::RenderWindow& window);
+    const UI& ui;
+
+public:
+
+    Render(sf::RenderWindow& window, const UI& ui);
 };

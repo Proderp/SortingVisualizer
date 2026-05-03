@@ -3,8 +3,8 @@
 App::App() : 
     window(sf::VideoMode({DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT}), "Sorting Visualizer"),
     windowSize(static_cast<sf::Vector2f>(window.getSize())),
-    renderer(window),
-    ui(window, windowSize)
+    ui(window, windowSize),
+    renderer(window, ui)
 {
     
 }
