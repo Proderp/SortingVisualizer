@@ -31,6 +31,10 @@ void UI::updateArrayDimensions(const std::vector<Element>& array) {
     arrayDimensions.barHeightUnit = maxBarHeight / *maxElement;
 }
 
+void UI::updateRandomizeButtonLayout() {
+    
+}
+
 const ArrayDimensions& UI::getArrayDimensions() const {
     return arrayDimensions;
 }
