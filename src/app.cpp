@@ -3,7 +3,7 @@
 App::App() : 
     window(sf::VideoMode({DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT}), "Sorting Visualizer"),
     windowSize(static_cast<sf::Vector2f>(window.getSize())),
-    ui(window, windowSize),
+    ui(window, windowSize, sortingEngine.getArray()),
     renderer(window, ui)
 {}
 
@@ -22,7 +22,7 @@ void App::eventLoop() {
 
         if (const sf::Event::Resized* resizeEvent = event->getIf<sf::Event::Resized>()) {
             windowSize = static_cast<sf::Vector2f>(resizeEvent->size);
-            ui.updateUI();
+            ui.updateUI(sortingEngine.getArray());
         }
     }
 }

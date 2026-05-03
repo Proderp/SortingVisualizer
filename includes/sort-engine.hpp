@@ -4,6 +4,8 @@
 class SortEngine {
 private:
     std::vector<Element> array;
+    uint16_t arraySize{50};
+    uint16_t range{100};
 
     std::random_device rd;
     std::mt19937 twister;
@@ -16,4 +18,5 @@ public:
     SortEngine();
 
     const std::vector<Element>& getArray() const;
+    const uint16_t getArraySize() const;
 };

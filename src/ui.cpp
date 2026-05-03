@@ -1,15 +1,15 @@
 #include "ui.hpp"
 
-UI::UI(sf::RenderWindow& window, const sf::Vector2f& windowSize) :
+UI::UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array) :
     window(window),
     windowSize(windowSize)
 {
-    updateUI();
+    updateUI(array);
 }
 
-void UI::updateUI() {
+void UI::updateUI(const std::vector<Element>& array) {
     updateView();
-    updateArrayDimensions();
+    updateArrayDimensions(array);
 }
 
 void UI::updateView() {
@@ -19,15 +19,16 @@ void UI::updateView() {
     window.setView(view);
 }
 
-void UI::updateArrayDimensions() {
+void UI::updateArrayDimensions(const std::vector<Element>& array) {
     arrayDimensions.offsetX = windowSize.x * 0.1f;
     arrayDimensions.offsetY = windowSize.y * 0.7f;
 
-    const float allocatedBarArea = windowSize.x - arrayDimensions.offsetX * 2 - arrayDimensions.barSpacing * (ARRAY_SIZE - 1);
-    arrayDimensions.barWidth = allocatedBarArea / ARRAY_SIZE;
+    const float allocatedBarArea = windowSize.x - arrayDimensions.offsetX * 2 - arrayDimensions.barSpacing * (array.size() - 1);
+    arrayDimensions.barWidth = allocatedBarArea / array.size();
 
+    auto maxElement = std::max_element(array.begin(), array.end());
     const float maxBarHeight = arrayDimensions.offsetY - (windowSize.y * 0.1f);
-    arrayDimensions.barHeightUnit = maxBarHeight / ARRAY_SIZE;
+    arrayDimensions.barHeightUnit = maxBarHeight / *maxElement;
 }
 
 const ArrayDimensions& UI::getArrayDimensions() const {

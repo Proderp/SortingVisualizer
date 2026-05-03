@@ -20,12 +20,13 @@ private:
 
     const sf::Vector2f& windowSize;
 
-public:
-    UI(sf::RenderWindow& window, const sf::Vector2f& windowSize);    
-
-    void updateUI();
     void updateView();
-    void updateArrayDimensions();
+    void updateArrayDimensions(const std::vector<Element>& array);
+
+public:
+    UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array);    
+
+    void updateUI(const std::vector<Element>& array);
 
     const ArrayDimensions& getArrayDimensions() const;
 };
