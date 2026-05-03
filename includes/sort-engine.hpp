@@ -9,6 +9,9 @@ private:
     std::mt19937 twister;
     std::uniform_int_distribution<> distribution;
 
+    void randomizeArray();
+    void randomizeArrayConsecutively();
+
 public:
     SortEngine();
 
