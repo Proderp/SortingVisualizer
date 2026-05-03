@@ -26,7 +26,7 @@ struct ButtonsLayout {
 class UI {
 private:
     ArrayDimensions arrayDimensions;
-    ButtonsLayout randomizeButtonLayout;
+    ButtonsLayout buttonLayout;
 
     sf::RenderWindow& window;
     sf::View view;
@@ -35,7 +35,7 @@ private:
 
     void updateView();
     void updateArrayDimensions(const std::vector<Element>& array);
-    void updateRandomizeButtonLayout();
+    void updateButtonLayout();
 
 public:
     UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array);    
