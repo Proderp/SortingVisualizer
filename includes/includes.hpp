@@ -5,6 +5,9 @@
 #include <vector>
 #include <random>
 
+using Element = uint16_t;
+using Index = uint16_t;
+
 constexpr uint16_t DEFAULT_WINDOW_WIDTH{800};
 constexpr uint16_t DEFAULT_WINDOW_HEIGHT{600};
 

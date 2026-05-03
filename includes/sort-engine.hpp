@@ -3,7 +3,7 @@
 
 class SortEngine {
 private:
-    std::vector<uint16_t> array;
+    std::vector<Element> array;
 
     std::random_device rd;
     std::mt19937 twister;
@@ -12,5 +12,5 @@ private:
 public:
     SortEngine();
 
-    const std::vector<uint16_t>& getArray() const;
+    const std::vector<Element>& getArray() const;
 };

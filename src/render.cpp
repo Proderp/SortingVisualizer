@@ -5,10 +5,10 @@ Render::Render(sf::RenderWindow& window, const UI& ui) :
     ui(ui)
 {}
 
-void Render::drawArray(const std::vector<uint16_t>& array) {
+void Render::drawArray(const std::vector<Element>& array) {
     const ArrayDimensions& dimensions = ui.getArrayDimensions();
 
-    for (uint16_t i{0}; i < ARRAY_SIZE; i++) {
+    for (Index i{0}; i < ARRAY_SIZE; i++) {
         const float xPosition = dimensions.offsetX + (i * dimensions.barWidth) + (i * dimensions.barSpacing);
         rectangle.setPosition({xPosition, dimensions.offsetY});
 

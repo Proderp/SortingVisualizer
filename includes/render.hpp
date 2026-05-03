@@ -14,5 +14,5 @@ public:
 
     Render(sf::RenderWindow& window, const UI& ui);
 
-    void drawArray(const std::vector<uint16_t>& array);
+    void drawArray(const std::vector<Element>& array);
 };
