@@ -8,7 +8,11 @@ private:
 
     const UI& ui;
 
+    sf::RectangleShape rectangle;
+
 public:
 
     Render(sf::RenderWindow& window, const UI& ui);
+
+    void drawArray(const std::vector<uint16_t>& array);
 };

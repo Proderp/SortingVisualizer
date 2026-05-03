@@ -5,9 +5,7 @@ App::App() :
     windowSize(static_cast<sf::Vector2f>(window.getSize())),
     ui(window, windowSize),
     renderer(window, ui)
-{
-    
-}
+{}
 
 void App::run() {
     while (window.isOpen()) {
@@ -31,6 +29,8 @@ void App::eventLoop() {
 
 void App::render() {
     window.clear(sf::Color(25, 25, 28));
+
+    renderer.drawArray(sortingEngine.getArray());
 
     window.display();
 }

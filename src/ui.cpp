@@ -9,6 +9,7 @@ UI::UI(sf::RenderWindow& window, const sf::Vector2f& windowSize) :
 
 void UI::updateUI() {
     updateView();
+    updateArrayDimensions();
 }
 
 void UI::updateView() {
@@ -20,10 +21,13 @@ void UI::updateView() {
 
 void UI::updateArrayDimensions() {
     arrayDimensions.offsetX = windowSize.x * 0.1f;
-    arrayDimensions.offsetY = windowSize.y * 0.1f;
+    arrayDimensions.offsetY = windowSize.y * 0.85f;
 
-    arrayDimensions.barWidth = (windowSize.x - arrayDimensions.offsetX * 2 - arrayDimensions.barSpacing * 99) / 100;
-    arrayDimensions.barHeightUnit = (windowSize.y - arrayDimensions.offsetY * 2) / 100;
+    const float allocatedBarArea = windowSize.x - arrayDimensions.offsetX * 2 - arrayDimensions.barSpacing * 99;
+    arrayDimensions.barWidth = allocatedBarArea / 100;
+
+    const float maxBarHeight = arrayDimensions.offsetY - (windowSize.y * 0.1f);
+    arrayDimensions.barHeightUnit = maxBarHeight / 100;
 }
 
 const ArrayDimensions& UI::getArrayDimensions() const {
