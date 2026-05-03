@@ -8,7 +8,7 @@ Render::Render(sf::RenderWindow& window, const UI& ui) :
 void Render::drawArray(const std::vector<uint16_t>& array) {
     const ArrayDimensions& dimensions = ui.getArrayDimensions();
 
-    for (uint16_t i{0}; i < array.size(); i++) {
+    for (uint16_t i{0}; i < ARRAY_SIZE; i++) {
         const float xPosition = dimensions.offsetX + (i * dimensions.barWidth) + (i * dimensions.barSpacing);
         rectangle.setPosition({xPosition, dimensions.offsetY});
 

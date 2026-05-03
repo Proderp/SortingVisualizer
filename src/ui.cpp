@@ -23,11 +23,11 @@ void UI::updateArrayDimensions() {
     arrayDimensions.offsetX = windowSize.x * 0.1f;
     arrayDimensions.offsetY = windowSize.y * 0.85f;
 
-    const float allocatedBarArea = windowSize.x - arrayDimensions.offsetX * 2 - arrayDimensions.barSpacing * 99;
-    arrayDimensions.barWidth = allocatedBarArea / 100;
+    const float allocatedBarArea = windowSize.x - arrayDimensions.offsetX * 2 - (arrayDimensions.barSpacing * (ARRAY_SIZE - 1));
+    arrayDimensions.barWidth = allocatedBarArea / ARRAY_SIZE;
 
     const float maxBarHeight = arrayDimensions.offsetY - (windowSize.y * 0.1f);
-    arrayDimensions.barHeightUnit = maxBarHeight / 100;
+    arrayDimensions.barHeightUnit = maxBarHeight / ARRAY_SIZE;
 }
 
 const ArrayDimensions& UI::getArrayDimensions() const {
