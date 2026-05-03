@@ -20,3 +20,7 @@ void Render::drawArray(const std::vector<Element>& array) {
         window.draw(rectangle);
     }
 }
+
+void Render::drawButtons(const ButtonLayout& buttonLayout) {
+    
+}

@@ -42,11 +42,15 @@ void UI::updateButtonLayout() {
     buttonLayout.randomizeConsecutiveButton.size = size;
 
     const float yPosition = arrayDimensions.offsetY + ySize * 1.5f;
-    buttonLayout.sortButton.position = {arrayDimensions.offsetX, yPosition};
-    buttonLayout.randomizeNormalButton.position = {arrayDimensions.offsetX + size.x * 1.5f, yPosition};
-    buttonLayout.randomizeConsecutiveButton.position = {arrayDimensions.offsetX + size.x * 3.f, yPosition};
+    buttonLayout.sortButton.position = {arrayDimensions.offsetX + size.x * 0.5f, yPosition};
+    buttonLayout.randomizeNormalButton.position = {arrayDimensions.offsetX + size.x * 1.f + margin, yPosition};
+    buttonLayout.randomizeConsecutiveButton.position = {arrayDimensions.offsetX + size.x * 1.5f + margin, yPosition};
 }
 
 const ArrayDimensions& UI::getArrayDimensions() const {
     return arrayDimensions;
+}
+
+const ButtonLayout& UI::getButtonLayout() const {
+    return buttonLayout;
 }

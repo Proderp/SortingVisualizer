@@ -17,7 +17,7 @@ struct Button {
     sf::FloatRect bounds;
 };
 
-struct ButtonsLayout {
+struct ButtonLayout {
     Button sortButton;
     Button randomizeNormalButton;
     Button randomizeConsecutiveButton;
@@ -26,7 +26,9 @@ struct ButtonsLayout {
 class UI {
 private:
     ArrayDimensions arrayDimensions;
-    ButtonsLayout buttonLayout;
+    ButtonLayout buttonLayout;
+
+    const float margin{5.f};
 
     sf::RenderWindow& window;
     sf::View view;
@@ -43,4 +45,6 @@ public:
     void updateUI(const std::vector<Element>& array);
 
     const ArrayDimensions& getArrayDimensions() const;
+
+    const ButtonLayout& getButtonLayout() const;
 };
