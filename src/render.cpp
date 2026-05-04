@@ -6,6 +6,14 @@ Render::Render(sf::RenderWindow& window, const UI& ui) :
     text(font, "")
 {}
 
+void Render::loadFont() {
+    if (!font.openFromFile("../fonts/Ubuntu-Regular.ttf")) {
+        std::cerr << "Error loading font." << std::endl;
+    }
+
+    text.setFont(font);
+}
+
 void Render::drawArray(const std::vector<Element>& array) {
     const ArrayDimensions& dimensions = ui.getArrayDimensions();
 

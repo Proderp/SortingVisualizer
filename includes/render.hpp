@@ -12,6 +12,8 @@ private:
     sf::Text text;
     sf::RectangleShape rectangle;
 
+    void loadFont();
+
 public:
 
     Render(sf::RenderWindow& window, const UI& ui);
