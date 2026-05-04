@@ -4,10 +4,12 @@ Render::Render(sf::RenderWindow& window, const UI& ui) :
     window(window),
     ui(ui),
     text(font, "")
-{}
+{
+    loadFont();
+}
 
 void Render::loadFont() {
-    if (!font.openFromFile("../fonts/Ubuntu-Regular.ttf")) {
+    if (!font.openFromFile("../../fonts/Ubuntu-Regular.ttf")) {
         std::cerr << "Error loading font." << std::endl;
     }
 
@@ -41,7 +43,7 @@ void Render::drawButtons(const ButtonLayout& buttonLayout) {
     };
 
     text.setCharacterSize(buttonLayout.characterSize);
-    text.setFillColor(sf::Color::Green);
+    text.setFillColor(sf::Color::Black);
 
     auto drawText = [&](const Button& button) {
         text.setString(button.name);
