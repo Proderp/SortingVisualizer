@@ -25,6 +25,8 @@ private:
 
 public:
     std::array<Button*, 3> buttons = {&sortButton, &randomizeNormalButton, &randomizeConsecutiveButton};
+
+    uint32_t characterSize{30};
 };
 
 class UI {
@@ -43,6 +45,7 @@ private:
     void updateArrayDimensions(const std::vector<Element>& array);
     void updateButtonLayout();
     void updateButtonBounds(Button& button);
+    void updateCharacterSize();
 
 public:
     UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array);    

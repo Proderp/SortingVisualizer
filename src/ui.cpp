@@ -50,6 +50,8 @@ void UI::updateButtonLayout() {
         
         updateButtonBounds(*button);
     }
+
+    updateCharacterSize();
 }
 
 void UI::updateButtonBounds(Button& button) {
@@ -59,6 +61,10 @@ void UI::updateButtonBounds(Button& button) {
     };
     
     button.bounds = sf::FloatRect(topLeftCorner, button.size);
+}
+
+void UI::updateCharacterSize() {
+    buttonLayout.characterSize = buttonLayout.buttons.at(0)->size.x / 2.f;
 }
 
 const ArrayDimensions& UI::getArrayDimensions() const {
