@@ -10,9 +10,12 @@ private:
 
     sf::Font font;
     sf::Text text;
+    sf::FloatRect textBounds;
     sf::RectangleShape rectangle;
 
     void loadFont();
+
+    void setTextOrigin();
 
 public:
 

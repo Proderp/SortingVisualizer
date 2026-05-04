@@ -43,8 +43,10 @@ void Render::drawButtons(const ButtonLayout& buttonLayout) {
     text.setCharacterSize(buttonLayout.characterSize);
     text.setFillColor(sf::Color::Green);
 
-    auto drawText = [&text = this->text, &window = this->window](const Button& button) {
+    auto drawText = [&](const Button& button) {
         text.setString(button.name);
+        setTextOrigin();
+
         text.setPosition(button.position);
         window.draw(text);
     };
@@ -53,4 +55,13 @@ void Render::drawButtons(const ButtonLayout& buttonLayout) {
         drawButton(*button);
         drawText(*button);
     }
+}
+
+void Render::setTextOrigin() {
+	textBounds = text.getLocalBounds();
+
+	text.setOrigin({
+		std::round(textBounds.position.x + textBounds.size.x / 2.f),
+		std::round(textBounds.position.y + textBounds.size.y / 2.f)
+	});
 }
