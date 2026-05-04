@@ -15,7 +15,9 @@ void UI::updateUI(const std::vector<Element>& array) {
 
 void UI::updateView() {
     view.setSize(windowSize);
-    view.setCenter({windowSize.x / 2.f, windowSize.y / 2.f});
+
+    const sf::Vector2f centerOfWindow = {windowSize.x / 2.f, windowSize.y / 2.f};
+    view.setCenter(centerOfWindow);
 
     window.setView(view);
 }
@@ -28,8 +30,8 @@ void UI::updateArrayDimensions(const std::vector<Element>& array) {
     arrayDimensions.barWidth = allocatedBarArea / array.size();
 
     const float maxBarHeight = arrayDimensions.offsetY - (windowSize.y * 0.1f);
-    auto maxElement = std::max_element(array.begin(), array.end());
-    arrayDimensions.barHeightUnit = maxBarHeight / *maxElement;
+    auto maxElement = *std::max_element(array.begin(), array.end());
+    arrayDimensions.barHeightUnit = maxBarHeight / maxElement;
 }
 
 void UI::updateButtonLayout() {

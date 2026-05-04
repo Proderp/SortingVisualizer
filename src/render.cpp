@@ -24,12 +24,12 @@ void Render::drawArray(const std::vector<Element>& array) {
 
 void Render::drawButtons(const ButtonLayout& buttonLayout) {
 
-    auto drawButton = [&](const Button& button) {
-        rectangle.setSize(button.size);
-        rectangle.setPosition(button.position);
-        rectangle.setOrigin(rectangle.getGeometricCenter());
+    auto drawButton = [&rect = this->rectangle, &window = this->window](const Button& button) {
+        rect.setSize(button.size);
+        rect.setPosition(button.position);
+        rect.setOrigin(rect.getGeometricCenter());
         
-        window.draw(rectangle);
+        window.draw(rect);
     };
 
     for (const Button* button : buttonLayout.buttons) {
