@@ -30,8 +30,8 @@ void Render::drawArray(const std::vector<Element>& array) {
     }
 }
 
-void Render::drawButtons(const ButtonLayout& buttonLayout) {
-
+void Render::drawButtons(const ButtonLayout& buttonLayout) {   
+    
     auto drawButton = [&rect = this->rectangle, &window = this->window](const Button& button) {
         rect.setSize(button.size);
         rect.setPosition(button.position);
@@ -39,8 +39,26 @@ void Render::drawButtons(const ButtonLayout& buttonLayout) {
         
         window.draw(rect);
     };
-
+    
     for (const Button* button : buttonLayout.buttons) {
         drawButton(*button);
     }
+
+    drawButtonText(buttonLayout);
+}
+
+void Render::drawButtonText(const ButtonLayout& buttonLayout) {
+
+    auto drawText = [&text = this->text, &window = this->window](const std::string string, const sf::Vector2f position) {
+        text.setString(string);
+        text.setPosition(position);
+        window.draw(text);
+    };
+
+    text.setCharacterSize(buttonLayout.characterSize);
+    text.setFillColor(sf::Color::Green);
+
+    drawText("Sort", buttonLayout.buttons.at(0)->position);
+    drawText("Randomize", buttonLayout.buttons.at(1)->position);
+    drawText("Consecutive", buttonLayout.buttons.at(2)->position);
 }
