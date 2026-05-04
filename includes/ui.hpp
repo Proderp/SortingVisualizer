@@ -21,6 +21,8 @@ struct ButtonLayout {
     Button sortButton;
     Button randomizeNormalButton;
     Button randomizeConsecutiveButton;
+
+    std::array<Button*, 3> buttons = {&sortButton, &randomizeNormalButton, &randomizeConsecutiveButton};
 };
 
 class UI {
@@ -28,7 +30,7 @@ private:
     ArrayDimensions arrayDimensions;
     ButtonLayout buttonLayout;
 
-    const float margin{5.f};
+    const float margin{15.f};
 
     sf::RenderWindow& window;
     sf::View view;
@@ -38,6 +40,7 @@ private:
     void updateView();
     void updateArrayDimensions(const std::vector<Element>& array);
     void updateButtonLayout();
+    void updateButtonBounds(Button& button);
 
 public:
     UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array);    

@@ -10,6 +10,7 @@ UI::UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vect
 void UI::updateUI(const std::vector<Element>& array) {
     updateView();
     updateArrayDimensions(array);
+    updateButtonLayout();
 }
 
 void UI::updateView() {
@@ -32,19 +33,30 @@ void UI::updateArrayDimensions(const std::vector<Element>& array) {
 }
 
 void UI::updateButtonLayout() {
-    // size = (whatever y is / 3, windowSize.y - offsetY / 3.f)
-    // position = (offsetX, offsetY + size.y * 1.5f)
-    const float ySize = (windowSize.y - arrayDimensions.offsetY) / 3.f;
-    const sf::Vector2f size = {ySize / 3.f, ySize};
+    const float xSize = (windowSize.y - arrayDimensions.offsetY) / 2.f;
+    const sf::Vector2f size = {xSize, xSize / 2.f};
+    
+    const float yPosition = arrayDimensions.offsetY + xSize;
+    
+    for (Index i{0}; i < buttonLayout.buttons.size(); i++) {
+        Button* button = buttonLayout.buttons.at(i);
+        
+        button->size = size;
 
-    buttonLayout.sortButton.size = size;
-    buttonLayout.randomizeNormalButton.size = size;
-    buttonLayout.randomizeConsecutiveButton.size = size;
+        const float addedSpacing = size.x * (0.5f + i) + margin * i;
+        button->position = {arrayDimensions.offsetX + addedSpacing, yPosition};
+        
+        updateButtonBounds(*button);
+    }
+}
 
-    const float yPosition = arrayDimensions.offsetY + ySize * 1.5f;
-    buttonLayout.sortButton.position = {arrayDimensions.offsetX + size.x * 0.5f, yPosition};
-    buttonLayout.randomizeNormalButton.position = {arrayDimensions.offsetX + size.x * 1.f + margin, yPosition};
-    buttonLayout.randomizeConsecutiveButton.position = {arrayDimensions.offsetX + size.x * 1.5f + margin, yPosition};
+void UI::updateButtonBounds(Button& button) {
+    const sf::Vector2f topLeftCorner = {
+        button.position.x - button.size.x / 2.f, 
+        button.position.y - button.size.y / 2.f
+    };
+    
+    button.bounds = sf::FloatRect(topLeftCorner, button.size);
 }
 
 const ArrayDimensions& UI::getArrayDimensions() const {
