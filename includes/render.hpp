@@ -8,6 +8,8 @@ private:
 
     const UI& ui;
 
+    sf::Font font;
+    sf::Text text;
     sf::RectangleShape rectangle;
 
 public:

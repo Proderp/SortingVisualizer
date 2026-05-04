@@ -31,6 +31,7 @@ void App::render() {
     window.clear(sf::Color(25, 25, 28));
 
     renderer.drawArray(sortingEngine.getArray());
+    renderer.drawButtons(ui.getButtonLayout());
 
     window.display();
 }

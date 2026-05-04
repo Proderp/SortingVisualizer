@@ -2,7 +2,8 @@
 
 Render::Render(sf::RenderWindow& window, const UI& ui) : 
     window(window),
-    ui(ui)
+    ui(ui),
+    text(font, "")
 {}
 
 void Render::drawArray(const std::vector<Element>& array) {
@@ -22,5 +23,16 @@ void Render::drawArray(const std::vector<Element>& array) {
 }
 
 void Render::drawButtons(const ButtonLayout& buttonLayout) {
-    
+
+    auto drawButton = [&](const Button& button) {
+        rectangle.setSize(button.size);
+        rectangle.setPosition(button.position);
+        rectangle.setOrigin(rectangle.getGeometricCenter());
+        
+        window.draw(rectangle);
+    };
+
+    for (const Button* button : buttonLayout.buttons) {
+        drawButton(*button);
+    }
 }
