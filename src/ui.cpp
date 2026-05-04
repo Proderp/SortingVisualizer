@@ -69,6 +69,11 @@ void UI::updateButtonBounds(Button& button) {
     button.bounds = sf::FloatRect(topLeftCorner, button.size);
 }
 
+const ClickedButton UI::handleLeftClick(const sf::Vector2f mousePosition) {
+    
+}
+
+
 void UI::updateCharacterSize() {
     buttonLayout.characterSize = buttonLayout.buttons.at(0)->size.y / 3;
 }

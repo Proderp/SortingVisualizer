@@ -58,6 +58,8 @@ public:
 
     void updateUI(const std::vector<Element>& array);
 
+    const ClickedButton handleLeftClick(const sf::Vector2f mousePosition);
+
     const ArrayDimensions& getArrayDimensions() const;
 
     const ButtonLayout& getButtonLayout() const;
