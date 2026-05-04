@@ -15,6 +15,10 @@ struct Button {
     sf::Vector2f position;
     sf::Vector2f size;
     sf::FloatRect bounds;
+
+    const std::string name;
+
+    Button(const std::string name) : name(name) {};
 };
 
 struct ButtonLayout {
@@ -24,6 +28,8 @@ private:
     Button randomizeConsecutiveButton;
 
 public:
+    ButtonLayout();
+
     std::array<Button*, 3> buttons = {&sortButton, &randomizeNormalButton, &randomizeConsecutiveButton};
 
     uint32_t characterSize{30};

@@ -1,5 +1,11 @@
 #include "ui.hpp"
 
+ButtonLayout::ButtonLayout() : 
+    sortButton("Sort"),
+    randomizeNormalButton("Randomize"),
+    randomizeConsecutiveButton("Consecutive")
+{}
+
 UI::UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array) :
     window(window),
     windowSize(windowSize)
