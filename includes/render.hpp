@@ -21,5 +21,4 @@ public:
     void drawArray(const std::vector<Element>& array);
 
     void drawButtons(const ButtonLayout& buttonLayout);
-    void drawButtonText(const ButtonLayout& buttonLayout);
 };
