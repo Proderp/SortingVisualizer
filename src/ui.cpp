@@ -70,7 +70,7 @@ void UI::updateButtonBounds(Button& button) {
 }
 
 void UI::updateCharacterSize() {
-    buttonLayout.characterSize = buttonLayout.buttons.at(0)->size.x / 2.f;
+    buttonLayout.characterSize = buttonLayout.buttons.at(0)->size.y / 3;
 }
 
 const ArrayDimensions& UI::getArrayDimensions() const {

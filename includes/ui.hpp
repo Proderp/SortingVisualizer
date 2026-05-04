@@ -32,7 +32,7 @@ public:
 
     std::array<Button*, 3> buttons = {&sortButton, &randomizeNormalButton, &randomizeConsecutiveButton};
 
-    uint32_t characterSize{30};
+    unsigned int characterSize{30};
 };
 
 class UI {
