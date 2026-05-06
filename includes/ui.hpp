@@ -4,12 +4,14 @@
 struct ArrayDimensions {
     float offsetX;
     float offsetY;
-
+    
     float barWidth;
     float barHeightUnit;
-
+    
     float barSpacing{1.f};
 };
+
+enum class ButtonType { Sort, Randomize, Consecutive, None };
 
 struct Button {
     sf::Vector2f position;
