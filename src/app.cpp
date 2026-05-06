@@ -10,6 +10,7 @@ App::App() :
 void App::run() {
     while (window.isOpen()) {
         eventLoop();
+        checkClock();
         render();
     }
 }
@@ -52,6 +53,14 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
             break;
         case None:
             break;
+    }
+}
+
+void App::checkClock() {
+    if (clock.getElapsedTime() >= interval) {
+        // run code
+        std::cout << "Woah!" << std::endl;
+        clock.restart();
     }
 }
 

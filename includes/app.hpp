@@ -13,6 +13,11 @@ private:
     UI ui;
     Render renderer;
 
+    sf::Clock clock;
+    sf::Time interval = sf::milliseconds(500);
+
+    void checkClock();
+
     void eventLoop();
     void handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent);
     
