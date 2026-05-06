@@ -17,8 +17,9 @@ struct Button {
     sf::FloatRect bounds;
 
     const std::string name;
+    const ButtonType id;
 
-    Button(const std::string name) : name(name) {};
+    Button(const std::string name, const ButtonType id) : name(name), id(id) {};
 };
 
 struct ButtonLayout {
@@ -30,7 +31,7 @@ private:
 public:
     ButtonLayout();
 
-    std::array<Button*, 3> buttons = {&sortButton, &randomizeNormalButton, &randomizeConsecutiveButton};
+    const std::array<Button*, 3> buttons = {&sortButton, &randomizeNormalButton, &randomizeConsecutiveButton};
 
     unsigned int characterSize{30};
 };
@@ -58,7 +59,7 @@ public:
 
     void updateUI(const std::vector<Element>& array);
 
-    const ClickedButton handleLeftClick(const sf::Vector2f mousePosition);
+    const ButtonType findClickedButton(const sf::Vector2f mousePosition);
 
     const ArrayDimensions& getArrayDimensions() const;
 
