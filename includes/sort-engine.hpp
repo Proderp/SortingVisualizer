@@ -1,6 +1,22 @@
 #pragma once
 #include "includes.hpp"
 
+enum class ActionType {Compare, Swap, MarkSorted, Sorted};
+
+struct Action {
+    ActionType actionType;
+    Index indexOne, indexTwo;
+
+    // comparing and swapping
+    Action(ActionType action, Index indexOne, Index indexTwo);
+
+    // marking sorted
+    Action(ActionType action, Index index);
+
+    // fully sorted
+    Action() : actionType(ActionType::Sorted) {}
+};
+
 class SortEngine {
 private:
     std::vector<Element> array;
@@ -11,6 +27,7 @@ private:
     std::mt19937 twister;
     std::uniform_int_distribution<> distribution;
     
+    std::vector<Action> actions;
 public:
     SortEngine();
 

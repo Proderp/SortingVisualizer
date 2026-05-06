@@ -1,5 +1,15 @@
 #include "sort-engine.hpp"
 
+Action::Action(ActionType action, Index indexOne, Index indexTwo) : 
+    actionType(action),
+    indexOne(indexOne), indexTwo(indexTwo)
+{}
+
+Action::Action(ActionType action, Index index) :
+    actionType(action),
+    indexOne(index)
+{}
+
 SortEngine::SortEngine() :
     twister(rd()),
     distribution(1, range)
@@ -22,13 +32,14 @@ void SortEngine::randomizeArrayConsecutively() {
 }
 
 void SortEngine::bubbleSort() {
-    for (Index i{0}; i < array.size(); i++) {
-        Index sortedIndex = array.size() - i;
+    std::vector<Element> newArray(array);
+    for (Index i{0}; i < newArray.size(); i++) {
+        Index sortedIndex = newArray.size() - i;
         bool swapMade{false};
         
         for (Index j{0}; j < sortedIndex - 1; j++) {
-            if (array.at(j) > array.at(j + 1)) {
-                std::swap(array.at(j), array.at(j + 1));
+            if (newArray.at(j) > newArray.at(j + 1)) {
+                std::swap(newArray.at(j), newArray.at(j + 1));
                 swapMade = true;
             }
         }
