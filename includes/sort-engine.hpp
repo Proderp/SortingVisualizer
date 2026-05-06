@@ -28,14 +28,19 @@ private:
     std::uniform_int_distribution<> distribution;
     
     std::vector<Action> actions;
+    Index currentActionIndex{0};
+
 public:
     SortEngine();
 
     void randomizeArray();
     void randomizeArrayConsecutively();
+    
+    void runAction();
+    
+    void bubbleSort();
 
     const std::vector<Element>& getArray() const;
     const uint16_t getArraySize() const;
-
-    void bubbleSort();
+    const size_t getActionVectorSize() const;
 };

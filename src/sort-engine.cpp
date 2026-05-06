@@ -68,3 +68,7 @@ const std::vector<Element>& SortEngine::getArray() const {
 const uint16_t SortEngine::getArraySize() const {
     return arraySize;
 }
+
+const size_t SortEngine::getActionVectorSize() const {
+    return actions.size();
+}
