@@ -10,12 +10,12 @@ private:
     std::random_device rd;
     std::mt19937 twister;
     std::uniform_int_distribution<> distribution;
+    
+public:
+    SortEngine();
 
     void randomizeArray();
     void randomizeArrayConsecutively();
-
-public:
-    SortEngine();
 
     const std::vector<Element>& getArray() const;
     const uint16_t getArraySize() const;
