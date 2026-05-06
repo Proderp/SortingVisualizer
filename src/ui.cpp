@@ -32,6 +32,10 @@ void UI::updateArrayDimensions(const std::vector<Element>& array) {
     arrayDimensions.offsetX = windowSize.x * 0.1f;
     arrayDimensions.offsetY = windowSize.y * 0.7f;
 
+    if (array.empty()) {
+        return;
+    }
+
     const float allocatedBarArea = windowSize.x - arrayDimensions.offsetX * 2 - arrayDimensions.barSpacing * (array.size() - 1);
     arrayDimensions.barWidth = allocatedBarArea / array.size();
 
