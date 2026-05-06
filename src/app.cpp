@@ -42,8 +42,12 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
         case Sort:
             break;
         case Randomize:
+            sortingEngine.randomizeArray();
+            ui.updateUI(sortingEngine.getArray());
             break;
         case Consecutive:
+            sortingEngine.randomizeArrayConsecutively();
+            ui.updateUI(sortingEngine.getArray());
             break;
         case None:
             break;
