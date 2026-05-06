@@ -33,21 +33,32 @@ void SortEngine::randomizeArrayConsecutively() {
 
 void SortEngine::bubbleSort() {
     std::vector<Element> newArray(array);
+
     for (Index i{0}; i < newArray.size(); i++) {
         Index sortedIndex = newArray.size() - i;
         bool swapMade{false};
         
         for (Index j{0}; j < sortedIndex - 1; j++) {
+            actions.push_back(Action(ActionType::Compare, j, j + 1));
             if (newArray.at(j) > newArray.at(j + 1)) {
+                actions.push_back(Action(ActionType::Swap, j, j + 1));
+                
                 std::swap(newArray.at(j), newArray.at(j + 1));
                 swapMade = true;
             }
         }
 
         if (!swapMade) {
+            for (Index k{0}; k < sortedIndex; k++) {
+                actions.push_back(Action());
+            }
             break;
         }
+
+        actions.push_back(Action(ActionType::MarkSorted, sortedIndex - 1));
     }
+
+    actions.push_back(Action());
 }
 
 const std::vector<Element>& SortEngine::getArray() const {

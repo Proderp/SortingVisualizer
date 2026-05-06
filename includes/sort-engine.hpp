@@ -14,7 +14,7 @@ struct Action {
     Action(ActionType action, Index index);
 
     // fully sorted
-    Action() : actionType(ActionType::Sorted) {}
+    Action(ActionType action = ActionType::Sorted) : actionType(action) {}
 };
 
 class SortEngine {
