@@ -24,6 +24,12 @@ void App::eventLoop() {
             windowSize = static_cast<sf::Vector2f>(resizeEvent->size);
             ui.updateUI(sortingEngine.getArray());
         }
+
+        if (const sf::Event::MouseButtonPressed* mousePressedEvent = event->getIf<sf::Event::MouseButtonPressed>()) {
+            if (mousePressedEvent->button == sf::Mouse::Button::Left) {
+                
+            } 
+        }
     }
 }
 

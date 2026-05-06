@@ -1,9 +1,9 @@
 #include "ui.hpp"
 
 ButtonLayout::ButtonLayout() : 
-    sortButton("Sort"),
-    randomizeNormalButton("Randomize"),
-    randomizeConsecutiveButton("Consecutive")
+    sortButton("Sort", ButtonType::Sort),
+    randomizeNormalButton("Randomize", ButtonType::Randomize),
+    randomizeConsecutiveButton("Consecutive", ButtonType::Consecutive)
 {}
 
 UI::UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array) :
@@ -73,10 +73,15 @@ void UI::updateButtonBounds(Button& button) {
     button.bounds = sf::FloatRect(topLeftCorner, button.size);
 }
 
-const ClickedButton UI::handleLeftClick(const sf::Vector2f mousePosition) {
-    
-}
+const ButtonType UI::findClickedButton(const sf::Vector2f mousePosition) {
+    for (const Button* button : buttonLayout.buttons) {
+        if (button->bounds.contains(mousePosition)) {
+            return button->id;
+        }
+    }
 
+    return ButtonType::None;
+}
 
 void UI::updateCharacterSize() {
     buttonLayout.characterSize = buttonLayout.buttons.at(0)->size.y / 3;
