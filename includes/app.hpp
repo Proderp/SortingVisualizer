@@ -14,6 +14,7 @@ private:
     Render renderer;
 
     void eventLoop();
+    void handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent);
     
     void render();
 public:

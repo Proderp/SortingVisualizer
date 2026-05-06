@@ -27,9 +27,26 @@ void App::eventLoop() {
 
         if (const sf::Event::MouseButtonPressed* mousePressedEvent = event->getIf<sf::Event::MouseButtonPressed>()) {
             if (mousePressedEvent->button == sf::Mouse::Button::Left) {
-                
+                handleLeftClick(mousePressedEvent);
             } 
         }
+    }
+}
+
+void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent) {
+    const sf::Vector2f mousePosition = static_cast<sf::Vector2f>(mousePressedEvent->position);
+    const ButtonType clickedButton = ui.findClickedButton(mousePosition);
+
+    switch (clickedButton) {
+        using enum ButtonType;
+        case Sort:
+            break;
+        case Randomize:
+            break;
+        case Consecutive:
+            break;
+        case None:
+            break;
     }
 }
 
