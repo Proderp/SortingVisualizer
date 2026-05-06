@@ -65,8 +65,22 @@ const std::vector<Element>& SortEngine::getArray() const {
     return array;
 }
 
-void SortEngine::runAction() {
+bool SortEngine::runAction() {
+    if (currentActionIndex >= actions.size()) {
+        return false;
+    }
     
+    const Action& action = actions.at(currentActionIndex);
+    switch (action.actionType) {
+        case ActionType::Compare:
+            break;
+        case ActionType::Swap:
+            std::swap(array.at(action.indexOne), array.at(action.indexTwo));
+            break;
+    }
+
+    currentActionIndex++;
+    return true;
 }
 
 const uint16_t SortEngine::getArraySize() const {

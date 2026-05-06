@@ -60,7 +60,9 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
 void App::checkClock() {
     if (clock.getElapsedTime() >= interval and isSorting) {
 
-        sortingEngine.runAction();
+        if (!sortingEngine.runAction()) {
+            isSorting = false;
+        }
 
         clock.restart();
     }

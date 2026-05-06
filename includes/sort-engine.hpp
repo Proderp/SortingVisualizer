@@ -36,7 +36,7 @@ public:
     void randomizeArray();
     void randomizeArrayConsecutively();
     
-    void runAction();
+    bool runAction();
     
     void bubbleSort();
 
