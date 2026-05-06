@@ -42,6 +42,7 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
         using enum ButtonType;
         case Sort:
             sortingEngine.bubbleSort();
+            isSorting = true;
             break;
         case Randomize:
             sortingEngine.randomizeArray();
@@ -57,9 +58,10 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
 }
 
 void App::checkClock() {
-    if (clock.getElapsedTime() >= interval) {
-        // run code
-        std::cout << "Woah!" << std::endl;
+    if (clock.getElapsedTime() >= interval and isSorting) {
+
+        sortingEngine.runAction();
+
         clock.restart();
     }
 }

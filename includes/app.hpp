@@ -16,6 +16,8 @@ private:
     sf::Clock clock;
     sf::Time interval = sf::milliseconds(500);
 
+    bool isSorting{false};
+
     void checkClock();
 
     void eventLoop();
