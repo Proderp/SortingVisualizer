@@ -60,10 +60,10 @@ void Render::drawButtons(const ButtonLayout& buttonLayout) {
 }
 
 void Render::setTextOrigin() {
-	textBounds = text.getLocalBounds();
+	const sf::FloatRect bounds = text.getLocalBounds();
 
 	text.setOrigin({
-		std::round(textBounds.position.x + textBounds.size.x / 2.f),
-		std::round(textBounds.position.y + textBounds.size.y / 2.f)
+		std::round(bounds.position.x + bounds.size.x / 2.f),
+		std::round(bounds.position.y + bounds.size.y / 2.f)
 	});
 }
