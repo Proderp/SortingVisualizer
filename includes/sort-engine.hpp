@@ -19,4 +19,6 @@ public:
 
     const std::vector<Element>& getArray() const;
     const uint16_t getArraySize() const;
+
+    void bubbleSort();
 };

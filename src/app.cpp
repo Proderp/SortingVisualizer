@@ -40,6 +40,7 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
     switch (clickedButton) {
         using enum ButtonType;
         case Sort:
+            sortingEngine.bubbleSort();
             break;
         case Randomize:
             sortingEngine.randomizeArray();

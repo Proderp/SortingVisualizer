@@ -21,6 +21,24 @@ void SortEngine::randomizeArrayConsecutively() {
     std::shuffle(array.begin(), array.end(), twister);
 }
 
+void SortEngine::bubbleSort() {
+    for (Index i{0}; i < array.size(); i++) {
+        Index sortedIndex = array.size() - i;
+        bool swapMade{false};
+        
+        for (Index j{0}; j < sortedIndex - 1; j++) {
+            if (array.at(j) > array.at(j + 1)) {
+                std::swap(array.at(j), array.at(j + 1));
+                swapMade = true;
+            }
+        }
+
+        if (!swapMade) {
+            break;
+        }
+    }
+}
+
 const std::vector<Element>& SortEngine::getArray() const {
     return array;
 }
