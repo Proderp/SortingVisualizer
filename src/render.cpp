@@ -28,13 +28,17 @@ void Render::drawArray(const std::vector<Element>& array, const VisualState& vis
 
         rectangle.setOrigin({0.f, barSize.y});
         
+        rectangle.setFillColor(sf::Color::White);
+        
         if (visualData.activeOne != INACTIVE and visualData.activeTwo != INACTIVE) {
+            if (visualData.activeOne == i or visualData.activeTwo == i) {
+                rectangle.setFillColor(sf::Color::Red);
+            }
+        }
+
+        if (visualData.activeOne != INACTIVE) {
             if (visualData.isSorted.at(i) and !visualData.isSorted.empty()) {
                 rectangle.setFillColor(sf::Color::Green);
-            } else if (visualData.activeOne == i or visualData.activeTwo == i) {
-                rectangle.setFillColor(sf::Color::Red);
-            } else {
-                rectangle.setFillColor(sf::Color::White);
             }
         }
 

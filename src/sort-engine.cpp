@@ -54,7 +54,7 @@ void SortEngine::bubbleSort() {
 
         if (!swapMade) {
             for (Index k{0}; k < sortedIndex; k++) {
-                actions.push_back(Action());
+                actions.push_back(Action(ActionType::MarkSorted, k));
             }
             break;
         }
