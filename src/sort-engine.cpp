@@ -33,6 +33,8 @@ void SortEngine::randomizeArrayConsecutively() {
 
 void SortEngine::bubbleSort() {
     std::vector<Element> newArray(array);
+    isSorted.resize(arraySize);
+    std::fill(isSorted.begin(), isSorted.end(), false);
 
     for (Index i{0}; i < newArray.size(); i++) {
         Index sortedIndex = newArray.size() - i;
@@ -74,10 +76,21 @@ bool SortEngine::runAction() {
         case ActionType::Swap:
             std::swap(array.at(action.indexOne.value()), array.at(action.indexTwo.value()));
             break;
+        case ActionType::MarkSorted:
+            isSorted.at(action.indexOne.value()) = true;
+            break;
+        case ActionType::Sorted:
+            resetActions();
+            return false;
+            break;
     }
 
     currentActionIndex++;
     return true;
+}
+
+const Action& SortEngine::getCurrentAction() const {
+    return actions.at(currentActionIndex);
 }
 
 void SortEngine::resetActions() {

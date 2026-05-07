@@ -29,6 +29,7 @@ private:
     
     std::vector<Action> actions;
     Index currentActionIndex{0};
+    std::vector<bool> isSorted;
 
 public:
     SortEngine();
@@ -36,9 +37,9 @@ public:
     void randomizeArray();
     void randomizeArrayConsecutively();
     
-    void resetActions();
-
     bool runAction();
+    const Action& getCurrentAction() const;
+    void resetActions();
     
     void bubbleSort();
 
