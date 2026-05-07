@@ -61,12 +61,9 @@ void SortEngine::bubbleSort() {
     actions.push_back(Action());
 }
 
-const std::vector<Element>& SortEngine::getArray() const {
-    return array;
-}
-
 bool SortEngine::runAction() {
     if (currentActionIndex >= actions.size()) {
+        resetActions();
         return false;
     }
     
@@ -82,6 +79,17 @@ bool SortEngine::runAction() {
     currentActionIndex++;
     return true;
 }
+
+void SortEngine::resetActions() {
+    actions.clear();
+    currentActionIndex = 0;
+}
+
+
+const std::vector<Element>& SortEngine::getArray() const {
+    return array;
+}
+
 
 const uint16_t SortEngine::getArraySize() const {
     return arraySize;
