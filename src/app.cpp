@@ -41,6 +41,7 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
     switch (clickedButton) {
         using enum ButtonType;
         case Sort:
+            stopSorting();
             sortingEngine.bubbleSort();
             isSorting = true;
             break;
@@ -62,6 +63,7 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
 void App::stopSorting() {
     isSorting = false;
     sortingEngine.resetActions();
+    sortingEngine.resetVisualData();
 }
 
 void App::checkClock() {
