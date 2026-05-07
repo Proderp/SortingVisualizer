@@ -14,6 +14,8 @@ SortEngine::SortEngine() :
     twister(rd()),
     distribution(1, range)
 {
+    visualData.isSorted.reserve(arraySize);
+
     array.reserve(arraySize);
     randomizeArrayConsecutively();
 }
@@ -85,6 +87,7 @@ bool SortEngine::runAction() {
             std::swap(array.at(action.indexOne), array.at(action.indexTwo));
             break;
         case ActionType::MarkSorted:
+            visualData.activeOne = action.indexOne;
             visualData.isSorted.at(action.indexOne) = true;
             break;
         case ActionType::Sorted:

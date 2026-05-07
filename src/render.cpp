@@ -16,7 +16,7 @@ void Render::loadFont() {
     text.setFont(font);
 }
 
-void Render::drawArray(const std::vector<Element>& array) {
+void Render::drawArray(const std::vector<Element>& array, const VisualState& visualData) {
     const ArrayDimensions& dimensions = ui.getArrayDimensions();
 
     for (Index i{0}; i < array.size(); i++) {
@@ -28,12 +28,24 @@ void Render::drawArray(const std::vector<Element>& array) {
 
         rectangle.setOrigin({0.f, barSize.y});
         
+        if (visualData.activeOne != INACTIVE and visualData.activeTwo != INACTIVE) {
+            if (visualData.isSorted.at(i) and !visualData.isSorted.empty()) {
+                rectangle.setFillColor(sf::Color::Green);
+            } else if (visualData.activeOne == i or visualData.activeTwo == i) {
+                rectangle.setFillColor(sf::Color::Red);
+            } else {
+                rectangle.setFillColor(sf::Color::White);
+            }
+        }
+
         window.draw(rectangle);
     }
 }
 
 void Render::drawButtons(const ButtonLayout& buttonLayout) {   
        
+    rectangle.setFillColor(sf::Color::White);
+
     auto drawButton = [&rect = this->rectangle, &window = this->window](const Button& button) {
         rect.setSize(button.size);
         rect.setPosition(button.position);

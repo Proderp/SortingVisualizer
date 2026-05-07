@@ -20,7 +20,7 @@ public:
 
     Render(sf::RenderWindow& window, const UI& ui);
 
-    void drawArray(const std::vector<Element>& array);
+    void drawArray(const std::vector<Element>& array, const VisualState& visualData);
 
     void drawButtons(const ButtonLayout& buttonLayout);
 };

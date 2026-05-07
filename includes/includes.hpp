@@ -17,8 +17,7 @@ constexpr uint16_t DEFAULT_WINDOW_HEIGHT{ 600 };
 constexpr Index INACTIVE = std::numeric_limits<Index>::max();
 
 struct VisualState {
-    Index activeOne{INACTIVE};
-    Index activeTwo{INACTIVE};
-    Index currentPivot{INACTIVE};
+    Index activeOne{INACTIVE}, activeTwo{INACTIVE};
+
     std::vector<bool> isSorted; 
 };
