@@ -16,8 +16,9 @@ constexpr uint16_t DEFAULT_WINDOW_HEIGHT{ 600 };
 
 constexpr Index INACTIVE = std::numeric_limits<Index>::max();
 
-struct VisualState {
+struct VisualData {
     Index activeOne{INACTIVE}, activeTwo{INACTIVE};
 
+    bool isSorted{false};
     std::vector<bool> sortedElements; 
 };

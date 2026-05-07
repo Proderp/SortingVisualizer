@@ -16,7 +16,7 @@ void Render::loadFont() {
     text.setFont(font);
 }
 
-void Render::drawArray(const std::vector<Element>& array, const VisualState& visualData) {
+void Render::drawArray(const std::vector<Element>& array, const VisualData& visualData) {
     const ArrayDimensions& dimensions = ui.getArrayDimensions();
 
     for (Index i{0}; i < array.size(); i++) {
@@ -36,7 +36,7 @@ void Render::drawArray(const std::vector<Element>& array, const VisualState& vis
             }
         }
 
-        if (visualData.activeOne != INACTIVE) {
+        if (visualData.activeOne != INACTIVE or visualData.isSorted) {
             if (visualData.sortedElements.at(i) and !visualData.sortedElements.empty()) {
                 rectangle.setFillColor(sf::Color::Green);
             }

@@ -29,7 +29,7 @@ private:
     
     std::vector<Action> actions;
     Index currentActionIndex{0};
-    VisualState visualData;
+    VisualData visualData;
 
 public:
     SortEngine();
@@ -38,7 +38,7 @@ public:
     void randomizeArrayConsecutively();
     
     bool runAction();
-    const VisualState& getVisualData() const;
+    const VisualData& getVisualData() const;
     void resetActions();
     
     void bubbleSort();

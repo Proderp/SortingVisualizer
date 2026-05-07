@@ -91,6 +91,7 @@ bool SortEngine::runAction() {
             visualData.sortedElements.at(action.indexOne) = true;
             break;
         case ActionType::Sorted:
+            visualData.isSorted = true;
             resetActions();
             return false;
             break;
@@ -100,7 +101,7 @@ bool SortEngine::runAction() {
     return true;
 }
 
-const VisualState& SortEngine::getVisualData() const {
+const VisualData& SortEngine::getVisualData() const {
     return visualData;
 }
 
