@@ -45,20 +45,23 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
             isSorting = true;
             break;
         case Randomize:
-            isSorting = false;
-            sortingEngine.resetActions();
+            stopSorting();
             sortingEngine.randomizeArray();
             ui.updateUI(sortingEngine.getArray());
             break;
         case Consecutive:
-            isSorting = false;
-            sortingEngine.resetActions();
+            stopSorting();
             sortingEngine.randomizeArrayConsecutively();
             ui.updateUI(sortingEngine.getArray());
             break;
         case None:
             break;
     }
+}
+
+void App::stopSorting() {
+    isSorting = false;
+    sortingEngine.resetActions();
 }
 
 void App::checkClock() {

@@ -23,6 +23,8 @@ private:
     void eventLoop();
     void handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent);
     
+    void stopSorting();
+
     void render();
 public:
 
