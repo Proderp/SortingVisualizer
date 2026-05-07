@@ -33,8 +33,8 @@ void SortEngine::randomizeArrayConsecutively() {
 
 void SortEngine::bubbleSort() {
     std::vector<Element> newArray(array);
-    isSorted.resize(arraySize);
-    std::fill(isSorted.begin(), isSorted.end(), false);
+    visualData.isSorted.resize(arraySize);
+    std::fill(visualData.isSorted.begin(), visualData.isSorted.end(), false);
 
     for (Index i{0}; i < newArray.size(); i++) {
         Index sortedIndex = newArray.size() - i;
@@ -70,14 +70,22 @@ bool SortEngine::runAction() {
     }
     
     const Action& action = actions.at(currentActionIndex);
+    
+    visualData.activeOne = INACTIVE;
+    visualData.activeTwo = INACTIVE;
+    
     switch (action.actionType) {
         case ActionType::Compare:
+            visualData.activeOne = action.indexOne;
+            visualData.activeTwo = action.indexTwo;
             break;
         case ActionType::Swap:
-            std::swap(array.at(action.indexOne.value()), array.at(action.indexTwo.value()));
+            visualData.activeOne = action.indexOne;
+            visualData.activeTwo = action.indexTwo;
+            std::swap(array.at(action.indexOne), array.at(action.indexTwo));
             break;
         case ActionType::MarkSorted:
-            isSorted.at(action.indexOne.value()) = true;
+            visualData.isSorted.at(action.indexOne) = true;
             break;
         case ActionType::Sorted:
             resetActions();
@@ -89,8 +97,8 @@ bool SortEngine::runAction() {
     return true;
 }
 
-const Action& SortEngine::getCurrentAction() const {
-    return actions.at(currentActionIndex);
+const VisualState& SortEngine::getVisualData() const {
+    return visualData;
 }
 
 void SortEngine::resetActions() {

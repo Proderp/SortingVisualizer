@@ -5,7 +5,7 @@ enum class ActionType {Compare, Swap, MarkSorted, Sorted};
 
 struct Action {
     ActionType actionType;
-    std::optional<Index> indexOne, indexTwo;
+    Index indexOne, indexTwo;
 
     // comparing and swapping
     Action(ActionType action, Index indexOne, Index indexTwo);
@@ -29,7 +29,7 @@ private:
     
     std::vector<Action> actions;
     Index currentActionIndex{0};
-    std::vector<bool> isSorted;
+    VisualState visualData;
 
 public:
     SortEngine();
@@ -38,7 +38,7 @@ public:
     void randomizeArrayConsecutively();
     
     bool runAction();
-    const Action& getCurrentAction() const;
+    const VisualState& getVisualData() const;
     void resetActions();
     
     void bubbleSort();
