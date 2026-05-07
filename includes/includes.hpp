@@ -19,5 +19,5 @@ constexpr Index INACTIVE = std::numeric_limits<Index>::max();
 struct VisualState {
     Index activeOne{INACTIVE}, activeTwo{INACTIVE};
 
-    std::vector<bool> isSorted; 
+    std::vector<bool> sortedElements; 
 };

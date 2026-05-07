@@ -37,7 +37,7 @@ void Render::drawArray(const std::vector<Element>& array, const VisualState& vis
         }
 
         if (visualData.activeOne != INACTIVE) {
-            if (visualData.isSorted.at(i) and !visualData.isSorted.empty()) {
+            if (visualData.sortedElements.at(i) and !visualData.sortedElements.empty()) {
                 rectangle.setFillColor(sf::Color::Green);
             }
         }

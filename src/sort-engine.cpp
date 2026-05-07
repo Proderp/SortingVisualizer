@@ -14,7 +14,7 @@ SortEngine::SortEngine() :
     twister(rd()),
     distribution(1, range)
 {
-    visualData.isSorted.reserve(arraySize);
+    visualData.sortedElements.reserve(arraySize);
 
     array.reserve(arraySize);
     randomizeArrayConsecutively();
@@ -35,8 +35,8 @@ void SortEngine::randomizeArrayConsecutively() {
 
 void SortEngine::bubbleSort() {
     std::vector<Element> newArray(array);
-    visualData.isSorted.resize(arraySize);
-    std::fill(visualData.isSorted.begin(), visualData.isSorted.end(), false);
+    visualData.sortedElements.resize(arraySize);
+    std::fill(visualData.sortedElements.begin(), visualData.sortedElements.end(), false);
 
     for (Index i{0}; i < newArray.size(); i++) {
         Index sortedIndex = newArray.size() - i;
@@ -88,7 +88,7 @@ bool SortEngine::runAction() {
             break;
         case ActionType::MarkSorted:
             visualData.activeOne = action.indexOne;
-            visualData.isSorted.at(action.indexOne) = true;
+            visualData.sortedElements.at(action.indexOne) = true;
             break;
         case ActionType::Sorted:
             resetActions();
