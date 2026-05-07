@@ -5,7 +5,7 @@ enum class ActionType {Compare, Swap, MarkSorted, Sorted};
 
 struct Action {
     ActionType actionType;
-    Index indexOne, indexTwo;
+    std::optional<Index> indexOne, indexTwo;
 
     // comparing and swapping
     Action(ActionType action, Index indexOne, Index indexTwo);

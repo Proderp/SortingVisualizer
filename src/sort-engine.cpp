@@ -72,7 +72,7 @@ bool SortEngine::runAction() {
         case ActionType::Compare:
             break;
         case ActionType::Swap:
-            std::swap(array.at(action.indexOne), array.at(action.indexTwo));
+            std::swap(array.at(action.indexOne.value()), array.at(action.indexTwo.value()));
             break;
     }
 
@@ -85,11 +85,9 @@ void SortEngine::resetActions() {
     currentActionIndex = 0;
 }
 
-
 const std::vector<Element>& SortEngine::getArray() const {
     return array;
 }
-
 
 const uint16_t SortEngine::getArraySize() const {
     return arraySize;
