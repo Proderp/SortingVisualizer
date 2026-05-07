@@ -45,10 +45,14 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
             isSorting = true;
             break;
         case Randomize:
+            isSorting = false;
+            sortingEngine.resetActions();
             sortingEngine.randomizeArray();
             ui.updateUI(sortingEngine.getArray());
             break;
         case Consecutive:
+            isSorting = false;
+            sortingEngine.resetActions();
             sortingEngine.randomizeArrayConsecutively();
             ui.updateUI(sortingEngine.getArray());
             break;
