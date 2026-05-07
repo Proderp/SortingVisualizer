@@ -41,6 +41,8 @@ public:
     const VisualData& getVisualData() const;
     void resetActions();
     
+    void resetVisualData();
+
     void bubbleSort();
 
     const std::vector<Element>& getArray() const;

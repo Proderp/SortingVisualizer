@@ -110,6 +110,10 @@ void SortEngine::resetActions() {
     currentActionIndex = 0;
 }
 
+void SortEngine::resetVisualData() {
+    visualData = VisualData{};
+}
+
 const std::vector<Element>& SortEngine::getArray() const {
     return array;
 }
