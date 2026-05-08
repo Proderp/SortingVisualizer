@@ -11,7 +11,7 @@ struct ArrayDimensions {
     float barSpacing{0.f};
 };
 
-enum class ButtonType { Sort, Randomize, Consecutive, None };
+enum class ButtonType { Sort, Randomize, Consecutive, AnimationSlider, None };
 
 struct Button {
     sf::Vector2f position;
@@ -36,6 +36,15 @@ public:
     const std::array<Button*, 3> buttons = {&sortButton, &randomizeNormalButton, &randomizeConsecutiveButton};
 
     unsigned int characterSize{30};
+};
+
+struct Slider {
+    sf::Vector2f position;
+    sf::Vector2f size;
+
+    Button thumb;
+
+    Slider(const std::string buttonName, const ButtonType buttonID);
 };
 
 class UI {

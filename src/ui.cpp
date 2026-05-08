@@ -6,6 +6,10 @@ ButtonLayout::ButtonLayout() :
     randomizeConsecutiveButton("Consecutive", ButtonType::Consecutive)
 {}
 
+Slider::Slider(const std::string buttonName, const ButtonType buttonID) :
+    thumb(buttonName, buttonID)
+{}
+
 UI::UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array) :
     window(window),
     windowSize(windowSize)
