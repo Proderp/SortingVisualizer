@@ -1,16 +1,7 @@
 #include "ui.hpp"
 
-ButtonLayout::ButtonLayout() : 
-    sortButton("Sort", ButtonType::Sort),
-    randomizeNormalButton("Randomize", ButtonType::Randomize),
-    randomizeConsecutiveButton("Consecutive", ButtonType::Consecutive)
-{}
-
-Slider::Slider(const std::string buttonName, const ButtonType buttonID) :
-    thumb(buttonName, buttonID)
-{}
-
 UI::UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array) :
+    animationSlider("Animation Slider", ButtonType::AnimationSlider),
     window(window),
     windowSize(windowSize)
 {
@@ -77,6 +68,10 @@ void UI::updateButtonBounds(Button& button) {
     button.bounds = sf::FloatRect(topLeftCorner, button.size);
 }
 
+void UI::updateCharacterSize() {
+    buttonLayout.characterSize = buttonLayout.buttons.at(0)->size.y / 3;
+}
+
 const ButtonType UI::findClickedButton(const sf::Vector2f mousePosition) {
     for (const Button* button : buttonLayout.buttons) {
         if (button->bounds.contains(mousePosition)) {
@@ -85,10 +80,6 @@ const ButtonType UI::findClickedButton(const sf::Vector2f mousePosition) {
     }
 
     return ButtonType::None;
-}
-
-void UI::updateCharacterSize() {
-    buttonLayout.characterSize = buttonLayout.buttons.at(0)->size.y / 3;
 }
 
 const ArrayDimensions& UI::getArrayDimensions() const {
