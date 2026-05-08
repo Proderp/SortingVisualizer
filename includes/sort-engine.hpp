@@ -5,16 +5,20 @@ enum class ActionType {Compare, Swap, MarkSorted, Sorted};
 
 struct Action {
     ActionType actionType;
-    Index indexOne, indexTwo;
+    Index indexOne{INACTIVE}, indexTwo{INACTIVE};
+    Element oldValue{INACTIVE}, newValue{INACTIVE};
 
-    // comparing and swapping
+    // Comparing and Swapping
     Action(ActionType action, Index indexOne, Index indexTwo);
 
-    // marking sorted
+    // Marking Sorted
     Action(ActionType action, Index index);
 
-    // fully sorted
-    Action(ActionType action = ActionType::Sorted) : actionType(action) {}
+    // Merge Overwrite
+    Action(ActionType action, Index index, Element oldValue, Element newValue);
+
+    // Fully Sorted
+    Action(ActionType action);
 };
 
 class SortEngine {

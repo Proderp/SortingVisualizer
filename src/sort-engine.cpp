@@ -1,14 +1,26 @@
 #include "sort-engine.hpp"
 
+// Comparing and Swapping
 Action::Action(ActionType action, Index indexOne, Index indexTwo) : 
     actionType(action),
     indexOne(indexOne), indexTwo(indexTwo)
 {}
 
+// Marking Sorted
 Action::Action(ActionType action, Index index) :
     actionType(action),
     indexOne(index)
 {}
+
+// Merge Overwrites
+Action::Action(ActionType action, Index index, Element oldValue, Element newValue) : 
+    actionType(action),
+    indexOne(index),
+    oldValue(oldValue), newValue(newValue)
+{}
+
+// Fully Sorted
+Action::Action(ActionType action) : actionType(action) {}
 
 SortEngine::SortEngine() :
     twister(rd()),
@@ -62,7 +74,7 @@ void SortEngine::bubbleSort() {
         actions.push_back(Action(ActionType::MarkSorted, sortedIndex - 1));
     }
 
-    actions.push_back(Action());
+    actions.push_back(Action(ActionType::Sorted));
 }
 
 bool SortEngine::runAction() {
