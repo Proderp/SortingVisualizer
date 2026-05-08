@@ -77,6 +77,15 @@ void SortEngine::bubbleSort() {
     actions.push_back(Action(ActionType::Sorted));
 }
 
+void SortEngine::mergeWrapper() {
+    std::vector<Element> tempArray(array);
+    std::vector<Element> originalArray(array);
+    
+    Index left{0}, right{array.size()};
+
+    mergeSort(tempArray, originalArray, left, right);
+}
+
 bool SortEngine::runAction() {
     if (currentActionIndex >= actions.size()) {
         return false;
