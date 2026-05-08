@@ -150,7 +150,7 @@ void SortEngine::merge(std::vector<Element>& tempArray, std::vector<Element>& or
     }
 }
 
-bool SortEngine::runAction() {
+bool SortEngine::runActionForward() {
     if (currentActionIndex >= actions.size()) {
         return false;
     }

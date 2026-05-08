@@ -35,22 +35,27 @@ private:
     Index currentActionIndex{0};
     VisualData visualData;
 
+    void mergeSort(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index left, const Index right);
+    void merge(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index leftEnd, const Index middle, const Index rightEnd);
+
 public:
     SortEngine();
 
     void randomizeArray();
     void randomizeArrayConsecutively();
     
-    bool runAction();
+    bool runActionForward();
     const VisualData& getVisualData() const;
     void resetActions();
     
     void resetVisualData();
 
     void bubbleSort();
+
     void mergeWrapper();
-    void mergeSort(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index left, const Index right);
-    void merge(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index leftEnd, const Index middle, const Index rightEnd);
+
+
+
 
     const std::vector<Element>& getArray() const;
     const uint16_t getArraySize() const;

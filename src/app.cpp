@@ -31,6 +31,12 @@ void App::eventLoop() {
                 handleLeftClick(mousePressedEvent);
             } 
         }
+
+        if (const sf::Event::KeyPressed* keyPressedEvent = event->getIf<sf::Event::KeyPressed>()) {
+            if (keyPressedEvent->scancode == sf::Keyboard::Scancode::Left) {
+                // run code
+            }
+        }
     }
 }
 
@@ -69,7 +75,7 @@ void App::stopSorting() {
 void App::checkClock() {
     if (clock.getElapsedTime() >= interval and isSorting) {
 
-        if (!sortingEngine.runAction()) {
+        if (!sortingEngine.runActionForward()) {
             isSorting = false;
         }
 

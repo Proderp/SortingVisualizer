@@ -8,7 +8,7 @@ struct ArrayDimensions {
     float barWidth;
     float barHeightUnit;
     
-    float barSpacing{1.f};
+    float barSpacing{0.f};
 };
 
 enum class ButtonType { Sort, Randomize, Consecutive, None };
