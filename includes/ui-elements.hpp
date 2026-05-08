@@ -34,6 +34,7 @@ public:
 
     const std::array<Button*, 3> buttons = {&sortButton, &randomizeNormalButton, &randomizeConsecutiveButton};
 
+    float layoutWidth;
     unsigned int characterSize{30};
 };
 
