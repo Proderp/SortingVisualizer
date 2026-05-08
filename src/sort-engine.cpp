@@ -12,7 +12,7 @@ Action::Action(ActionType action, Index index) :
     indexOne(index)
 {}
 
-// Merge Overwrites
+// Overwrites
 Action::Action(ActionType action, Index index, Element oldValue, Element newValue) : 
     actionType(action),
     indexOne(index),
@@ -109,11 +109,20 @@ void SortEngine::merge(std::vector<Element>& tempArray, std::vector<Element>& or
         tempArray.at(i) = originalArray.at(i);
     }
 
+    auto createOverwriteAction = [&](const Index index) {
+        actions.push_back(Action(ActionType::Overwrite, k, originalArray.at(k), tempArray.at(index)));
+    };
+
     while (left <= middle and right <= rightEnd) {
+
+        actions.push_back(Action(ActionType::Compare, left, right));
+
         if (tempArray.at(left) < tempArray.at(right)) {
+            createOverwriteAction(left);
             originalArray.at(k) = tempArray.at(left);
             left++;
         } else {
+            createOverwriteAction(right);
             originalArray.at(k) = tempArray.at(right);
             right++;
         }
@@ -122,6 +131,7 @@ void SortEngine::merge(std::vector<Element>& tempArray, std::vector<Element>& or
     }
 
     while (left <= middle) {
+        createOverwriteAction(left);
         originalArray.at(k) = tempArray.at(left);
         left++;        
 
@@ -129,6 +139,7 @@ void SortEngine::merge(std::vector<Element>& tempArray, std::vector<Element>& or
     }
 
     while (right <= rightEnd) {
+        createOverwriteAction(right);
         originalArray.at(k) = tempArray.at(right);
         right++;
         

@@ -1,7 +1,7 @@
 #pragma once
 #include "includes.hpp"
 
-enum class ActionType {Compare, Swap, MarkSorted, Sorted};
+enum class ActionType {Compare, Swap, MarkSorted, Overwrite, Sorted};
 
 struct Action {
     ActionType actionType;
@@ -14,7 +14,7 @@ struct Action {
     // Marking Sorted
     Action(ActionType action, Index index);
 
-    // Merge Overwrite
+    // Overwrite
     Action(ActionType action, Index index, Element oldValue, Element newValue);
 
     // Fully Sorted
