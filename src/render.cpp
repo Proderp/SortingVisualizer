@@ -30,17 +30,23 @@ void Render::drawArray(const std::vector<Element>& array, const VisualData& visu
         
         rectangle.setFillColor(sf::Color::White);
         
+        // for swaps and comaprisons
         if (visualData.activeOne != INACTIVE and visualData.activeTwo != INACTIVE) {
             if (visualData.activeOne == i or visualData.activeTwo == i) {
                 rectangle.setFillColor(sf::Color::Red);
             }
         }
 
+        // for marking sorted and overwrites
         if (visualData.activeOne != INACTIVE or visualData.isSorted) {
             if (visualData.sortedElements.at(i) and !visualData.sortedElements.empty()) {
                 rectangle.setFillColor(sf::Color::Green);
             }
         }
+
+        if (visualData.isOverwrite and i == visualData.activeOne) {
+            rectangle.setFillColor(sf::Color::Yellow);
+        } 
 
         window.draw(rectangle);
     }

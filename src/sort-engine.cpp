@@ -159,6 +159,7 @@ bool SortEngine::runActionForward() {
     
     visualData.activeOne = INACTIVE;
     visualData.activeTwo = INACTIVE;
+    visualData.isOverwrite = false;
     
     switch (action.actionType) {
         case ActionType::Compare:
@@ -178,6 +179,7 @@ bool SortEngine::runActionForward() {
             break;
         
         case ActionType::Overwrite:
+            visualData.isOverwrite = true;
             visualData.activeOne = action.indexOne;
             array.at(action.indexOne) = action.newValue;
             break;
@@ -203,9 +205,11 @@ void SortEngine::runActionBackward() {
     if (currentActionIndex == 0) {
         visualData.activeOne = INACTIVE;
         visualData.activeTwo = INACTIVE;
+        visualData.isOverwrite = false;
     } else {
         visualData.activeOne = action.indexOne;
         visualData.activeTwo = action.indexTwo;
+        visualData.isOverwrite = false;
     }
 
     switch (action.actionType) {
@@ -223,6 +227,7 @@ void SortEngine::runActionBackward() {
             break;
         
         case ActionType::Overwrite:
+            visualData.isOverwrite = true;
             array.at(action.indexOne) = action.oldValue;
             break;
 
