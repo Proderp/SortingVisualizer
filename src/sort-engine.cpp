@@ -165,19 +165,23 @@ bool SortEngine::runActionForward() {
             visualData.activeOne = action.indexOne;
             visualData.activeTwo = action.indexTwo;
             break;
+
         case ActionType::Swap:
             visualData.activeOne = action.indexOne;
             visualData.activeTwo = action.indexTwo;
             std::swap(array.at(action.indexOne), array.at(action.indexTwo));
             break;
+        
         case ActionType::MarkSorted:
             visualData.activeOne = action.indexOne;
             visualData.sortedElements.at(action.indexOne) = true;
             break;
+        
         case ActionType::Overwrite:
             visualData.activeOne = action.indexOne;
             array.at(action.indexOne) = action.newValue;
             break;
+        
         case ActionType::Sorted:
             visualData.isSorted = true;
             return false;
@@ -186,6 +190,46 @@ bool SortEngine::runActionForward() {
 
     currentActionIndex++;
     return true;
+}
+
+void SortEngine::runActionBackward() {
+    if (currentActionIndex <= 0) {
+        return;
+    }
+
+    currentActionIndex--;
+    const Action& action = actions.at(currentActionIndex);
+
+    if (currentActionIndex == 0) {
+        visualData.activeOne = INACTIVE;
+        visualData.activeTwo = INACTIVE;
+    } else {
+        visualData.activeOne = action.indexOne;
+        visualData.activeTwo = action.indexTwo;
+    }
+
+    switch (action.actionType) {
+        case ActionType::Compare:
+            // do nothing
+            break;
+        
+        case ActionType::Swap:
+            std::swap(array.at(action.indexOne), array.at(action.indexTwo));
+            break;
+
+        case ActionType::MarkSorted:
+            visualData.sortedElements.at(action.indexOne) = false;
+            visualData.isSorted = false;
+            break;
+        
+        case ActionType::Overwrite:
+            array.at(action.indexOne) = action.oldValue;
+            break;
+
+        case ActionType::Sorted:
+            visualData.isSorted = false;
+            break;
+    }
 }
 
 const VisualData& SortEngine::getVisualData() const {

@@ -45,6 +45,7 @@ public:
     void randomizeArrayConsecutively();
     
     bool runActionForward();
+    void runActionBackward();
     const VisualData& getVisualData() const;
     void resetActions();
     
@@ -53,9 +54,6 @@ public:
     void bubbleSort();
 
     void mergeWrapper();
-
-
-
 
     const std::vector<Element>& getArray() const;
     const uint16_t getArraySize() const;

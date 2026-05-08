@@ -34,7 +34,8 @@ void App::eventLoop() {
 
         if (const sf::Event::KeyPressed* keyPressedEvent = event->getIf<sf::Event::KeyPressed>()) {
             if (keyPressedEvent->scancode == sf::Keyboard::Scancode::Left) {
-                // run code
+                isSorting = false;
+                sortingEngine.runActionBackward();
             }
         }
     }
