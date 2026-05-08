@@ -81,6 +81,10 @@ void Render::drawButtons(const ButtonLayout& buttonLayout) {
     }
 }
 
+void Render::drawAnimationSlider(const Slider& animationSlider) {
+    return;
+}
+
 void Render::setTextOrigin() {
 	const sf::FloatRect bounds = text.getLocalBounds();
 
