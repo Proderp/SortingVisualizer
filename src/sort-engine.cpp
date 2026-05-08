@@ -78,10 +78,14 @@ void SortEngine::bubbleSort() {
 }
 
 void SortEngine::mergeWrapper() {
+    if (array.empty()) {
+        return;
+    }
+
     std::vector<Element> tempArray(array);
     std::vector<Element> originalArray(array);
     
-    Index left{0}, right{array.size()};
+    Index left{0}, right{static_cast<Index>(array.size() - 1)};
 
     mergeSort(tempArray, originalArray, left, right);
 }
@@ -91,11 +95,45 @@ void SortEngine::mergeSort(std::vector<Element>& tempArray, std::vector<Element>
         return;
     }
 
-    Index middle{left + right / 2};
+    Index middle{(left + right) / 2};
 
     mergeSort(tempArray, originalArray, left, middle);
     mergeSort(tempArray, originalArray, middle + 1, right);
-    merge(tempArray, originalArray, left, right);
+    merge(tempArray, originalArray, left, middle, right);
+}
+
+void SortEngine::merge(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index leftEnd, const Index middle, const Index rightEnd) {
+    Index left{leftEnd}, right{middle + 1}, k{leftEnd};
+
+    for (Index i{left}; i <= rightEnd; i++) {
+        tempArray.at(i) = originalArray.at(i);
+    }
+
+    while (left <= middle and right <= rightEnd) {
+        if (tempArray.at(left) < tempArray.at(right)) {
+            originalArray.at(k) = tempArray.at(left);
+            left++;
+        } else {
+            originalArray.at(k) = tempArray.at(right);
+            right++;
+        }
+        
+        k++;
+    }
+
+    while (left <= middle) {
+        originalArray.at(k) = tempArray.at(left);
+        left++;        
+
+        k++;
+    }
+
+    while (right <= rightEnd) {
+        originalArray.at(k) = tempArray.at(right);
+        right++;
+        
+        k++;
+    }
 }
 
 bool SortEngine::runAction() {
