@@ -41,8 +41,10 @@ public:
 struct Slider {
     sf::Vector2f position;
     sf::Vector2f size;
+    sf::FloatRect trackBounds;
 
     Button thumb;
+    float percentage{0.f};
 
     Slider(const std::string buttonName, const ButtonType buttonID);
 };
