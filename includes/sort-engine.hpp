@@ -1,26 +1,30 @@
 #pragma once
 #include "includes.hpp"
 
-enum class ActionType {Compare, Swap, MarkSorted, Sorted};
+enum class ActionType {Compare, Swap, MarkSorted, Overwrite, Sorted};
 
 struct Action {
     ActionType actionType;
-    Index indexOne, indexTwo;
+    Index indexOne{INACTIVE}, indexTwo{INACTIVE};
+    Element oldValue{INACTIVE}, newValue{INACTIVE};
 
-    // comparing and swapping
+    // Comparing and Swapping
     Action(ActionType action, Index indexOne, Index indexTwo);
 
-    // marking sorted
+    // Marking Sorted
     Action(ActionType action, Index index);
 
-    // fully sorted
-    Action(ActionType action = ActionType::Sorted) : actionType(action) {}
+    // Overwrite
+    Action(ActionType action, Index index, Element oldValue, Element newValue);
+
+    // Fully Sorted
+    Action(ActionType action);
 };
 
 class SortEngine {
 private:
     std::vector<Element> array;
-    uint16_t arraySize{50};
+    uint16_t arraySize{300};
     uint16_t range{100};
 
     std::random_device rd;
@@ -44,6 +48,9 @@ public:
     void resetVisualData();
 
     void bubbleSort();
+    void mergeWrapper();
+    void mergeSort(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index left, const Index right);
+    void merge(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index leftEnd, const Index middle, const Index rightEnd);
 
     const std::vector<Element>& getArray() const;
     const uint16_t getArraySize() const;

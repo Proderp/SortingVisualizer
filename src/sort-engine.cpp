@@ -1,14 +1,26 @@
 #include "sort-engine.hpp"
 
+// Comparing and Swapping
 Action::Action(ActionType action, Index indexOne, Index indexTwo) : 
     actionType(action),
     indexOne(indexOne), indexTwo(indexTwo)
 {}
 
+// Marking Sorted
 Action::Action(ActionType action, Index index) :
     actionType(action),
     indexOne(index)
 {}
+
+// Overwrites
+Action::Action(ActionType action, Index index, Element oldValue, Element newValue) : 
+    actionType(action),
+    indexOne(index),
+    oldValue(oldValue), newValue(newValue)
+{}
+
+// Fully Sorted
+Action::Action(ActionType action) : actionType(action) {}
 
 SortEngine::SortEngine() :
     twister(rd()),
@@ -35,8 +47,6 @@ void SortEngine::randomizeArrayConsecutively() {
 
 void SortEngine::bubbleSort() {
     std::vector<Element> newArray(array);
-    visualData.sortedElements.resize(arraySize);
-    std::fill(visualData.sortedElements.begin(), visualData.sortedElements.end(), false);
 
     for (Index i{0}; i < newArray.size(); i++) {
         Index sortedIndex = newArray.size() - i;
@@ -62,7 +72,82 @@ void SortEngine::bubbleSort() {
         actions.push_back(Action(ActionType::MarkSorted, sortedIndex - 1));
     }
 
-    actions.push_back(Action());
+    actions.push_back(Action(ActionType::Sorted));
+}
+
+void SortEngine::mergeWrapper() {
+    if (array.empty()) {
+        return;
+    }
+
+    std::vector<Element> tempArray(array);
+    std::vector<Element> originalArray(array);
+    
+    Index left{0}, right{static_cast<Index>(array.size() - 1)};
+
+    mergeSort(tempArray, originalArray, left, right);
+
+    for (Index i{0}; i < array.size(); i++) {
+        actions.push_back(Action(ActionType::MarkSorted, i));
+    }
+    actions.push_back(Action(ActionType::Sorted));
+}
+
+void SortEngine::mergeSort(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index left, const Index right) {
+    if (left >= right) {
+        return;
+    }
+
+    Index middle{(left + right) / 2};
+
+    mergeSort(tempArray, originalArray, left, middle);
+    mergeSort(tempArray, originalArray, middle + 1, right);
+    merge(tempArray, originalArray, left, middle, right);
+}
+
+void SortEngine::merge(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index leftEnd, const Index middle, const Index rightEnd) {
+    Index left{leftEnd}, right{middle + 1}, k{leftEnd};
+
+    for (Index i{left}; i <= rightEnd; i++) {
+        tempArray.at(i) = originalArray.at(i);
+    }
+
+    auto createOverwriteAction = [&](const Index index) {
+        actions.push_back(Action(ActionType::Overwrite, k, originalArray.at(k), tempArray.at(index)));
+    };
+
+    while (left <= middle and right <= rightEnd) {
+
+        actions.push_back(Action(ActionType::Compare, left, right));
+
+        if (tempArray.at(left) < tempArray.at(right)) {
+            createOverwriteAction(left);
+            originalArray.at(k) = tempArray.at(left);
+            left++;
+        } else {
+            createOverwriteAction(right);
+            originalArray.at(k) = tempArray.at(right);
+            right++;
+        }
+        
+        k++;
+    }
+
+    while (left <= middle) {
+        createOverwriteAction(left);
+        originalArray.at(k) = tempArray.at(left);
+        left++;        
+
+        k++;
+    }
+
+    while (right <= rightEnd) {
+        createOverwriteAction(right);
+        originalArray.at(k) = tempArray.at(right);
+        right++;
+        
+        k++;
+    }
 }
 
 bool SortEngine::runAction() {
@@ -89,6 +174,10 @@ bool SortEngine::runAction() {
             visualData.activeOne = action.indexOne;
             visualData.sortedElements.at(action.indexOne) = true;
             break;
+        case ActionType::Overwrite:
+            visualData.activeOne = action.indexOne;
+            array.at(action.indexOne) = action.newValue;
+            break;
         case ActionType::Sorted:
             visualData.isSorted = true;
             return false;
@@ -110,6 +199,7 @@ void SortEngine::resetActions() {
 
 void SortEngine::resetVisualData() {
     visualData = VisualData{};
+    visualData.sortedElements.resize(array.size(), false);
 }
 
 const std::vector<Element>& SortEngine::getArray() const {
