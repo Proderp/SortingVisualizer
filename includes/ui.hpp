@@ -35,4 +35,6 @@ public:
     const ArrayDimensions& getArrayDimensions() const;
 
     const ButtonLayout& getButtonLayout() const;
+
+    const Slider& getAnimationSlider() const;
 };
