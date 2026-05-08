@@ -24,7 +24,7 @@ struct Action {
 class SortEngine {
 private:
     std::vector<Element> array;
-    uint16_t arraySize{50};
+    uint16_t arraySize{300};
     uint16_t range{100};
 
     std::random_device rd;
