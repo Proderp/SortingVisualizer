@@ -48,6 +48,9 @@ public:
     void resetVisualData();
 
     void bubbleSort();
+    void mergeWrapper();
+    void mergeSort(std::vector<Element>& tempArray, std::vector<Element>& originalArray, Index left, Index right);
+    void merge(std::vector<Element>& tempArray, std::vector<Element>& originalArray, Index left, Index right);
 
     const std::vector<Element>& getArray() const;
     const uint16_t getArraySize() const;
