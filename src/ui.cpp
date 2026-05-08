@@ -75,7 +75,15 @@ void UI::updateCharacterSize() {
 }
 
 void UI::updateAnimationSlider() {
+    const float xPosition = buttonLayout.layoutWidth + margin;
+    const float xSize = windowSize.x - arrayDimensions.offsetX * 2 - xPosition;
 
+    animationSlider.position = {xPosition, buttonLayout.buttons.at(0)->bounds.position.y};
+    animationSlider.size = {xSize, 50};
+    animationSlider.trackBounds = sf::FloatRect(animationSlider.position, animationSlider.size);
+
+    animationSlider.thumb.size = {xSize, xSize};
+    updateButtonBounds(animationSlider.thumb);
 }
 
 const ButtonType UI::findClickedButton(const sf::Vector2f mousePosition) {
@@ -94,4 +102,8 @@ const ArrayDimensions& UI::getArrayDimensions() const {
 
 const ButtonLayout& UI::getButtonLayout() const {
     return buttonLayout;
+}
+
+const Slider& UI::getAnimationSlider() const {
+    return animationSlider;
 }
