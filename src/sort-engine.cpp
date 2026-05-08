@@ -47,8 +47,6 @@ void SortEngine::randomizeArrayConsecutively() {
 
 void SortEngine::bubbleSort() {
     std::vector<Element> newArray(array);
-    visualData.sortedElements.resize(arraySize);
-    std::fill(visualData.sortedElements.begin(), visualData.sortedElements.end(), false);
 
     for (Index i{0}; i < newArray.size(); i++) {
         Index sortedIndex = newArray.size() - i;
@@ -88,6 +86,11 @@ void SortEngine::mergeWrapper() {
     Index left{0}, right{static_cast<Index>(array.size() - 1)};
 
     mergeSort(tempArray, originalArray, left, right);
+
+    for (Index i{0}; i < array.size(); i++) {
+        actions.push_back(Action(ActionType::MarkSorted, i));
+    }
+    actions.push_back(Action(ActionType::Sorted));
 }
 
 void SortEngine::mergeSort(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index left, const Index right) {
@@ -171,6 +174,10 @@ bool SortEngine::runAction() {
             visualData.activeOne = action.indexOne;
             visualData.sortedElements.at(action.indexOne) = true;
             break;
+        case ActionType::Overwrite:
+            visualData.activeOne = action.indexOne;
+            array.at(action.indexOne) = action.newValue;
+            break;
         case ActionType::Sorted:
             visualData.isSorted = true;
             return false;
@@ -192,6 +199,7 @@ void SortEngine::resetActions() {
 
 void SortEngine::resetVisualData() {
     visualData = VisualData{};
+    visualData.sortedElements.resize(array.size(), false);
 }
 
 const std::vector<Element>& SortEngine::getArray() const {
