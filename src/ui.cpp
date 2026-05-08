@@ -56,6 +56,8 @@ void UI::updateButtonLayout() {
         updateButtonBounds(*button);
     }
 
+    buttonLayout.layoutWidth = xSize * 3 + margin * 2;
+
     updateCharacterSize();
 }
 
@@ -70,6 +72,10 @@ void UI::updateButtonBounds(Button& button) {
 
 void UI::updateCharacterSize() {
     buttonLayout.characterSize = buttonLayout.buttons.at(0)->size.y / 3;
+}
+
+void UI::updateAnimationSlider() {
+
 }
 
 const ButtonType UI::findClickedButton(const sf::Vector2f mousePosition) {

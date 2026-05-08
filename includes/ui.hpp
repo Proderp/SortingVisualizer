@@ -17,11 +17,14 @@ private:
     const float margin{15.f};
 
     void updateView();
+    
     void updateArrayDimensions(const std::vector<Element>& array);
+    
     void updateButtonLayout();
     void updateButtonBounds(Button& button);
     void updateCharacterSize();
 
+    void updateAnimationSlider();
 public:
     UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array);    
 
