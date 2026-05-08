@@ -67,7 +67,6 @@ void SortEngine::bubbleSort() {
 
 bool SortEngine::runAction() {
     if (currentActionIndex >= actions.size()) {
-        resetActions();
         return false;
     }
     
@@ -92,7 +91,6 @@ bool SortEngine::runAction() {
             break;
         case ActionType::Sorted:
             visualData.isSorted = true;
-            resetActions();
             return false;
             break;
     }
