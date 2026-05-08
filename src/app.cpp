@@ -37,6 +37,15 @@ void App::eventLoop() {
                 isSorting = false;
                 sortingEngine.runActionBackward();
             }
+
+            if (keyPressedEvent->scancode == sf::Keyboard::Scancode::Right) {
+                isSorting = false;
+                sortingEngine.runActionForward();
+            }
+
+            if (keyPressedEvent->scancode == sf::Keyboard::Scancode::Space) {
+                isSorting = !isSorting;
+            }
         }
     }
 }
