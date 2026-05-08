@@ -86,6 +86,18 @@ void SortEngine::mergeWrapper() {
     mergeSort(tempArray, originalArray, left, right);
 }
 
+void SortEngine::mergeSort(std::vector<Element>& tempArray, std::vector<Element>& originalArray, Index left, Index right) {
+    if (left >= right) {
+        return;
+    }
+
+    Index middle{left + right / 2};
+
+    mergeSort(tempArray, originalArray, left, middle);
+    mergeSort(tempArray, originalArray, middle + 1, right);
+    merge();
+}
+
 bool SortEngine::runAction() {
     if (currentActionIndex >= actions.size()) {
         return false;
