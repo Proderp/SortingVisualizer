@@ -49,8 +49,8 @@ public:
 
     void bubbleSort();
     void mergeWrapper();
-    void mergeSort(std::vector<Element>& tempArray, std::vector<Element>& originalArray, Index left, Index right);
-    void merge(std::vector<Element>& tempArray, std::vector<Element>& originalArray, Index left, Index right);
+    void mergeSort(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index left, const Index right);
+    void merge(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index leftEnd, const Index rightEnd);
 
     const std::vector<Element>& getArray() const;
     const uint16_t getArraySize() const;
