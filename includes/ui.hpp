@@ -24,17 +24,18 @@ private:
     void updateButtonBounds(Button& button);
     void updateCharacterSize();
 
-    void updateAnimationSlider();
-public:
+    public:
     UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array);    
-
+    
     void updateUI(const std::vector<Element>& array);
-
+    void updateAnimationSlider();
+    
     const ButtonType findClickedButton(const sf::Vector2f mousePosition);
+    std::optional<float> checkSliderClick(const sf::Vector2f mousePosition);
 
     const ArrayDimensions& getArrayDimensions() const;
-
     const ButtonLayout& getButtonLayout() const;
-
     const Slider& getAnimationSlider() const;
+
+    void setAnimationPercentage(const float percentage);
 };

@@ -90,7 +90,10 @@ void UI::updateAnimationSlider() {
 
     Button& thumb = animationSlider.thumb;
     thumb.size = {height, height};
-    thumb.position = {xPosition + height / 2.f, yPosition};
+    const float minValue = xPosition + thumb.size.x / 2.f;
+    const float maxValue = xPosition + xSize - thumb.size.x / 2.f;
+    const float thumbXPosition = std::clamp(xPosition + (xSize * animationSlider.percentage), minValue, maxValue);
+    thumb.position = {thumbXPosition, yPosition};
     updateButtonBounds(thumb); 
 }
 
@@ -104,6 +107,25 @@ const ButtonType UI::findClickedButton(const sf::Vector2f mousePosition) {
     return ButtonType::None;
 }
 
+std::optional<float> UI::checkSliderClick(const sf::Vector2f mousePosition) {
+    
+    if (animationSlider.thumb.bounds.contains(mousePosition) or 
+        animationSlider.trackBounds.contains(mousePosition)) {
+        
+        const float trackWidth = animationSlider.size.x;
+        const float relativeX = mousePosition.x - animationSlider.position.x;
+        
+        float percentage = std::clamp(relativeX / trackWidth, 0.0f, 1.0f);
+    
+        setAnimationPercentage(percentage);
+        updateAnimationSlider();
+        
+        return percentage;
+    }
+    
+    return std::nullopt;
+}
+
 const ArrayDimensions& UI::getArrayDimensions() const {
     return arrayDimensions;
 }
@@ -114,4 +136,8 @@ const ButtonLayout& UI::getButtonLayout() const {
 
 const Slider& UI::getAnimationSlider() const {
     return animationSlider;
+}
+
+void UI::setAnimationPercentage(const float percentage) {
+    animationSlider.percentage = percentage;
 }
