@@ -258,3 +258,11 @@ const std::vector<Element>& SortEngine::getArray() const {
 const uint16_t SortEngine::getArraySize() const {
     return arraySize;
 }
+
+const uint16_t SortEngine::getActionsSize() const {
+    return actions.size();
+}
+
+const Index SortEngine::getCurrentActionIndex() const {
+    return currentActionIndex;
+}

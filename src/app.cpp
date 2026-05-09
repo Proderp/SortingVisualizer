@@ -84,12 +84,21 @@ void App::stopSorting() {
 
 void App::checkClock() {
     if (clock.getElapsedTime() >= interval and isSorting) {
+        clock.restart();
 
         if (!sortingEngine.runActionForward()) {
             isSorting = false;
+            return;
         }
 
-        clock.restart();
+        /*
+        Figure out where the thumb should be
+        1. Find the currentActionIndex / actions.size()
+        2. Find the pass this into updating the animation slider
+        3. Get position by getting range of positions
+        4. Multiply the ratio by the range
+        5. Add the range to the starting x positions
+        */
     }
 }
 

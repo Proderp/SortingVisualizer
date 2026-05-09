@@ -57,4 +57,6 @@ public:
 
     const std::vector<Element>& getArray() const;
     const uint16_t getArraySize() const;
+    const uint16_t getActionsSize() const;
+    const Index getCurrentActionIndex() const;
 };
