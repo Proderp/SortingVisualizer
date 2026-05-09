@@ -98,6 +98,7 @@ void App::render() {
 
     renderer.drawArray(sortingEngine.getArray(), sortingEngine.getVisualData());
     renderer.drawButtons(ui.getButtonLayout());
+    renderer.drawAnimationSlider(ui.getAnimationSlider());
 
     window.display();
 }

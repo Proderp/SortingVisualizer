@@ -14,7 +14,7 @@ private:
     Render renderer;
 
     sf::Clock clock;
-    sf::Time interval{sf::milliseconds(10)};
+    sf::Time interval{sf::milliseconds(1)};
 
     bool isSorting{false};
 
