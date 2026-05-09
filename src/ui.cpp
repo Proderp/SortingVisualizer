@@ -110,15 +110,16 @@ const ButtonType UI::findClickedButton(const sf::Vector2f mousePosition) {
     return ButtonType::None;
 }
 
-std::optional<float> UI::checkSliderClick(const sf::Vector2f mousePosition) {
+std::optional<float> UI::checkSliderClick(const sf::Vector2f mousePosition, const bool isDragging) {
+    
     
     if (animationSlider.thumb.bounds.contains(mousePosition) or 
-        animationSlider.trackBounds.contains(mousePosition)) {
-        
+        animationSlider.trackBounds.contains(mousePosition) or isDragging) {
+    
         const float trackStartX = animationSlider.position.x;
         const float trackWidth = animationSlider.size.x;
         const float thumbRadius = animationSlider.thumb.size.x / 2.f;
-
+        
         const float activeTrackWidth = trackWidth - animationSlider.thumb.size.x;
         const float activeStartX = trackStartX + thumbRadius;
 

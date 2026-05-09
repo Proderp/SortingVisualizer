@@ -17,6 +17,7 @@ private:
     sf::Time interval{sf::milliseconds(1)};
 
     bool isSorting{false};
+    bool isDragging{false};
 
     void checkClock();
     void updateAnimationThumb();

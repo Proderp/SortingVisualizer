@@ -32,6 +32,24 @@ void App::eventLoop() {
             } 
         }
 
+        if (const sf::Event::MouseMoved* mouseMovedEvent = event->getIf<sf::Event::MouseMoved>()) {
+            if (isDragging) {
+                const sf::Vector2f mousePosition = static_cast<sf::Vector2f>(mouseMovedEvent->position);
+                std::optional<float> percentage = ui.checkSliderClick(mousePosition, isDragging);
+
+                if (percentage.has_value()) {
+                    Index targetIndex = static_cast<Index>(percentage.value() * sortingEngine.getActionsSize());
+                    sortingEngine.scrubAnimation(targetIndex);
+                }
+            }
+        }
+
+        if (const sf::Event::MouseButtonReleased* mouseButtonReleeasedEvent = event->getIf<sf::Event::MouseButtonReleased>()) {
+            if (mouseButtonReleeasedEvent->button == sf::Mouse::Button::Left) {
+                isDragging = false;
+            }
+        }
+
         if (const sf::Event::KeyPressed* keyPressedEvent = event->getIf<sf::Event::KeyPressed>()) {
             if (keyPressedEvent->scancode == sf::Keyboard::Scancode::Left) {
                 isSorting = false;
@@ -53,7 +71,7 @@ void App::eventLoop() {
 }
 
 void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent) {
-    const sf::Vector2f mousePosition = static_cast<sf::Vector2f>(mousePressedEvent->position);
+    sf::Vector2f mousePosition = static_cast<sf::Vector2f>(mousePressedEvent->position);
     const ButtonType clickedButton = ui.findClickedButton(mousePosition);
 
     switch (clickedButton) {
@@ -77,9 +95,14 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
             break;
     }
 
-    std::optional<float> percentage = ui.checkSliderClick(mousePosition);
+    mousePosition = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
+
+    std::optional<float> percentage = ui.checkSliderClick(mousePosition, isDragging);
 
     if (percentage.has_value()) {
+        isDragging = true;
+        isSorting = false;
+        
         Index targetIndex = static_cast<Index>(percentage.value() * sortingEngine.getActionsSize());
         sortingEngine.scrubAnimation(targetIndex);
     }
