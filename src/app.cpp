@@ -33,7 +33,7 @@ void App::eventLoop() {
         }
 
         if (const sf::Event::MouseMoved* mouseMovedEvent = event->getIf<sf::Event::MouseMoved>()) {
-            if (isDragging) {
+            if (isDragging and sortingEngine.getActionsSize() > 0) {
                 const sf::Vector2f mousePosition = static_cast<sf::Vector2f>(mouseMovedEvent->position);
                 std::optional<float> percentage = ui.checkSliderClick(mousePosition, isDragging);
 
@@ -95,23 +95,16 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
             break;
     }
 
-    mousePosition = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
-
-    std::optional<float> percentage = ui.checkSliderClick(mousePosition, isDragging);
-
-    if (percentage.has_value()) {
-        isDragging = true;
-        isSorting = false;
-        
-        Index targetIndex = static_cast<Index>(percentage.value() * sortingEngine.getActionsSize());
-        sortingEngine.scrubAnimation(targetIndex);
-    }
+    if (sortingEngine.getActionsSize() > 0) {
+        findNewPercentage();
+    }    
 }
 
 void App::stopSorting() {
     isSorting = false;
     sortingEngine.resetActions();
     sortingEngine.resetVisualData();
+    ui.resetAnimationSlider();
 }
 
 void App::checkClock() {
@@ -136,14 +129,25 @@ void App::updateAnimationThumb() {
     }
 }
 
+void App::findNewPercentage() {
+    const sf::Vector2f mousePosition = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
+    std::optional<float> percentage = ui.checkSliderClick(mousePosition, isDragging);
+
+    if (percentage.has_value()) {
+        isDragging = true;
+        isSorting = false;
+
+        Index targetIndex = static_cast<Index>(percentage.value() * sortingEngine.getActionsSize());
+        sortingEngine.scrubAnimation(targetIndex);
+    }
+}
+
 void App::render() {
     window.clear(sf::Color(25, 25, 28));
 
     renderer.drawArray(sortingEngine.getArray(), sortingEngine.getVisualData());
     renderer.drawButtons(ui.getButtonLayout());
     renderer.drawAnimationSlider(ui.getAnimationSlider());
-    renderer.highlightRect(ui.getAnimationSlider().trackBounds);
-    renderer.highlightRect(ui.getAnimationSlider().thumb.bounds);
 
     window.display();
 }
