@@ -12,6 +12,7 @@ void UI::updateUI(const std::vector<Element>& array) {
     updateView();
     updateArrayDimensions(array);
     updateButtonLayout();
+    updateAnimationSlider();
 }
 
 void UI::updateView() {
@@ -44,19 +45,21 @@ void UI::updateButtonLayout() {
     const sf::Vector2f size = {xSize, xSize / 2.f};
     
     const float yPosition = arrayDimensions.offsetY + xSize;
+    float addedSpacing;
     
     for (Index i{0}; i < buttonLayout.buttons.size(); i++) {
         Button* button = buttonLayout.buttons.at(i);
         
         button->size = size;
 
-        const float addedSpacing = size.x * (0.5f + i) + margin * i;
+        addedSpacing = xSize * (0.5f + i) + margin * i;
         button->position = {arrayDimensions.offsetX + addedSpacing, yPosition};
         
         updateButtonBounds(*button);
     }
 
-    buttonLayout.layoutWidth = xSize * 3 + margin * 2;
+    const Button& lastButton = *buttonLayout.buttons.at(2);
+    buttonLayout.layoutWidth = lastButton.position.x + lastButton.size.x;
 
     updateCharacterSize();
 }
@@ -76,14 +79,19 @@ void UI::updateCharacterSize() {
 
 void UI::updateAnimationSlider() {
     const float xPosition = buttonLayout.layoutWidth + margin;
-    const float xSize = windowSize.x - arrayDimensions.offsetX * 2 - xPosition;
+    const float yPosition = windowSize.y * 0.85f;
+    animationSlider.position = {xPosition, yPosition};
 
-    animationSlider.position = {xPosition, buttonLayout.buttons.at(0)->bounds.position.y};
-    animationSlider.size = {xSize, 50};
-    animationSlider.trackBounds = sf::FloatRect(animationSlider.position, animationSlider.size);
+    const float height = 15;
+    const float xSize = windowSize.x - xPosition - arrayDimensions.offsetX;
+    animationSlider.size = {xSize, height};
 
-    animationSlider.thumb.size = {xSize, xSize};
-    updateButtonBounds(animationSlider.thumb);
+    animationSlider.trackBounds = sf::FloatRect({animationSlider.position.x, animationSlider.position.y - height / 2.f}, animationSlider.size);
+
+    Button& thumb = animationSlider.thumb;
+    thumb.size = {height, height};
+    thumb.position = {xPosition + height / 2.f, yPosition};
+    updateButtonBounds(thumb); 
 }
 
 const ButtonType UI::findClickedButton(const sf::Vector2f mousePosition) {
