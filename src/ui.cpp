@@ -151,3 +151,8 @@ const Slider& UI::getAnimationSlider() const {
 void UI::setAnimationPercentage(const float percentage) {
     animationSlider.percentage = percentage;
 }
+
+void UI::resetAnimationSlider() {
+    setAnimationPercentage(0.f);
+    updateAnimationSlider();
+}

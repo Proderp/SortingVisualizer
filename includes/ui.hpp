@@ -38,4 +38,5 @@ public:
     const Slider& getAnimationSlider() const;
 
     void setAnimationPercentage(const float percentage);
+    void resetAnimationSlider();
 };
