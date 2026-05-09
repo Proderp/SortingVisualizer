@@ -83,16 +83,19 @@ void UI::updateAnimationSlider() {
     animationSlider.position = {xPosition, yPosition};
 
     const float height = 15;
-    const float xSize = windowSize.x - xPosition - arrayDimensions.offsetX;
-    animationSlider.size = {xSize, height};
+    const float trackWidth = windowSize.x - xPosition - arrayDimensions.offsetX;
+    animationSlider.size = {trackWidth, height};
 
     animationSlider.trackBounds = sf::FloatRect({animationSlider.position.x, animationSlider.position.y - height / 2.f}, animationSlider.size);
 
     Button& thumb = animationSlider.thumb;
     thumb.size = {height, height};
-    const float minValue = xPosition + thumb.size.x / 2.f;
-    const float maxValue = xPosition + xSize - thumb.size.x / 2.f;
-    const float thumbXPosition = std::clamp(xPosition + (xSize * animationSlider.percentage), minValue, maxValue);
+    
+    const float thumbRadius = thumb.size.x / 2.f;
+    const float minValue = xPosition + thumbRadius;
+    const float maxValue = trackWidth - thumb.size.x;
+    const float thumbXPosition = minValue + (maxValue * animationSlider.percentage);
+
     thumb.position = {thumbXPosition, yPosition};
     updateButtonBounds(thumb); 
 }
@@ -112,10 +115,16 @@ std::optional<float> UI::checkSliderClick(const sf::Vector2f mousePosition) {
     if (animationSlider.thumb.bounds.contains(mousePosition) or 
         animationSlider.trackBounds.contains(mousePosition)) {
         
+        const float trackStartX = animationSlider.position.x;
         const float trackWidth = animationSlider.size.x;
-        const float relativeX = mousePosition.x - animationSlider.position.x;
+        const float thumbRadius = animationSlider.thumb.size.x / 2.f;
+
+        const float activeTrackWidth = trackWidth - animationSlider.thumb.size.x;
+        const float activeStartX = trackStartX + thumbRadius;
+
+        const float relativeX = mousePosition.x - activeStartX;
         
-        float percentage = std::clamp(relativeX / trackWidth, 0.0f, 1.0f);
+        float percentage = std::clamp(relativeX / activeTrackWidth, 0.0f, 1.0f);
     
         setAnimationPercentage(percentage);
         updateAnimationSlider();
