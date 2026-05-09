@@ -186,6 +186,7 @@ bool SortEngine::runActionForward() {
         
         case ActionType::Sorted:
             visualData.isSorted = true;
+            currentActionIndex++;
             return false;
             break;
     }
@@ -238,13 +239,20 @@ void SortEngine::runActionBackward() {
 }
 
 void SortEngine::scrubAnimation(const Index targetIndex) {
+    const Index safeTargetIndex = std::clamp(targetIndex, static_cast<Index>(0), static_cast<Index>(getActionsSize()));
+
     // if the scrub went forward in time
-    while (currentActionIndex < targetIndex) {
-        runActionForward();
+    while (currentActionIndex < safeTargetIndex) {
+        if (!runActionForward()) {
+            break;
+        }
     }
 
     // if the scrub went backward in time
-    while (currentActionIndex > targetIndex) {
+    while (currentActionIndex > safeTargetIndex) {
+        if (currentActionIndex == 0) {
+            break;
+        }
         runActionBackward();
     }
 }
