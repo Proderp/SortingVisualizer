@@ -237,6 +237,18 @@ void SortEngine::runActionBackward() {
     }
 }
 
+void SortEngine::scrubAnimation(const Index targetIndex) {
+    // if the scrub went forward in time
+    while (currentActionIndex < targetIndex) {
+        runActionForward();
+    }
+
+    // if the scrub went backward in time
+    while (currentActionIndex > targetIndex) {
+        runActionBackward();
+    }
+}
+
 const VisualData& SortEngine::getVisualData() const {
     return visualData;
 }

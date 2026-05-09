@@ -46,6 +46,7 @@ public:
     
     bool runActionForward();
     void runActionBackward();
+    void scrubAnimation(const Index targetIndex);
     const VisualData& getVisualData() const;
     void resetActions();
     
