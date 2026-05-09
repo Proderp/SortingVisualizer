@@ -19,6 +19,7 @@ private:
     bool isSorting{false};
 
     void checkClock();
+    void updateAnimationThumb();
 
     void eventLoop();
     void handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent);

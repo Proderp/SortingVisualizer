@@ -36,11 +36,13 @@ void App::eventLoop() {
             if (keyPressedEvent->scancode == sf::Keyboard::Scancode::Left) {
                 isSorting = false;
                 sortingEngine.runActionBackward();
+                updateAnimationThumb();
             }
 
             if (keyPressedEvent->scancode == sf::Keyboard::Scancode::Right) {
                 isSorting = false;
                 sortingEngine.runActionForward();
+                updateAnimationThumb();
             }
 
             if (keyPressedEvent->scancode == sf::Keyboard::Scancode::Space) {
@@ -74,6 +76,13 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
         case None:
             break;
     }
+
+    std::optional<float> percentage = ui.checkSliderClick(mousePosition);
+
+    if (percentage.has_value()) {
+        Index targetIndex = static_cast<Index>(percentage.value() * sortingEngine.getActionsSize());
+        sortingEngine.scrubAnimation(targetIndex);
+    }
 }
 
 void App::stopSorting() {
@@ -91,14 +100,16 @@ void App::checkClock() {
             return;
         }
 
-        /*
-        Figure out where the thumb should be
-        1. Find the currentActionIndex / actions.size()
-        2. Find the pass this into updating the animation slider
-        3. Get position by getting range of positions
-        4. Multiply the ratio by the range
-        5. Add the range to the starting x positions
-        */
+        updateAnimationThumb();
+    }
+}
+
+void App::updateAnimationThumb() {
+    if (sortingEngine.getActionsSize() > 0) {
+        float percentage = static_cast<float>(sortingEngine.getCurrentActionIndex()) / sortingEngine.getActionsSize();
+        
+        ui.setAnimationPercentage(percentage);
+        ui.updateAnimationSlider();
     }
 }
 
@@ -108,6 +119,8 @@ void App::render() {
     renderer.drawArray(sortingEngine.getArray(), sortingEngine.getVisualData());
     renderer.drawButtons(ui.getButtonLayout());
     renderer.drawAnimationSlider(ui.getAnimationSlider());
+    renderer.highlightRect(ui.getAnimationSlider().trackBounds);
+    renderer.highlightRect(ui.getAnimationSlider().thumb.bounds);
 
     window.display();
 }
