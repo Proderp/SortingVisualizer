@@ -49,17 +49,17 @@ void Render::drawArray(const std::vector<Element>& array, const VisualData& visu
     }
 }
 
-void Render::drawButtons(const ButtonLayout& buttonLayout) {   
+void Render::drawButton(const Button& button) {
+    rectangle.setSize(button.size);
+    rectangle.setPosition(button.position);
+    rectangle.setOrigin(rectangle.getGeometricCenter());
+    
+    window.draw(rectangle);
+}
+
+void Render::drawButtonLayout(const ButtonLayout& buttonLayout) {   
        
     rectangle.setFillColor(sf::Color::White);
-
-    auto drawButton = [&rect = this->rectangle, &window = this->window](const Button& button) {
-        rect.setSize(button.size);
-        rect.setPosition(button.position);
-        rect.setOrigin(rect.getGeometricCenter());
-        
-        window.draw(rect);
-    };
 
     text.setCharacterSize(buttonLayout.characterSize);
     text.setFillColor(sf::Color::Black);
@@ -106,11 +106,7 @@ void Render::drawSliderLayout(const SliderLayout& sliderLayout) {
         window.draw(rectangle);
 
         rectangle.setFillColor(sf::Color::Green);
-        rectangle.setPosition(slider->thumb.position);
-        rectangle.setSize(slider->thumb.size);
-        rectangle.setOrigin(rectangle.getGeometricCenter());
-
-        window.draw(rectangle);
+        drawButton(slider->thumb);
     }
 }
 
