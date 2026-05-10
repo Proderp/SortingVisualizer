@@ -17,6 +17,7 @@ set(SOURCE_FILES
     src/render.cpp
     src/sort-engine.cpp
     src/ui.cpp
+    src/ui-elements.cpp
 )
 
 add_library(lib ${SOURCE_FILES})

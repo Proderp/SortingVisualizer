@@ -24,8 +24,8 @@ struct Action {
 class SortEngine {
 private:
     std::vector<Element> array;
-    uint16_t arraySize{300};
-    uint16_t range{100};
+    uint16_t arraySize{500};
+    uint16_t range{500};
 
     std::random_device rd;
     std::mt19937 twister;
@@ -35,23 +35,29 @@ private:
     Index currentActionIndex{0};
     VisualData visualData;
 
+    void mergeSort(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index left, const Index right);
+    void merge(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index leftEnd, const Index middle, const Index rightEnd);
+
 public:
     SortEngine();
 
     void randomizeArray();
     void randomizeArrayConsecutively();
     
-    bool runAction();
+    bool runActionForward();
+    void runActionBackward();
+    void scrubAnimation(const Index targetIndex);
     const VisualData& getVisualData() const;
     void resetActions();
     
     void resetVisualData();
 
     void bubbleSort();
+
     void mergeWrapper();
-    void mergeSort(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index left, const Index right);
-    void merge(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index leftEnd, const Index middle, const Index rightEnd);
 
     const std::vector<Element>& getArray() const;
     const uint16_t getArraySize() const;
+    const uint16_t getActionsSize() const;
+    const Index getCurrentActionIndex() const;
 };

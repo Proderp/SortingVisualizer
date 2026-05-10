@@ -150,7 +150,7 @@ void SortEngine::merge(std::vector<Element>& tempArray, std::vector<Element>& or
     }
 }
 
-bool SortEngine::runAction() {
+bool SortEngine::runActionForward() {
     if (currentActionIndex >= actions.size()) {
         return false;
     }
@@ -159,33 +159,101 @@ bool SortEngine::runAction() {
     
     visualData.activeOne = INACTIVE;
     visualData.activeTwo = INACTIVE;
+    visualData.isOverwrite = false;
     
     switch (action.actionType) {
         case ActionType::Compare:
             visualData.activeOne = action.indexOne;
             visualData.activeTwo = action.indexTwo;
             break;
+
         case ActionType::Swap:
             visualData.activeOne = action.indexOne;
             visualData.activeTwo = action.indexTwo;
             std::swap(array.at(action.indexOne), array.at(action.indexTwo));
             break;
+        
         case ActionType::MarkSorted:
             visualData.activeOne = action.indexOne;
             visualData.sortedElements.at(action.indexOne) = true;
             break;
+        
         case ActionType::Overwrite:
+            visualData.isOverwrite = true;
             visualData.activeOne = action.indexOne;
             array.at(action.indexOne) = action.newValue;
             break;
+        
         case ActionType::Sorted:
             visualData.isSorted = true;
+            currentActionIndex++;
             return false;
             break;
     }
 
     currentActionIndex++;
     return true;
+}
+
+void SortEngine::runActionBackward() {
+    if (currentActionIndex <= 0) {
+        return;
+    }
+
+    currentActionIndex--;
+    const Action& action = actions.at(currentActionIndex);
+
+    if (currentActionIndex == 0) {
+        visualData.activeOne = INACTIVE;
+        visualData.activeTwo = INACTIVE;
+    } else {
+        visualData.activeOne = action.indexOne;
+        visualData.activeTwo = action.indexTwo;
+    }
+    visualData.isOverwrite = false;
+
+    switch (action.actionType) {
+        case ActionType::Compare:
+            // do nothing
+            break;
+        
+        case ActionType::Swap:
+            std::swap(array.at(action.indexOne), array.at(action.indexTwo));
+            break;
+
+        case ActionType::MarkSorted:
+            visualData.sortedElements.at(action.indexOne) = false;
+            visualData.isSorted = false;
+            break;
+        
+        case ActionType::Overwrite:
+            visualData.isOverwrite = true;
+            array.at(action.indexOne) = action.oldValue;
+            break;
+
+        case ActionType::Sorted:
+            visualData.isSorted = false;
+            break;
+    }
+}
+
+void SortEngine::scrubAnimation(const Index targetIndex) {
+    const Index safeTargetIndex = std::clamp(targetIndex, static_cast<Index>(0), static_cast<Index>(getActionsSize()));
+
+    // if the scrub went forward in time
+    while (currentActionIndex < safeTargetIndex) {
+        if (!runActionForward()) {
+            break;
+        }
+    }
+
+    // if the scrub went backward in time
+    while (currentActionIndex > safeTargetIndex) {
+        if (currentActionIndex == 0) {
+            break;
+        }
+        runActionBackward();
+    }
 }
 
 const VisualData& SortEngine::getVisualData() const {
@@ -208,4 +276,12 @@ const std::vector<Element>& SortEngine::getArray() const {
 
 const uint16_t SortEngine::getArraySize() const {
     return arraySize;
+}
+
+const uint16_t SortEngine::getActionsSize() const {
+    return actions.size();
+}
+
+const Index SortEngine::getCurrentActionIndex() const {
+    return currentActionIndex;
 }

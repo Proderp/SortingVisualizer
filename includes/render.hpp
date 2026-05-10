@@ -23,4 +23,7 @@ public:
     void drawArray(const std::vector<Element>& array, const VisualData& visualData);
 
     void drawButtons(const ButtonLayout& buttonLayout);
+
+    void drawAnimationSlider(const Slider& animationSlider);
+    void highlightRect(sf::FloatRect floatRect);
 };

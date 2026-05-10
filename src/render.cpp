@@ -30,17 +30,20 @@ void Render::drawArray(const std::vector<Element>& array, const VisualData& visu
         
         rectangle.setFillColor(sf::Color::White);
         
+        // for swaps and comaprisons
         if (visualData.activeOne != INACTIVE and visualData.activeTwo != INACTIVE) {
             if (visualData.activeOne == i or visualData.activeTwo == i) {
                 rectangle.setFillColor(sf::Color::Red);
             }
         }
 
-        if (visualData.activeOne != INACTIVE or visualData.isSorted) {
-            if (visualData.sortedElements.at(i) and !visualData.sortedElements.empty()) {
-                rectangle.setFillColor(sf::Color::Green);
-            }
+        if (!visualData.sortedElements.empty() and visualData.sortedElements.at(i)) {
+            rectangle.setFillColor(sf::Color::Green);
         }
+
+        if (visualData.isOverwrite and i == visualData.activeOne) {
+            rectangle.setFillColor(sf::Color::Yellow);
+        } 
 
         window.draw(rectangle);
     }
@@ -73,6 +76,44 @@ void Render::drawButtons(const ButtonLayout& buttonLayout) {
         drawButton(*button);
         drawText(*button);
     }
+}
+
+void Render::drawAnimationSlider(const Slider& animationSlider) {
+    rectangle.setFillColor(sf::Color(100, 100, 100));
+    rectangle.setPosition(animationSlider.position);
+    rectangle.setSize(animationSlider.size);
+    rectangle.setOrigin({0, animationSlider.size.y / 2.f});
+
+    window.draw(rectangle);
+
+    rectangle.setFillColor(sf::Color::Green);
+    rectangle.setPosition(animationSlider.thumb.position);
+    rectangle.setSize(animationSlider.thumb.size);
+    rectangle.setOrigin(rectangle.getGeometricCenter());
+
+    window.draw(rectangle);
+}
+
+void Render::highlightRect(sf::FloatRect floatRect) {
+    sf::RectangleShape visualRect;
+    sf::CircleShape dot(2);
+    dot.setFillColor(sf::Color::Transparent);
+    dot.setOrigin(dot.getGeometricCenter());
+    dot.setOutlineThickness(-1.f);
+    dot.setOutlineColor(sf::Color::Blue);
+
+    visualRect.setSize(floatRect.size);
+    visualRect.setPosition(floatRect.position);
+    dot.setPosition(floatRect.position);
+    window.draw(dot);
+
+    visualRect.setFillColor(sf::Color::Transparent);
+    visualRect.setOutlineColor(sf::Color::Red);
+    visualRect.setOutlineThickness(1.0f);
+    dot.setPosition(floatRect.position);
+    window.draw(dot);
+
+    window.draw(visualRect);
 }
 
 void Render::setTextOrigin() {

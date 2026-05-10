@@ -14,11 +14,14 @@ private:
     Render renderer;
 
     sf::Clock clock;
-    sf::Time interval{sf::milliseconds(10)};
+    sf::Time interval{sf::milliseconds(1)};
 
     bool isSorting{false};
+    bool isDragging{false};
 
     void checkClock();
+    void updateAnimationThumb();
+    void findNewPercentage();
 
     void eventLoop();
     void handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent);

@@ -18,6 +18,7 @@ constexpr Index INACTIVE = std::numeric_limits<Index>::max();
 
 struct VisualData {
     Index activeOne{INACTIVE}, activeTwo{INACTIVE};
+    bool isOverwrite{false};
 
     bool isSorted{false};
     std::vector<bool> sortedElements; 
