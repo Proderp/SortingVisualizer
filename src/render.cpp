@@ -37,11 +37,8 @@ void Render::drawArray(const std::vector<Element>& array, const VisualData& visu
             }
         }
 
-        // for marking sorted and overwrites
-        if (visualData.activeOne != INACTIVE or visualData.isSorted) {
-            if (visualData.sortedElements.at(i) and !visualData.sortedElements.empty()) {
-                rectangle.setFillColor(sf::Color::Green);
-            }
+        if (!visualData.sortedElements.empty() and visualData.sortedElements.at(i)) {
+            rectangle.setFillColor(sf::Color::Green);
         }
 
         if (visualData.isOverwrite and i == visualData.activeOne) {

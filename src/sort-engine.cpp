@@ -206,12 +206,11 @@ void SortEngine::runActionBackward() {
     if (currentActionIndex == 0) {
         visualData.activeOne = INACTIVE;
         visualData.activeTwo = INACTIVE;
-        visualData.isOverwrite = false;
     } else {
         visualData.activeOne = action.indexOne;
         visualData.activeTwo = action.indexTwo;
-        visualData.isOverwrite = false;
     }
+    visualData.isOverwrite = false;
 
     switch (action.actionType) {
         case ActionType::Compare:
