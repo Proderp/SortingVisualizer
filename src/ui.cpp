@@ -77,6 +77,10 @@ void UI::updateCharacterSize() {
     buttonLayout.characterSize = buttonLayout.buttons.at(0)->size.y / 3;
 }
 
+void UI::updateSliderLayout() {
+    
+}
+
 void UI::updateAnimationSlider() {
     const float xPosition = buttonLayout.layoutWidth + margin;
     const float yPosition = windowSize.y * 0.85f;
