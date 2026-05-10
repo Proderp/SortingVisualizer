@@ -14,5 +14,6 @@ Slider::Slider(const std::string buttonName, const ButtonType buttonID) :
 
 SliderLayout::SliderLayout() : 
     animationSlider("Animation Slider", ButtonType::AnimationSlider),
-    arraySizeSlider("Array Size", ButtonType::ArraySizeSlider)
+    arraySizeSlider("Array Size", ButtonType::ArraySizeSlider),
+    latencySlider("Speed", ButtonType::LatencySlider)
 {}

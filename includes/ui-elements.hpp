@@ -10,7 +10,7 @@ struct ArrayDimensions {
     float barSpacing{0.f};
 };
 
-enum class ButtonType { Sort, Randomize, Consecutive, AnimationSlider, ArraySizeSlider, None };
+enum class ButtonType { Sort, Randomize, Consecutive, AnimationSlider, ArraySizeSlider, LatencySlider, None };
 
 struct Button {
     sf::Vector2f position;
@@ -53,10 +53,11 @@ struct SliderLayout {
 private:
     Slider animationSlider;
     Slider arraySizeSlider;
+    Slider latencySlider;
 
 public:
     SliderLayout();
 
-    const std::array<Slider*, 2> sliders = {&animationSlider, &arraySizeSlider};
+    const std::array<Slider*, 3> sliders = {&animationSlider, &arraySizeSlider, &latencySlider};
     uint32_t characterSize{15};
 };
