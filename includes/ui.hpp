@@ -38,6 +38,7 @@ public:
     const ArrayDimensions& getArrayDimensions() const;
     const ButtonLayout& getButtonLayout() const;
     const Slider& getAnimationSlider() const;
+    const SliderLayout& getSliderLayout() const;
 
     void setAnimationPercentage(const float percentage);
     void resetAnimationSlider();

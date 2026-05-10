@@ -154,8 +154,9 @@ void App::render() {
     window.clear(sf::Color(25, 25, 28));
 
     renderer.drawArray(sortingEngine.getArray(), sortingEngine.getVisualData());
-    renderer.drawButtons(ui.getButtonLayout());
+    renderer.drawButtonLayout(ui.getButtonLayout());
     renderer.drawAnimationSlider(ui.getAnimationSlider());
+    renderer.drawSliderLayout(ui.getSliderLayout());
 
     window.display();
 }

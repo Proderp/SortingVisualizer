@@ -13,6 +13,7 @@ void UI::updateUI(const std::vector<Element>& array) {
     updateArrayDimensions(array);
     updateButtonLayout();
     updateAnimationSlider();
+    updateSliderLayout();
 }
 
 void UI::updateView() {
@@ -189,6 +190,10 @@ const ButtonLayout& UI::getButtonLayout() const {
 
 const Slider& UI::getAnimationSlider() const {
     return animationSlider;
+}
+
+const SliderLayout& UI::getSliderLayout() const {
+    return sliderLayout;
 }
 
 void UI::setAnimationPercentage(const float percentage) {
