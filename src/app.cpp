@@ -66,6 +66,14 @@ void App::eventLoop() {
             if (keyPressedEvent->scancode == sf::Keyboard::Scancode::Space) {
                 isSorting = !isSorting;
             }
+            
+            if (keyPressedEvent->scancode == sf::Keyboard::Scancode::R) {
+                if (sortingEngine.getActionsSize() > 0) {
+                    sortingEngine.scrubAnimation(0);
+                    updateAnimationThumb();
+                    isSorting = true;
+                }
+            }
         }
     }
 }
