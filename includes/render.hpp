@@ -25,5 +25,7 @@ public:
     void drawButtons(const ButtonLayout& buttonLayout);
 
     void drawAnimationSlider(const Slider& animationSlider);
+    void drawSliderLayout(const SliderLayout& sliderLayout);
+
     void highlightRect(sf::FloatRect floatRect);
 };

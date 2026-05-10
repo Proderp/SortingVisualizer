@@ -94,6 +94,26 @@ void Render::drawAnimationSlider(const Slider& animationSlider) {
     window.draw(rectangle);
 }
 
+void Render::drawSliderLayout(const SliderLayout& sliderLayout) {
+    for (const Slider* slider : sliderLayout.sliders) {
+        rectangle.setFillColor(sf::Color(100, 100, 100));
+        rectangle.setPosition(slider->position);
+        rectangle.setSize(slider->size);
+
+        const sf::Vector2f middleLeft = {0, slider->size.y / 2.f}; 
+        rectangle.setOrigin(middleLeft);
+
+        window.draw(rectangle);
+
+        rectangle.setFillColor(sf::Color::Green);
+        rectangle.setPosition(slider->thumb.position);
+        rectangle.setSize(slider->thumb.size);
+        rectangle.setOrigin(rectangle.getGeometricCenter());
+
+        window.draw(rectangle);
+    }
+}
+
 void Render::highlightRect(sf::FloatRect floatRect) {
     sf::RectangleShape visualRect;
     sf::CircleShape dot(2);
