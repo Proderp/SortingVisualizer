@@ -78,7 +78,46 @@ void UI::updateCharacterSize() {
 }
 
 void UI::updateSliderLayout() {
+    const float xPosition = buttonLayout.layoutWidth + margin;
+    float sliderDistance = (windowSize.y - arrayDimensions.offsetY) / 3.f;
+    float startYPosition = arrayDimensions.offsetY + sliderDistance;
     
+    const float trackHeight = 15;
+    const float thumbRadius = trackHeight / 2.f;
+
+    for (Index i{0}; i < sliderLayout.sliders.size(); i++) {
+        Slider& slider = *sliderLayout.sliders.at(i);
+
+        const float yPosition = startYPosition + sliderDistance * i;
+        slider.position = {xPosition, yPosition};
+
+        slider.size.y = trackHeight;
+        
+        float trackWidth;
+        switch (slider.thumb.id) {
+            case ButtonType::AnimationSlider:
+                trackWidth = windowSize.x - xPosition - arrayDimensions.offsetX;
+                break;
+            case ButtonType::ArraySizeSlider:
+            case ButtonType::LatencySlider:
+                trackWidth = 200.f;
+                break;
+        }
+
+        slider.size = {trackWidth, trackHeight};
+
+        const sf::Vector2f middleLeftOfTrack = {slider.position.x, slider.position.y - trackHeight / 2.f};
+        slider.trackBounds = sf::FloatRect(middleLeftOfTrack, slider.size);
+    
+        slider.thumb.size = {trackHeight, trackHeight};
+
+        const float minValue = xPosition + thumbRadius;
+        const float maxValue = trackWidth - trackHeight;
+        const float thumbXPosition = minValue + (maxValue * slider.percentage);
+        
+        slider.thumb.position = {thumbXPosition, yPosition};
+        updateButtonBounds(slider.thumb);
+    }
 }
 
 void UI::updateAnimationSlider() {

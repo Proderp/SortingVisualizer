@@ -6,6 +6,7 @@ class UI {
 private:
     ArrayDimensions arrayDimensions;
     ButtonLayout buttonLayout;
+    SliderLayout sliderLayout;
 
     Slider animationSlider;
 
