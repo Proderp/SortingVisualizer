@@ -1,7 +1,6 @@
 #include "ui.hpp"
 
 UI::UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array) :
-    animationSlider("Animation Slider", ButtonType::AnimationSlider),
     window(window),
     windowSize(windowSize)
 {
@@ -12,7 +11,6 @@ void UI::updateUI(const std::vector<Element>& array) {
     updateView();
     updateArrayDimensions(array);
     updateButtonLayout();
-    updateAnimationSlider();
     updateSliderLayout();
 }
 
@@ -80,7 +78,7 @@ void UI::updateCharacterSize() {
 
 void UI::updateSliderLayout() {
     const float xPosition = buttonLayout.layoutWidth + margin;
-    float sliderDistance = (windowSize.y - arrayDimensions.offsetY) / 3.f;
+    float sliderDistance = (windowSize.y - arrayDimensions.offsetY) / 4.f;
     float startYPosition = arrayDimensions.offsetY + sliderDistance;
     
     const float trackHeight = 15;
@@ -121,29 +119,6 @@ void UI::updateSliderLayout() {
     }
 }
 
-void UI::updateAnimationSlider() {
-    const float xPosition = buttonLayout.layoutWidth + margin;
-    const float yPosition = windowSize.y * 0.85f;
-    animationSlider.position = {xPosition, yPosition};
-
-    const float height = 15;
-    const float trackWidth = windowSize.x - xPosition - arrayDimensions.offsetX;
-    animationSlider.size = {trackWidth, height};
-
-    animationSlider.trackBounds = sf::FloatRect({animationSlider.position.x, animationSlider.position.y - height / 2.f}, animationSlider.size);
-
-    Button& thumb = animationSlider.thumb;
-    thumb.size = {height, height};
-    
-    const float thumbRadius = thumb.size.x / 2.f;
-    const float minValue = xPosition + thumbRadius;
-    const float maxValue = trackWidth - thumb.size.x;
-    const float thumbXPosition = minValue + (maxValue * animationSlider.percentage);
-
-    thumb.position = {thumbXPosition, yPosition};
-    updateButtonBounds(thumb); 
-}
-
 const ButtonType UI::findClickedButton(const sf::Vector2f mousePosition) {
     for (const Button* button : buttonLayout.buttons) {
         if (button->bounds.contains(mousePosition)) {
@@ -155,7 +130,7 @@ const ButtonType UI::findClickedButton(const sf::Vector2f mousePosition) {
 }
 
 std::optional<float> UI::checkSliderClick(const sf::Vector2f mousePosition, const bool isDragging) {
-    
+    Slider& animationSlider = *sliderLayout.sliders.at(0);
     
     if (animationSlider.thumb.bounds.contains(mousePosition) or 
         animationSlider.trackBounds.contains(mousePosition) or isDragging) {
@@ -172,7 +147,7 @@ std::optional<float> UI::checkSliderClick(const sf::Vector2f mousePosition, cons
         float percentage = std::clamp(relativeX / activeTrackWidth, 0.0f, 1.0f);
     
         setAnimationPercentage(percentage);
-        updateAnimationSlider();
+        updateSliderLayout();
         
         return percentage;
     }
@@ -189,7 +164,7 @@ const ButtonLayout& UI::getButtonLayout() const {
 }
 
 const Slider& UI::getAnimationSlider() const {
-    return animationSlider;
+    return *sliderLayout.sliders.at(0);
 }
 
 const SliderLayout& UI::getSliderLayout() const {
@@ -197,10 +172,10 @@ const SliderLayout& UI::getSliderLayout() const {
 }
 
 void UI::setAnimationPercentage(const float percentage) {
-    animationSlider.percentage = percentage;
+    sliderLayout.sliders.at(0)->percentage = percentage;
 }
 
 void UI::resetAnimationSlider() {
     setAnimationPercentage(0.f);
-    updateAnimationSlider();
+    updateSliderLayout();
 }

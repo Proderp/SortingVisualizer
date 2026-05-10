@@ -133,7 +133,7 @@ void App::updateAnimationThumb() {
         float percentage = static_cast<float>(sortingEngine.getCurrentActionIndex()) / sortingEngine.getActionsSize();
         
         ui.setAnimationPercentage(percentage);
-        ui.updateAnimationSlider();
+        ui.updateSliderLayout();
     }
 }
 
@@ -155,7 +155,6 @@ void App::render() {
 
     renderer.drawArray(sortingEngine.getArray(), sortingEngine.getVisualData());
     renderer.drawButtonLayout(ui.getButtonLayout());
-    renderer.drawAnimationSlider(ui.getAnimationSlider());
     renderer.drawSliderLayout(ui.getSliderLayout());
 
     window.display();
