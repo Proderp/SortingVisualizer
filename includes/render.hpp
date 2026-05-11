@@ -12,6 +12,9 @@ private:
     sf::Text text;
     sf::RectangleShape rectangle;
 
+    sf::Color cold; 
+    sf::Color hot;
+
     void loadFont();
 
     void setTextOrigin();

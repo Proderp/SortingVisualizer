@@ -3,7 +3,9 @@
 Render::Render(sf::RenderWindow& window, const UI& ui) : 
     window(window),
     ui(ui),
-    text(font, "")
+    text(font, ""),
+    cold(67, 206, 162),
+    hot(24, 90, 157)
 {
     loadFont();
 }
@@ -19,7 +21,16 @@ void Render::loadFont() {
 void Render::drawArray(const std::vector<Element>& array, const VisualData& visualData) {
     const ArrayDimensions& dimensions = ui.getArrayDimensions();
 
+
     for (Index i{0}; i < array.size(); i++) {
+        const float normalizedValue = static_cast<float>(array.at(i)) / array.size();
+
+        const uint8_t r = cold.r + normalizedValue * (hot.r - cold.r);
+        const uint8_t g = cold.g + normalizedValue * (hot.g - cold.g);
+        const uint8_t b = cold.b + normalizedValue * (hot.b - cold.b);
+
+        rectangle.setFillColor(sf::Color(r, g, b));
+
         const float xPosition = dimensions.offsetX + (i * dimensions.barWidth) + (i * dimensions.barSpacing);
         rectangle.setPosition({xPosition, dimensions.offsetY});
 
@@ -28,26 +39,26 @@ void Render::drawArray(const std::vector<Element>& array, const VisualData& visu
 
         rectangle.setOrigin({0.f, barSize.y});
         
-        rectangle.setFillColor(sf::Color::White);
+        // rectangle.setFillColor(sf::Color::White);
         
-        // for swaps and comaprisons
-        if (visualData.activeOne != INACTIVE and visualData.activeTwo != INACTIVE) {
-            if (visualData.activeOne == i or visualData.activeTwo == i) {
-                rectangle.setFillColor(sf::Color::Red);
-            }
-        }
+        // // for swaps and comaprisons
+        // if (visualData.activeOne != INACTIVE and visualData.activeTwo != INACTIVE) {
+        //     if (visualData.activeOne == i or visualData.activeTwo == i) {
+        //         rectangle.setFillColor(sf::Color::Red);
+        //     }
+        // }
 
-        if (visualData.sortedElements.size() == array.size() and visualData.sortedElements.at(i)) {
-            rectangle.setFillColor(sf::Color::Green);
-        }
+        // if (visualData.sortedElements.size() == array.size() and visualData.sortedElements.at(i)) {
+        //     rectangle.setFillColor(sf::Color::Green);
+        // }
 
-        if (visualData.isOverwrite and i == visualData.activeOne) {
-            rectangle.setFillColor(sf::Color::Yellow);
-        } 
+        // if (visualData.isOverwrite and i == visualData.activeOne) {
+        //     rectangle.setFillColor(sf::Color::Yellow);
+        // } 
 
-        if (visualData.pivot != INACTIVE and i == visualData.pivot) {
-            rectangle.setFillColor(sf::Color(255, 165, 0));
-        }
+        // if (visualData.pivot != INACTIVE and i == visualData.pivot) {
+        //     rectangle.setFillColor(sf::Color(255, 165, 0));
+        // }
 
         window.draw(rectangle);
     }
