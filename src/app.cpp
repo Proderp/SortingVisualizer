@@ -5,7 +5,9 @@ App::App() :
     windowSize(static_cast<sf::Vector2f>(window.getSize())),
     ui(window, windowSize, sortingEngine.getArray()),
     renderer(window, ui)
-{}
+{
+    updateArraySizeThumb();
+}
 
 void App::run() {
     while (window.isOpen()) {
@@ -165,6 +167,12 @@ void App::updateAnimationThumb() {
         ui.setAnimationPercentage(percentage);
         ui.updateSliderLayout();
     }
+}
+
+void App::updateArraySizeThumb() {
+    float percentage = static_cast<float>(sortingEngine.getArraySize() / 500);
+    ui.setArraySizePercentage(percentage);
+    ui.updateSliderLayout();
 }
 
 void App::render() {

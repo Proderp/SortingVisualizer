@@ -39,4 +39,6 @@ public:
 
     void setAnimationPercentage(const float percentage);
     void resetAnimationSlider();
+
+    void setArraySizePercentage(const float percentage);
 };

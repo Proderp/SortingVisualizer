@@ -21,6 +21,7 @@ private:
 
     void checkClock();
     void updateAnimationThumb();
+    void updateArraySizeThumb();
 
     void eventLoop();
     void handleSliderEvent(const sf::Vector2f mousePosition);

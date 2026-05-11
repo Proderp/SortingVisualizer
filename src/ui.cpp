@@ -181,3 +181,7 @@ void UI::resetAnimationSlider() {
     setAnimationPercentage(0.f);
     updateSliderLayout();
 }
+
+void UI::setArraySizePercentage(const float percentage) {
+    sliderLayout.sliders.at(1)->percentage = percentage;
+}
