@@ -7,6 +7,7 @@ App::App() :
     renderer(window, ui)
 {
     updateArraySizeThumb();
+    updateLatencyThumb();
 }
 
 void App::run() {
@@ -95,7 +96,7 @@ void App::handleSliderEvent(const sf::Vector2f mousePosition) {
                 sortingEngine.scrubAnimation(targetIndex);
                 break;
             }
-            case ButtonType::ArraySizeSlider:
+            case ButtonType::ArraySizeSlider: {
                 const int potentialSize = static_cast<int>(500 * event->percentage);
                 const int newArraySize = std::clamp(potentialSize, 10, 500);
                 
@@ -108,6 +109,12 @@ void App::handleSliderEvent(const sf::Vector2f mousePosition) {
                 sortingEngine.randomizeArrayConsecutively();
                 ui.updateUI(sortingEngine.getArray());
                 break;
+            }
+            case ButtonType::LatencySlider: {
+                const sf::Time newLatency = sf::milliseconds(500 * event->percentage);
+                latency = newLatency;
+                break;
+            }
         }
     }
 }
@@ -148,7 +155,7 @@ void App::stopSorting() {
 }
 
 void App::checkClock() {
-    if (clock.getElapsedTime() >= interval and isSorting) {
+    if (clock.getElapsedTime() >= latency and isSorting) {
         clock.restart();
 
         if (!sortingEngine.runActionForward()) {
@@ -172,6 +179,12 @@ void App::updateAnimationThumb() {
 void App::updateArraySizeThumb() {
     float percentage = static_cast<float>(sortingEngine.getArraySize() / 500);
     ui.setArraySizePercentage(percentage);
+    ui.updateSliderLayout();
+}
+
+void App::updateLatencyThumb() {
+    float percentage = static_cast<float>(latency.asMilliseconds() / 500);
+    ui.setLatencyPercentage(percentage);
     ui.updateSliderLayout();
 }
 

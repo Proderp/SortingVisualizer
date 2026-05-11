@@ -41,4 +41,6 @@ public:
     void resetAnimationSlider();
 
     void setArraySizePercentage(const float percentage);
+
+    void setLatencyPercentage(const float percentage);
 };

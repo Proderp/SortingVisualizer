@@ -14,7 +14,7 @@ private:
     Render renderer;
 
     sf::Clock clock;
-    sf::Time interval{sf::milliseconds(1)};
+    sf::Time latency{sf::milliseconds(100)};
 
     bool isSorting{false};
     ButtonType draggedSlider{ButtonType::None};
@@ -22,6 +22,7 @@ private:
     void checkClock();
     void updateAnimationThumb();
     void updateArraySizeThumb();
+    void updateLatencyThumb();
 
     void eventLoop();
     void handleSliderEvent(const sf::Vector2f mousePosition);

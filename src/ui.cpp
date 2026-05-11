@@ -185,3 +185,7 @@ void UI::resetAnimationSlider() {
 void UI::setArraySizePercentage(const float percentage) {
     sliderLayout.sliders.at(1)->percentage = percentage;
 }
+
+void UI::setLatencyPercentage(const float percentage) {
+    sliderLayout.sliders.at(2)->percentage = percentage;
+}
