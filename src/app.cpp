@@ -87,10 +87,24 @@ void App::handleSliderEvent(const sf::Vector2f mousePosition) {
         draggedSlider = event->id;
 
         switch (event->id) {
-            case ButtonType::AnimationSlider:
+            case ButtonType::AnimationSlider: {
                 isSorting = false;
-                Index targetIndex = static_cast<Index>(event->percentage * sortingEngine.getActionsSize());
+                const Index targetIndex = static_cast<Index>(event->percentage * sortingEngine.getActionsSize());
                 sortingEngine.scrubAnimation(targetIndex);
+                break;
+            }
+            case ButtonType::ArraySizeSlider:
+                const int potentialSize = static_cast<int>(500 * event->percentage);
+                const int newArraySize = std::clamp(potentialSize, 10, 500);
+                
+                if (newArraySize == sortingEngine.getArraySize()) {
+                    break;
+                }
+                
+                stopSorting();
+                sortingEngine.setArraySize(newArraySize);
+                sortingEngine.randomizeArrayConsecutively();
+                ui.updateUI(sortingEngine.getArray());
                 break;
         }
     }
@@ -119,10 +133,6 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
             break;
         case None:
             break;
-    }
-
-    if (draggedSlider == ButtonType::AnimationSlider and sortingEngine.getActionsSize() == 0) {
-        return;
     }
     
     handleSliderEvent(mousePosition);
