@@ -152,6 +152,8 @@ void SortEngine::quickSortWrapper() {
     std::vector<Element> tempArray(array);
 
     quickSort(tempArray, leftEnd, rightEnd);
+    actions.push_back(Action(ActionType::SetPivot, INACTIVE, currentPivot));
+    currentPivot = INACTIVE;
     actions.push_back(Action(ActionType::Sorted));
 }
 
@@ -162,6 +164,9 @@ void SortEngine::quickSort(std::vector<Element>& tempArray, const Index leftEnd,
     }
 
     Index pivot = rightEnd;
+    actions.push_back(Action(ActionType::SetPivot, pivot, currentPivot));
+    currentPivot = pivot;
+
     Index leftPointer{leftEnd}, rightPointer{static_cast<Index>(rightEnd)};
 
     while (true) {
@@ -236,6 +241,10 @@ bool SortEngine::runActionForward() {
             visualData.activeOne = action.indexOne;
             array.at(action.indexOne) = action.newValue;
             break;
+
+        case ActionType::SetPivot:
+            visualData.pivot = action.indexOne;
+            break;
         
         case ActionType::Sorted:
             visualData.isSorted = true;
@@ -282,6 +291,10 @@ void SortEngine::runActionBackward() {
         case ActionType::Overwrite:
             visualData.isOverwrite = true;
             array.at(action.indexOne) = action.oldValue;
+            break;
+
+        case ActionType::SetPivot:
+            visualData.pivot = action.indexTwo;
             break;
 
         case ActionType::Sorted:

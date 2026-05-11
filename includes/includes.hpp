@@ -23,6 +23,7 @@ constexpr float MAX_LATENCY = 500.f;
 
 struct VisualData {
     Index activeOne{INACTIVE}, activeTwo{INACTIVE};
+    Index pivot{INACTIVE};
     bool isOverwrite{false};
 
     bool isSorted{false};

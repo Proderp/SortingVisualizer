@@ -45,6 +45,10 @@ void Render::drawArray(const std::vector<Element>& array, const VisualData& visu
             rectangle.setFillColor(sf::Color::Yellow);
         } 
 
+        if (visualData.pivot != INACTIVE and i == visualData.pivot) {
+            rectangle.setFillColor(sf::Color(255, 165, 0));
+        }
+
         window.draw(rectangle);
     }
 }

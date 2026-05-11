@@ -1,7 +1,7 @@
 #pragma once
 #include "includes.hpp"
 
-enum class ActionType {Compare, Swap, MarkSorted, Overwrite, Sorted};
+enum class ActionType {Compare, Swap, MarkSorted, Overwrite, SetPivot, Sorted};
 
 struct Action {
     ActionType actionType;
@@ -33,6 +33,7 @@ private:
     
     std::vector<Action> actions;
     Index currentActionIndex{0};
+    Index currentPivot{INACTIVE};
     VisualData visualData;
 
     void mergeSort(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index left, const Index right);
