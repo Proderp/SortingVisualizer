@@ -74,22 +74,36 @@ void SortEngine::bubbleSort() {
     actions.push_back(Action(ActionType::Sorted));
 }
 
-void SortEngine::mergeWrapper() {
-    if (array.empty()) {
-        return;
+bool SortEngine::isArraySorted(const std::vector<Element>& tempArray) {
+    for (Index i{0}; i < arraySize - 1; i++) {
+        if (tempArray.at(i) > tempArray.at(i + 1)) {
+            return false;
+        }
     }
 
-    std::vector<Element> tempArray(array);
-    std::vector<Element> originalArray(array);
-    
-    Index left{0}, right{static_cast<Index>(arraySize - 1)};
+    return true;
+}
 
-    mergeSort(tempArray, originalArray, left, right);
-
+void SortEngine::createCoolAnimation() {
     for (Index i{0}; i < arraySize; i++) {
         actions.push_back(Action(ActionType::MarkSorted, i));
     }
     actions.push_back(Action(ActionType::Sorted));
+}
+
+void SortEngine::mergeSortWrapper() {
+    std::vector<Element> tempArray(array);
+    std::vector<Element> originalArray(array);
+    
+    const Index left{0}, right{static_cast<Index>(arraySize - 1)};
+
+    if (isArraySorted(tempArray)) {
+        createCoolAnimation();
+        return;
+    }
+
+    mergeSort(tempArray, originalArray, left, right);
+    createCoolAnimation();
 }
 
 void SortEngine::mergeSort(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index left, const Index right) {
@@ -149,6 +163,74 @@ void SortEngine::merge(std::vector<Element>& tempArray, std::vector<Element>& or
     }
 }
 
+void SortEngine::quickSortWrapper() {
+    const Index leftEnd{0};
+    const Index rightEnd{static_cast<Index>(arraySize - 1)};
+
+    std::vector<Element> tempArray(array);
+
+    if (isArraySorted(tempArray)) {
+        createCoolAnimation();   
+        return;
+    }
+
+    quickSort(tempArray, leftEnd, rightEnd);
+    actions.push_back(Action(ActionType::SetPivot, INACTIVE, currentPivot));
+    currentPivot = INACTIVE;
+    actions.push_back(Action(ActionType::Sorted));
+}
+
+void SortEngine::quickSort(std::vector<Element>& tempArray, const Index leftEnd, const Index rightEnd) {
+    if (leftEnd >= rightEnd) {
+        actions.push_back(Action(ActionType::MarkSorted, leftEnd));
+        return;
+    }
+
+    Index pivot = rightEnd;
+    actions.push_back(Action(ActionType::SetPivot, pivot, currentPivot));
+    currentPivot = pivot;
+
+    Index leftPointer{leftEnd}, rightPointer{static_cast<Index>(rightEnd)};
+
+    while (true) {
+        for (; leftPointer < rightEnd; leftPointer++) {
+            actions.push_back(Action(ActionType::Compare, leftPointer, pivot));
+            if (tempArray.at(leftPointer) > tempArray.at(pivot)) {
+                break;
+            }
+        }
+        
+        for (; rightPointer > leftEnd; rightPointer--) {
+            actions.push_back(Action(ActionType::Compare, rightPointer, pivot));
+            if (tempArray.at(rightPointer) < tempArray.at(pivot)) {
+                break;
+            }
+        }
+
+        actions.push_back(Action(ActionType::Compare, leftPointer, rightPointer));
+        if (leftPointer < rightPointer) {
+            actions.push_back(Action(ActionType::Swap, leftPointer, rightPointer));
+            std::swap(tempArray.at(leftPointer), tempArray.at(rightPointer));
+        } else {
+            break;
+        }
+    }
+
+    actions.push_back(Action(ActionType::Swap, leftPointer, pivot));
+    std::swap(tempArray.at(leftPointer), tempArray.at(pivot));
+    actions.push_back(Action(ActionType::MarkSorted, leftPointer));
+
+    actions.push_back(Action(ActionType::Compare, leftPointer, leftEnd));
+    if (leftPointer > leftEnd) {
+        quickSort(tempArray, leftEnd, leftPointer - 1);
+    }
+
+    actions.push_back(Action(ActionType::Compare, leftPointer, rightEnd));
+    if (leftPointer < rightEnd) {
+        quickSort(tempArray, leftPointer + 1, rightEnd);
+    } 
+}
+
 bool SortEngine::runActionForward() {
     if (currentActionIndex >= actions.size()) {
         return false;
@@ -181,6 +263,10 @@ bool SortEngine::runActionForward() {
             visualData.isOverwrite = true;
             visualData.activeOne = action.indexOne;
             array.at(action.indexOne) = action.newValue;
+            break;
+
+        case ActionType::SetPivot:
+            visualData.pivot = action.indexOne;
             break;
         
         case ActionType::Sorted:
@@ -230,6 +316,10 @@ void SortEngine::runActionBackward() {
             array.at(action.indexOne) = action.oldValue;
             break;
 
+        case ActionType::SetPivot:
+            visualData.pivot = action.indexTwo;
+            break;
+
         case ActionType::Sorted:
             visualData.isSorted = false;
             break;
@@ -273,18 +363,18 @@ const std::vector<Element>& SortEngine::getArray() const {
     return array;
 }
 
-const uint16_t SortEngine::getArraySize() const {
+const size_t SortEngine::getArraySize() const {
     return arraySize;
 }
 
-const uint16_t SortEngine::getActionsSize() const {
+const size_t SortEngine::getActionsSize() const {
     return actions.size();
 }
 
-const Index SortEngine::getCurrentActionIndex() const {
+const size_t SortEngine::getCurrentActionIndex() const {
     return currentActionIndex;
 }
 
-void SortEngine::setArraySize(const uint16_t newArraySize) {
+void SortEngine::setArraySize(const size_t newArraySize) {
     arraySize = newArraySize;
 }

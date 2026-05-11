@@ -127,7 +127,7 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
         using enum ButtonType;
         case Sort:
             stopSorting();
-            sortingEngine.mergeWrapper();
+            sortingEngine.quickSortWrapper();
             isSorting = true;
             break;
         case Randomize:
@@ -160,6 +160,7 @@ void App::checkClock() {
 
         if (!sortingEngine.runActionForward()) {
             isSorting = false;
+            updateAnimationThumb();
             return;
         }
 

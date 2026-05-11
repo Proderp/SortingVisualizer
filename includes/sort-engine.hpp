@@ -1,7 +1,7 @@
 #pragma once
 #include "includes.hpp"
 
-enum class ActionType {Compare, Swap, MarkSorted, Overwrite, Sorted};
+enum class ActionType {Compare, Swap, MarkSorted, Overwrite, SetPivot, Sorted};
 
 struct Action {
     ActionType actionType;
@@ -24,7 +24,7 @@ struct Action {
 class SortEngine {
 private:
     std::vector<Element> array;
-    uint16_t arraySize{MAX_ARRAY_SIZE};
+    size_t arraySize{MAX_ARRAY_SIZE};
     uint16_t range{500};
 
     std::random_device rd;
@@ -32,12 +32,17 @@ private:
     std::uniform_int_distribution<> distribution;
     
     std::vector<Action> actions;
-    Index currentActionIndex{0};
+    size_t currentActionIndex{0};
+    size_t currentPivot{INACTIVE};
     VisualData visualData;
+
+    bool isArraySorted(const std::vector<Element>& tempArray);
+    void createCoolAnimation();
 
     void mergeSort(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index left, const Index right);
     void merge(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index leftEnd, const Index middle, const Index rightEnd);
 
+    void quickSort(std::vector<Element>& tempArray, const Index rightEnd, const Index leftEnd);
 public:
     SortEngine();
 
@@ -54,12 +59,14 @@ public:
 
     void bubbleSort();
 
-    void mergeWrapper();
+    void mergeSortWrapper();
+
+    void quickSortWrapper();
 
     const std::vector<Element>& getArray() const;
-    const uint16_t getArraySize() const;
-    const uint16_t getActionsSize() const;
-    const Index getCurrentActionIndex() const;
+    const size_t getArraySize() const;
+    const size_t getActionsSize() const;
+    const size_t getCurrentActionIndex() const;
 
-    void setArraySize(const uint16_t newArraySize);
+    void setArraySize(const size_t newArraySize);
 };
