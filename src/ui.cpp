@@ -129,27 +129,29 @@ const ButtonType UI::findClickedButton(const sf::Vector2f mousePosition) {
     return ButtonType::None;
 }
 
-std::optional<float> UI::checkSliderClick(const sf::Vector2f mousePosition, const bool isDragging) {
-    Slider& animationSlider = *sliderLayout.sliders.at(0);
-    
-    if (animationSlider.thumb.bounds.contains(mousePosition) or 
-        animationSlider.trackBounds.contains(mousePosition) or isDragging) {
-    
-        const float trackStartX = animationSlider.position.x;
-        const float trackWidth = animationSlider.size.x;
-        const float thumbRadius = animationSlider.thumb.size.x / 2.f;
-        
-        const float activeTrackWidth = trackWidth - animationSlider.thumb.size.x;
-        const float activeStartX = trackStartX + thumbRadius;
+std::optional<SliderEvent> UI::checkSliderClick(const sf::Vector2f mousePosition, const ButtonType activeDragSlider, const uint16_t actionSize) {
 
-        const float relativeX = mousePosition.x - activeStartX;
-        
-        float percentage = std::clamp(relativeX / activeTrackWidth, 0.0f, 1.0f);
-    
-        setAnimationPercentage(percentage);
-        updateSliderLayout();
-        
-        return percentage;
+    for (Slider* slider : sliderLayout.sliders) {
+        const bool isBeingDragged = (activeDragSlider == slider->thumb.id);
+
+        if (slider->thumb.bounds.contains(mousePosition) or 
+            slider->trackBounds.contains(mousePosition) or isBeingDragged) {
+            const float trackStartX = slider->position.x;
+            const float trackWidth = slider->size.x;
+            const float thumbRadius = slider->thumb.size.x / 2.f;
+            
+            const float activeTrackWidth = trackWidth - slider->thumb.size.x;
+            const float activeStartX = trackStartX + thumbRadius;
+
+            const float relativeX = mousePosition.x - activeStartX;    
+            
+            const float percentage = std::clamp(relativeX / activeTrackWidth, 0.0f, 1.0f);
+            
+            slider->percentage = percentage;
+            updateSliderLayout();
+
+            return SliderEvent{slider->thumb.id, percentage};
+        }
     }
     
     return std::nullopt;

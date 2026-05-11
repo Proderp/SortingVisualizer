@@ -33,20 +33,15 @@ void App::eventLoop() {
         }
 
         if (const sf::Event::MouseMoved* mouseMovedEvent = event->getIf<sf::Event::MouseMoved>()) {
-            if (isDragging and sortingEngine.getActionsSize() > 0) {
+            if (draggedSlider != ButtonType::None) {
                 const sf::Vector2f mousePosition = static_cast<sf::Vector2f>(mouseMovedEvent->position);
-                std::optional<float> percentage = ui.checkSliderClick(mousePosition, isDragging);
-
-                if (percentage.has_value()) {
-                    Index targetIndex = static_cast<Index>(percentage.value() * sortingEngine.getActionsSize());
-                    sortingEngine.scrubAnimation(targetIndex);
-                }
+                handleSliderEvent(mousePosition);
             }
         }
 
         if (const sf::Event::MouseButtonReleased* mouseButtonReleeasedEvent = event->getIf<sf::Event::MouseButtonReleased>()) {
             if (mouseButtonReleeasedEvent->button == sf::Mouse::Button::Left) {
-                isDragging = false;
+                draggedSlider = ButtonType::None;
             }
         }
 
@@ -78,6 +73,29 @@ void App::eventLoop() {
     }
 }
 
+void App::handleSliderEvent(const sf::Vector2f mousePosition) {
+    std::optional<SliderEvent> event = ui.checkSliderClick(mousePosition, draggedSlider, sortingEngine.getActionsSize());
+
+    if (event.has_value()) {
+
+        if (event->id == ButtonType::AnimationSlider and sortingEngine.getActionsSize() == 0) {
+            ui.resetAnimationSlider();
+            draggedSlider = ButtonType::None; 
+            return;
+        }
+
+        draggedSlider = event->id;
+
+        switch (event->id) {
+            case ButtonType::AnimationSlider:
+                isSorting = false;
+                Index targetIndex = static_cast<Index>(event->percentage * sortingEngine.getActionsSize());
+                sortingEngine.scrubAnimation(targetIndex);
+                break;
+        }
+    }
+}
+
 void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent) {
     sf::Vector2f mousePosition = static_cast<sf::Vector2f>(mousePressedEvent->position);
     const ButtonType clickedButton = ui.findClickedButton(mousePosition);
@@ -103,9 +121,11 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
             break;
     }
 
-    if (sortingEngine.getActionsSize() > 0) {
-        findNewPercentage();
-    }    
+    if (draggedSlider == ButtonType::AnimationSlider and sortingEngine.getActionsSize() == 0) {
+        return;
+    }
+    
+    handleSliderEvent(mousePosition);
 }
 
 void App::stopSorting() {
@@ -134,19 +154,6 @@ void App::updateAnimationThumb() {
         
         ui.setAnimationPercentage(percentage);
         ui.updateSliderLayout();
-    }
-}
-
-void App::findNewPercentage() {
-    const sf::Vector2f mousePosition = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
-    std::optional<float> percentage = ui.checkSliderClick(mousePosition, isDragging);
-
-    if (percentage.has_value()) {
-        isDragging = true;
-        isSorting = false;
-
-        Index targetIndex = static_cast<Index>(percentage.value() * sortingEngine.getActionsSize());
-        sortingEngine.scrubAnimation(targetIndex);
     }
 }
 

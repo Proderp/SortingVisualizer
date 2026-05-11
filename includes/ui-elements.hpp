@@ -61,3 +61,8 @@ public:
     const std::array<Slider*, 3> sliders = {&animationSlider, &arraySizeSlider, &latencySlider};
     uint32_t characterSize{15};
 };
+
+struct SliderEvent {
+    ButtonType id;
+    float percentage;
+};

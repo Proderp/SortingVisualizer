@@ -30,7 +30,7 @@ public:
     void updateSliderLayout();
 
     const ButtonType findClickedButton(const sf::Vector2f mousePosition);
-    std::optional<float> checkSliderClick(const sf::Vector2f mousePosition, const bool isDragging);
+    std::optional<SliderEvent> checkSliderClick(const sf::Vector2f mousePosition, const ButtonType activeDragSlider, const uint16_t actionSize);
 
     const ArrayDimensions& getArrayDimensions() const;
     const ButtonLayout& getButtonLayout() const;
