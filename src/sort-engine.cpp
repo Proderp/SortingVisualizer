@@ -74,18 +74,36 @@ void SortEngine::bubbleSort() {
     actions.push_back(Action(ActionType::Sorted));
 }
 
+bool SortEngine::isArraySorted(const std::vector<Element>& tempArray) {
+    for (Index i{0}; i < arraySize - 1; i++) {
+        if (tempArray.at(i) > tempArray.at(i + 1)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void SortEngine::createCoolAnimation() {
+    for (Index i{0}; i < arraySize; i++) {
+        actions.push_back(Action(ActionType::MarkSorted, i));
+    }
+    actions.push_back(Action(ActionType::Sorted));
+}
+
 void SortEngine::mergeSortWrapper() {
     std::vector<Element> tempArray(array);
     std::vector<Element> originalArray(array);
     
     const Index left{0}, right{static_cast<Index>(arraySize - 1)};
 
-    mergeSort(tempArray, originalArray, left, right);
-
-    for (Index i{0}; i < arraySize; i++) {
-        actions.push_back(Action(ActionType::MarkSorted, i));
+    if (isArraySorted(tempArray)) {
+        createCoolAnimation();
+        return;
     }
-    actions.push_back(Action(ActionType::Sorted));
+
+    mergeSort(tempArray, originalArray, left, right);
+    createCoolAnimation();
 }
 
 void SortEngine::mergeSort(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index left, const Index right) {
@@ -150,6 +168,11 @@ void SortEngine::quickSortWrapper() {
     const Index rightEnd{static_cast<Index>(arraySize - 1)};
 
     std::vector<Element> tempArray(array);
+
+    if (isArraySorted(tempArray)) {
+        createCoolAnimation();   
+        return;
+    }
 
     quickSort(tempArray, leftEnd, rightEnd);
     actions.push_back(Action(ActionType::SetPivot, INACTIVE, currentPivot));

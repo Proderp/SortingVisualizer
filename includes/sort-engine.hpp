@@ -36,6 +36,9 @@ private:
     size_t currentPivot{INACTIVE};
     VisualData visualData;
 
+    bool isArraySorted(const std::vector<Element>& tempArray);
+    void createCoolAnimation();
+
     void mergeSort(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index left, const Index right);
     void merge(std::vector<Element>& tempArray, std::vector<Element>& originalArray, const Index leftEnd, const Index middle, const Index rightEnd);
 
