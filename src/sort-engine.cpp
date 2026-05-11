@@ -231,6 +231,19 @@ void SortEngine::quickSort(std::vector<Element>& tempArray, const Index leftEnd,
     } 
 }
 
+void SortEngine::insertionSort() {
+    std::vector<Element> tempArray(array);
+
+    for (Index i{1}; i < arraySize; i++) {
+        int j = i - 1;
+
+        while (j >= 0 and tempArray.at(j + 1) < tempArray.at(j)) {            
+            std::swap(tempArray.at(j), tempArray.at(j + 1));            
+            j--;
+        }
+    }
+}
+
 bool SortEngine::runActionForward() {
     if (currentActionIndex >= actions.size()) {
         return false;

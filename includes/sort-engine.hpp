@@ -63,6 +63,8 @@ public:
 
     void quickSortWrapper();
 
+    void insertionSort();
+
     const std::vector<Element>& getArray() const;
     const size_t getArraySize() const;
     const size_t getActionsSize() const;
