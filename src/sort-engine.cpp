@@ -237,11 +237,19 @@ void SortEngine::insertionSort() {
     for (Index i{1}; i < arraySize; i++) {
         int j = i - 1;
 
-        while (j >= 0 and tempArray.at(j + 1) < tempArray.at(j)) {            
-            std::swap(tempArray.at(j), tempArray.at(j + 1));            
-            j--;
+        while (j >= 0) {
+            actions.push_back(Action(ActionType::Compare, j, j + 1));
+            if (tempArray.at(j + 1) < tempArray.at(j)) {
+                actions.push_back(Action(ActionType::Swap, j, j + 1));
+                std::swap(tempArray.at(j), tempArray.at(j + 1));            
+                j--;
+            } else {
+                break;
+            }
         }
     }
+
+    createCoolAnimation();
 }
 
 bool SortEngine::runActionForward() {
