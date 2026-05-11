@@ -127,7 +127,7 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
         using enum ButtonType;
         case Sort:
             stopSorting();
-            sortingEngine.quickSortWrapper();
+            sortingEngine.insertionSort();
             isSorting = true;
             break;
         case Randomize:

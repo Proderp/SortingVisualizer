@@ -231,6 +231,27 @@ void SortEngine::quickSort(std::vector<Element>& tempArray, const Index leftEnd,
     } 
 }
 
+void SortEngine::insertionSort() {
+    std::vector<Element> tempArray(array);
+
+    for (Index i{1}; i < arraySize; i++) {
+        int j = i - 1;
+
+        while (j >= 0) {
+            actions.push_back(Action(ActionType::Compare, j, j + 1));
+            if (tempArray.at(j + 1) < tempArray.at(j)) {
+                actions.push_back(Action(ActionType::Swap, j, j + 1));
+                std::swap(tempArray.at(j), tempArray.at(j + 1));            
+                j--;
+            } else {
+                break;
+            }
+        }
+    }
+
+    createCoolAnimation();
+}
+
 bool SortEngine::runActionForward() {
     if (currentActionIndex >= actions.size()) {
         return false;
