@@ -60,4 +60,6 @@ public:
     const uint16_t getArraySize() const;
     const uint16_t getActionsSize() const;
     const Index getCurrentActionIndex() const;
+
+    void setArraySize(const uint16_t newArraySize);
 };
