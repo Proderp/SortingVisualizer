@@ -75,10 +75,6 @@ void SortEngine::bubbleSort() {
 }
 
 void SortEngine::mergeSortWrapper() {
-    if (array.empty()) {
-        return;
-    }
-
     std::vector<Element> tempArray(array);
     std::vector<Element> originalArray(array);
     
@@ -156,11 +152,12 @@ void SortEngine::quickSortWrapper() {
     std::vector<Element> tempArray(array);
 
     quickSort(tempArray, leftEnd, rightEnd);
-    array = tempArray;
+    actions.push_back(Action(ActionType::Sorted));
 }
 
 void SortEngine::quickSort(std::vector<Element>& tempArray, const Index leftEnd, const Index rightEnd) {
     if (leftEnd >= rightEnd) {
+        actions.push_back(Action(ActionType::MarkSorted, leftEnd));
         return;
     }
 
@@ -169,30 +166,38 @@ void SortEngine::quickSort(std::vector<Element>& tempArray, const Index leftEnd,
 
     while (true) {
         for (; leftPointer < rightEnd; leftPointer++) {
+            actions.push_back(Action(ActionType::Compare, leftPointer, pivot));
             if (tempArray.at(leftPointer) > tempArray.at(pivot)) {
                 break;
             }
         }
         
         for (; rightPointer > leftEnd; rightPointer--) {
+            actions.push_back(Action(ActionType::Compare, rightPointer, pivot));
             if (tempArray.at(rightPointer) < tempArray.at(pivot)) {
                 break;
             }
         }
 
+        actions.push_back(Action(ActionType::Compare, leftPointer, rightPointer));
         if (leftPointer < rightPointer) {
+            actions.push_back(Action(ActionType::Swap, leftPointer, rightPointer));
             std::swap(tempArray.at(leftPointer), tempArray.at(rightPointer));
         } else {
             break;
         }
     }
 
+    actions.push_back(Action(ActionType::Swap, leftPointer, pivot));
     std::swap(tempArray.at(leftPointer), tempArray.at(pivot));
+    actions.push_back(Action(ActionType::MarkSorted, leftPointer));
 
+    actions.push_back(Action(ActionType::Compare, leftPointer, leftEnd));
     if (leftPointer > leftEnd) {
         quickSort(tempArray, leftEnd, leftPointer - 1);
     }
 
+    actions.push_back(Action(ActionType::Compare, leftPointer, rightEnd));
     if (leftPointer < rightEnd) {
         quickSort(tempArray, leftPointer + 1, rightEnd);
     } 
