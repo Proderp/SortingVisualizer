@@ -54,7 +54,10 @@ public:
 
     void bubbleSort();
 
-    void mergeWrapper();
+    void mergeSortWrapper();
+
+    void quickSortWrapper();
+    void quickSort(const Index rightEnd, const Index leftEnd);
 
     const std::vector<Element>& getArray() const;
     const uint16_t getArraySize() const;

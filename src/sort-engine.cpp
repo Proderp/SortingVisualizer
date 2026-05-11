@@ -74,7 +74,7 @@ void SortEngine::bubbleSort() {
     actions.push_back(Action(ActionType::Sorted));
 }
 
-void SortEngine::mergeWrapper() {
+void SortEngine::mergeSortWrapper() {
     if (array.empty()) {
         return;
     }
@@ -147,6 +147,43 @@ void SortEngine::merge(std::vector<Element>& tempArray, std::vector<Element>& or
         
         k++;
     }
+}
+
+void SortEngine::quickSort(const Index leftEnd, const Index rightEnd) {
+    if (leftEnd >= rightEnd) {
+        return;
+    }
+
+    Index pivot = rightEnd;
+    Index leftPointer{leftEnd}, rightPointer{static_cast<Index>(rightEnd)};
+
+    while (true) {
+        for (; leftPointer < rightEnd; leftPointer++) {
+            if (array.at(leftPointer) > array.at(pivot)) {
+                break;
+            }
+        }
+        
+        for (; rightPointer > leftEnd; rightPointer--) {
+            if (array.at(rightPointer) < array.at(pivot)) {
+                break;
+            }
+        }
+
+        if (leftPointer < rightPointer) {
+            std::swap(array.at(leftPointer), array.at(rightPointer));
+        } else {
+            break;
+        }
+    } 
+
+    if (leftPointer > leftEnd) {
+        quickSort(leftEnd, leftPointer - 1);
+    }
+
+    if (leftPointer < rightEnd) {
+        quickSort(leftPointer + 1, rightEnd);
+    } 
 }
 
 bool SortEngine::runActionForward() {
