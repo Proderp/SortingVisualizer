@@ -14,7 +14,7 @@ private:
     Render renderer;
 
     sf::Clock clock;
-    sf::Time latency{sf::milliseconds(5)};
+    sf::Time latency{sf::milliseconds(0)};
 
     bool isSorting{false};
     ButtonType draggedSlider{ButtonType::None};
