@@ -37,7 +37,7 @@ void Render::drawArray(const std::vector<Element>& array, const VisualData& visu
             }
         }
 
-        if (!visualData.sortedElements.empty() and visualData.sortedElements.at(i)) {
+        if (visualData.sortedElements.size() == array.size() and visualData.sortedElements.at(i)) {
             rectangle.setFillColor(sf::Color::Green);
         }
 
@@ -49,17 +49,17 @@ void Render::drawArray(const std::vector<Element>& array, const VisualData& visu
     }
 }
 
-void Render::drawButtons(const ButtonLayout& buttonLayout) {   
+void Render::drawButton(const Button& button) {
+    rectangle.setSize(button.size);
+    rectangle.setPosition(button.position);
+    rectangle.setOrigin(rectangle.getGeometricCenter());
+    
+    window.draw(rectangle);
+}
+
+void Render::drawButtonLayout(const ButtonLayout& buttonLayout) {   
        
     rectangle.setFillColor(sf::Color::White);
-
-    auto drawButton = [&rect = this->rectangle, &window = this->window](const Button& button) {
-        rect.setSize(button.size);
-        rect.setPosition(button.position);
-        rect.setOrigin(rect.getGeometricCenter());
-        
-        window.draw(rect);
-    };
 
     text.setCharacterSize(buttonLayout.characterSize);
     text.setFillColor(sf::Color::Black);
@@ -92,6 +92,22 @@ void Render::drawAnimationSlider(const Slider& animationSlider) {
     rectangle.setOrigin(rectangle.getGeometricCenter());
 
     window.draw(rectangle);
+}
+
+void Render::drawSliderLayout(const SliderLayout& sliderLayout) {
+    for (const Slider* slider : sliderLayout.sliders) {
+        rectangle.setFillColor(sf::Color(100, 100, 100));
+        rectangle.setPosition(slider->position);
+        rectangle.setSize(slider->size);
+
+        const sf::Vector2f middleLeft = {0, slider->size.y / 2.f}; 
+        rectangle.setOrigin(middleLeft);
+
+        window.draw(rectangle);
+
+        rectangle.setFillColor(sf::Color::Green);
+        drawButton(slider->thumb);
+    }
 }
 
 void Render::highlightRect(sf::FloatRect floatRect) {

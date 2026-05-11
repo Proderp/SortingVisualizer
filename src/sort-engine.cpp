@@ -26,9 +26,8 @@ SortEngine::SortEngine() :
     twister(rd()),
     distribution(1, range)
 {
-    visualData.sortedElements.reserve(arraySize);
+    visualData.sortedElements.resize(arraySize, false);
 
-    array.reserve(arraySize);
     randomizeArrayConsecutively();
 }
 
@@ -83,11 +82,11 @@ void SortEngine::mergeWrapper() {
     std::vector<Element> tempArray(array);
     std::vector<Element> originalArray(array);
     
-    Index left{0}, right{static_cast<Index>(array.size() - 1)};
+    Index left{0}, right{static_cast<Index>(arraySize - 1)};
 
     mergeSort(tempArray, originalArray, left, right);
 
-    for (Index i{0}; i < array.size(); i++) {
+    for (Index i{0}; i < arraySize; i++) {
         actions.push_back(Action(ActionType::MarkSorted, i));
     }
     actions.push_back(Action(ActionType::Sorted));
@@ -267,7 +266,7 @@ void SortEngine::resetActions() {
 
 void SortEngine::resetVisualData() {
     visualData = VisualData{};
-    visualData.sortedElements.resize(array.size(), false);
+    visualData.sortedElements.resize(arraySize, false);
 }
 
 const std::vector<Element>& SortEngine::getArray() const {
@@ -284,4 +283,8 @@ const uint16_t SortEngine::getActionsSize() const {
 
 const Index SortEngine::getCurrentActionIndex() const {
     return currentActionIndex;
+}
+
+void SortEngine::setArraySize(const uint16_t newArraySize) {
+    arraySize = newArraySize;
 }

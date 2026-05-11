@@ -17,13 +17,14 @@ private:
     sf::Time interval{sf::milliseconds(1)};
 
     bool isSorting{false};
-    bool isDragging{false};
+    ButtonType draggedSlider{ButtonType::None};
 
     void checkClock();
     void updateAnimationThumb();
-    void findNewPercentage();
+    void updateArraySizeThumb();
 
     void eventLoop();
+    void handleSliderEvent(const sf::Vector2f mousePosition);
     void handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent);
     
     void stopSorting();

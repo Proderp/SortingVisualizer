@@ -6,8 +6,7 @@ class UI {
 private:
     ArrayDimensions arrayDimensions;
     ButtonLayout buttonLayout;
-
-    Slider animationSlider;
+    SliderLayout sliderLayout;
 
     sf::RenderWindow& window;
     sf::View view;
@@ -28,15 +27,18 @@ public:
     UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array);    
     
     void updateUI(const std::vector<Element>& array);
-    void updateAnimationSlider();
-    
+    void updateSliderLayout();
+
     const ButtonType findClickedButton(const sf::Vector2f mousePosition);
-    std::optional<float> checkSliderClick(const sf::Vector2f mousePosition, const bool isDragging);
+    std::optional<SliderEvent> checkSliderClick(const sf::Vector2f mousePosition, const ButtonType activeDragSlider, const uint16_t actionSize);
 
     const ArrayDimensions& getArrayDimensions() const;
     const ButtonLayout& getButtonLayout() const;
     const Slider& getAnimationSlider() const;
+    const SliderLayout& getSliderLayout() const;
 
     void setAnimationPercentage(const float percentage);
     void resetAnimationSlider();
+
+    void setArraySizePercentage(const float percentage);
 };

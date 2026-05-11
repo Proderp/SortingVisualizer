@@ -16,14 +16,18 @@ private:
 
     void setTextOrigin();
 
+    void drawButton(const Button& button);
+
 public:
 
     Render(sf::RenderWindow& window, const UI& ui);
 
     void drawArray(const std::vector<Element>& array, const VisualData& visualData);
 
-    void drawButtons(const ButtonLayout& buttonLayout);
+    void drawButtonLayout(const ButtonLayout& buttonLayout);
 
     void drawAnimationSlider(const Slider& animationSlider);
+    void drawSliderLayout(const SliderLayout& sliderLayout);
+
     void highlightRect(sf::FloatRect floatRect);
 };

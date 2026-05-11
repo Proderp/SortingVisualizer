@@ -11,3 +11,9 @@ ButtonLayout::ButtonLayout() :
 Slider::Slider(const std::string buttonName, const ButtonType buttonID) :
     thumb(buttonName, buttonID)
 {}
+
+SliderLayout::SliderLayout() : 
+    animationSlider("Animation Slider", ButtonType::AnimationSlider),
+    arraySizeSlider("Array Size", ButtonType::ArraySizeSlider),
+    latencySlider("Speed", ButtonType::LatencySlider)
+{}
