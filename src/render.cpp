@@ -37,7 +37,7 @@ void Render::drawArray(const std::vector<Element>& array, const VisualData& visu
             }
         }
 
-        if (!visualData.sortedElements.empty() and visualData.sortedElements.at(i)) {
+        if (visualData.sortedElements.size() == array.size() and visualData.sortedElements.at(i)) {
             rectangle.setFillColor(sf::Color::Green);
         }
 
