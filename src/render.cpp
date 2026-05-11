@@ -110,28 +110,6 @@ void Render::drawSliderLayout(const SliderLayout& sliderLayout) {
     }
 }
 
-void Render::highlightRect(sf::FloatRect floatRect) {
-    sf::RectangleShape visualRect;
-    sf::CircleShape dot(2);
-    dot.setFillColor(sf::Color::Transparent);
-    dot.setOrigin(dot.getGeometricCenter());
-    dot.setOutlineThickness(-1.f);
-    dot.setOutlineColor(sf::Color::Blue);
-
-    visualRect.setSize(floatRect.size);
-    visualRect.setPosition(floatRect.position);
-    dot.setPosition(floatRect.position);
-    window.draw(dot);
-
-    visualRect.setFillColor(sf::Color::Transparent);
-    visualRect.setOutlineColor(sf::Color::Red);
-    visualRect.setOutlineThickness(1.0f);
-    dot.setPosition(floatRect.position);
-    window.draw(dot);
-
-    window.draw(visualRect);
-}
-
 void Render::setTextOrigin() {
 	const sf::FloatRect bounds = text.getLocalBounds();
 
