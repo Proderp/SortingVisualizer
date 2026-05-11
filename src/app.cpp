@@ -160,6 +160,7 @@ void App::checkClock() {
 
         if (!sortingEngine.runActionForward()) {
             isSorting = false;
+            updateAnimationThumb();
             return;
         }
 

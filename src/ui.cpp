@@ -174,7 +174,7 @@ const SliderLayout& UI::getSliderLayout() const {
 }
 
 void UI::setAnimationPercentage(const float percentage) {
-    sliderLayout.sliders.at(0)->percentage = percentage;
+    sliderLayout.sliders.at(0)->percentage = std::clamp(percentage, 0.0f, 1.0f);
 }
 
 void UI::resetAnimationSlider() {
@@ -183,9 +183,9 @@ void UI::resetAnimationSlider() {
 }
 
 void UI::setArraySizePercentage(const float percentage) {
-    sliderLayout.sliders.at(1)->percentage = percentage;
+    sliderLayout.sliders.at(1)->percentage = std::clamp(percentage, 0.0f, 1.0f);
 }
 
 void UI::setLatencyPercentage(const float percentage) {
-    sliderLayout.sliders.at(2)->percentage = percentage;
+    sliderLayout.sliders.at(2)->percentage = std::clamp(percentage, 0.0f, 1.0f);
 }

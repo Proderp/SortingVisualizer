@@ -340,18 +340,18 @@ const std::vector<Element>& SortEngine::getArray() const {
     return array;
 }
 
-const uint16_t SortEngine::getArraySize() const {
+const size_t SortEngine::getArraySize() const {
     return arraySize;
 }
 
-const uint16_t SortEngine::getActionsSize() const {
+const size_t SortEngine::getActionsSize() const {
     return actions.size();
 }
 
-const Index SortEngine::getCurrentActionIndex() const {
+const size_t SortEngine::getCurrentActionIndex() const {
     return currentActionIndex;
 }
 
-void SortEngine::setArraySize(const uint16_t newArraySize) {
+void SortEngine::setArraySize(const size_t newArraySize) {
     arraySize = newArraySize;
 }
