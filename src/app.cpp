@@ -177,13 +177,13 @@ void App::updateAnimationThumb() {
 }
 
 void App::updateArraySizeThumb() {
-    float percentage = static_cast<float>(sortingEngine.getArraySize() / 500);
+    float percentage = sortingEngine.getArraySize() / 500.f;
     ui.setArraySizePercentage(percentage);
     ui.updateSliderLayout();
 }
 
 void App::updateLatencyThumb() {
-    float percentage = static_cast<float>(latency.asMilliseconds() / 500);
+    float percentage = latency.asMilliseconds() / 500.f;
     ui.setLatencyPercentage(percentage);
     ui.updateSliderLayout();
 }
