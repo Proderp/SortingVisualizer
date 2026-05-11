@@ -82,7 +82,7 @@ void SortEngine::mergeSortWrapper() {
     std::vector<Element> tempArray(array);
     std::vector<Element> originalArray(array);
     
-    Index left{0}, right{static_cast<Index>(arraySize - 1)};
+    const Index left{0}, right{static_cast<Index>(arraySize - 1)};
 
     mergeSort(tempArray, originalArray, left, right);
 
@@ -149,7 +149,17 @@ void SortEngine::merge(std::vector<Element>& tempArray, std::vector<Element>& or
     }
 }
 
-void SortEngine::quickSort(const Index leftEnd, const Index rightEnd) {
+void SortEngine::quickSortWrapper() {
+    const Index leftEnd{0};
+    const Index rightEnd{static_cast<Index>(arraySize - 1)};
+
+    std::vector<Element> tempArray(array);
+
+    quickSort(tempArray, leftEnd, rightEnd);
+    array = tempArray;
+}
+
+void SortEngine::quickSort(std::vector<Element>& tempArray, const Index leftEnd, const Index rightEnd) {
     if (leftEnd >= rightEnd) {
         return;
     }
@@ -159,30 +169,32 @@ void SortEngine::quickSort(const Index leftEnd, const Index rightEnd) {
 
     while (true) {
         for (; leftPointer < rightEnd; leftPointer++) {
-            if (array.at(leftPointer) > array.at(pivot)) {
+            if (tempArray.at(leftPointer) > tempArray.at(pivot)) {
                 break;
             }
         }
         
         for (; rightPointer > leftEnd; rightPointer--) {
-            if (array.at(rightPointer) < array.at(pivot)) {
+            if (tempArray.at(rightPointer) < tempArray.at(pivot)) {
                 break;
             }
         }
 
         if (leftPointer < rightPointer) {
-            std::swap(array.at(leftPointer), array.at(rightPointer));
+            std::swap(tempArray.at(leftPointer), tempArray.at(rightPointer));
         } else {
             break;
         }
-    } 
+    }
+
+    std::swap(tempArray.at(leftPointer), tempArray.at(pivot));
 
     if (leftPointer > leftEnd) {
-        quickSort(leftEnd, leftPointer - 1);
+        quickSort(tempArray, leftEnd, leftPointer - 1);
     }
 
     if (leftPointer < rightEnd) {
-        quickSort(leftPointer + 1, rightEnd);
+        quickSort(tempArray, leftPointer + 1, rightEnd);
     } 
 }
 
