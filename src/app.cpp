@@ -97,8 +97,8 @@ void App::handleSliderEvent(const sf::Vector2f mousePosition) {
                 break;
             }
             case ButtonType::ArraySizeSlider: {
-                const int potentialSize = static_cast<int>(500 * event->percentage);
-                const int newArraySize = std::clamp(potentialSize, 10, 500);
+                const uint16_t potentialSize = static_cast<uint16_t>(MAX_ARRAY_SIZE * event->percentage);
+                const uint16_t newArraySize = std::clamp(potentialSize, MIN_ARRAY_SIZE, MAX_ARRAY_SIZE);
                 
                 if (newArraySize == sortingEngine.getArraySize()) {
                     break;
@@ -111,7 +111,7 @@ void App::handleSliderEvent(const sf::Vector2f mousePosition) {
                 break;
             }
             case ButtonType::LatencySlider: {
-                const sf::Time newLatency = sf::milliseconds(500 * event->percentage);
+                const sf::Time newLatency = sf::milliseconds(MAX_LATENCY * event->percentage);
                 latency = newLatency;
                 break;
             }
@@ -177,13 +177,13 @@ void App::updateAnimationThumb() {
 }
 
 void App::updateArraySizeThumb() {
-    float percentage = sortingEngine.getArraySize() / 500.f;
+    float percentage = static_cast<float>(sortingEngine.getArraySize()) / MAX_ARRAY_SIZE;
     ui.setArraySizePercentage(percentage);
     ui.updateSliderLayout();
 }
 
 void App::updateLatencyThumb() {
-    float percentage = latency.asMilliseconds() / 500.f;
+    float percentage = latency.asMilliseconds() / MAX_LATENCY;
     ui.setLatencyPercentage(percentage);
     ui.updateSliderLayout();
 }
