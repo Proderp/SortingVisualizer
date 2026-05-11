@@ -24,7 +24,7 @@ void UI::updateView() {
 }
 
 void UI::updateArrayDimensions(const std::vector<Element>& array) {
-    arrayDimensions.offsetX = windowSize.x * 0.1f;
+    arrayDimensions.offsetX = windowSize.x * 0.01f;
     arrayDimensions.offsetY = windowSize.y * 0.7f;
 
     if (array.empty()) {
@@ -34,7 +34,8 @@ void UI::updateArrayDimensions(const std::vector<Element>& array) {
     const float allocatedBarArea = windowSize.x - arrayDimensions.offsetX * 2 - arrayDimensions.barSpacing * (array.size() - 1);
     arrayDimensions.barWidth = allocatedBarArea / array.size();
 
-    const float maxBarHeight = arrayDimensions.offsetY - (windowSize.y * 0.1f);
+    const float distanceFromTop = windowSize.y * 0.02f;
+    const float maxBarHeight = arrayDimensions.offsetY - distanceFromTop;
     auto maxElement = *std::max_element(array.begin(), array.end());
     arrayDimensions.barHeightUnit = maxBarHeight / maxElement;
 }
@@ -78,7 +79,7 @@ void UI::updateCharacterSize() {
 
 void UI::updateSliderLayout() {
     const float xPosition = buttonLayout.layoutWidth + margin;
-    float sliderDistance = (windowSize.y - arrayDimensions.offsetY) / 4.f;
+    float sliderDistance = (windowSize.y - arrayDimensions.offsetY) / (sliderLayout.sliders.size() + 1);
     float startYPosition = arrayDimensions.offsetY + sliderDistance;
     
     const float trackHeight = 15;
