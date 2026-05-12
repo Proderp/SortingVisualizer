@@ -7,6 +7,7 @@ private:
     ArrayDimensions arrayDimensions;
     ButtonLayout buttonLayout;
     SliderLayout sliderLayout;
+    Slider animationSlider;
 
     sf::RenderWindow& window;
     sf::View view;

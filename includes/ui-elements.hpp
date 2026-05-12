@@ -51,14 +51,13 @@ struct Slider {
 
 struct SliderLayout {
 private:
-    Slider animationSlider;
     Slider arraySizeSlider;
     Slider latencySlider;
 
 public:
     SliderLayout();
 
-    const std::array<Slider*, 3> sliders = {&animationSlider, &arraySizeSlider, &latencySlider};
+    const std::array<Slider*, 2> sliders = {&arraySizeSlider, &latencySlider};
     uint32_t characterSize{15};
 };
 

@@ -1,6 +1,7 @@
 #include "ui.hpp"
 
 UI::UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array) :
+    animationSlider("Animation", ButtonType::AnimationSlider),
     window(window),
     windowSize(windowSize)
 {
@@ -95,9 +96,9 @@ void UI::updateSliderLayout() {
         
         float trackWidth;
         switch (slider.thumb.id) {
-            case ButtonType::AnimationSlider:
-                trackWidth = windowSize.x - xPosition - arrayDimensions.offsetX;
-                break;
+            // case ButtonType::AnimationSlider:
+            //     trackWidth = windowSize.x - xPosition - arrayDimensions.offsetX;
+            //     break;
             case ButtonType::ArraySizeSlider:
             case ButtonType::LatencySlider:
                 trackWidth = 200.f;
@@ -167,7 +168,7 @@ const ButtonLayout& UI::getButtonLayout() const {
 }
 
 const Slider& UI::getAnimationSlider() const {
-    return *sliderLayout.sliders.at(0);
+    return animationSlider;
 }
 
 const SliderLayout& UI::getSliderLayout() const {
@@ -175,7 +176,7 @@ const SliderLayout& UI::getSliderLayout() const {
 }
 
 void UI::setAnimationPercentage(const float percentage) {
-    sliderLayout.sliders.at(0)->percentage = std::clamp(percentage, 0.0f, 1.0f);
+    animationSlider.percentage = std::clamp(percentage, 0.0f, 1.0f);
 }
 
 void UI::resetAnimationSlider() {
