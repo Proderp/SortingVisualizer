@@ -2,7 +2,7 @@
 
 Render::Render(sf::RenderWindow& window, const UI& ui) : 
     window(window),
-    text(font, ""),
+    text(ubuntuFont, ""),
     cold(24, 90, 157),
     hot(191, 0, 255)
 {
@@ -10,11 +10,15 @@ Render::Render(sf::RenderWindow& window, const UI& ui) :
 }
 
 void Render::loadFont() {
-    if (!font.openFromFile("../../fonts/Ubuntu-Regular.ttf")) {
-        std::cerr << "Error loading font." << std::endl;
+    if (!ubuntuFont.openFromFile("../../fonts/Ubuntu-Regular.ttf")) {
+        std::cerr << "Error loading Ubuntu." << std::endl;
     }
 
-    text.setFont(font);
+    if (!firaCodeFont.openFromFile("../../fonts/FiraCode-Regular.ttf")) {
+        std::cerr << "Error loading Fira Code." << std::endl;
+    }
+
+    text.setFont(firaCodeFont);
 }
 
 void Render::drawArray(const std::vector<Element>& array, const ArrayDimensions& arrayDimensions, const VisualData& visualData) {
@@ -34,27 +38,6 @@ void Render::drawArray(const std::vector<Element>& array, const ArrayDimensions&
         rectangle.setSize(barSize);        
 
         rectangle.setOrigin({0.f, barSize.y});
-        
-        // rectangle.setFillColor(sf::Color::White);
-        
-        // // for swaps and comaprisons
-        // if (visualData.activeOne != INACTIVE and visualData.activeTwo != INACTIVE) {
-        //     if (visualData.activeOne == i or visualData.activeTwo == i) {
-        //         rectangle.setFillColor(sf::Color::Red);
-        //     }
-        // }
-
-        // if (visualData.sortedElements.size() == array.size() and visualData.sortedElements.at(i)) {
-        //     rectangle.setFillColor(sf::Color::Green);
-        // }
-
-        // if (visualData.isOverwrite and i == visualData.activeOne) {
-        //     rectangle.setFillColor(sf::Color::Yellow);
-        // } 
-
-        // if (visualData.pivot != INACTIVE and i == visualData.pivot) {
-        //     rectangle.setFillColor(sf::Color(255, 165, 0));
-        // }
 
         window.draw(rectangle);
     }
@@ -70,10 +53,12 @@ void Render::drawButton(const Button& button) {
 
 void Render::drawButtonLayout(const ButtonLayout& buttonLayout) {   
        
-    rectangle.setFillColor(sf::Color::White);
+    rectangle.setFillColor(sf::Color::Transparent);
+    rectangle.setOutlineThickness(2.f);
+    rectangle.setOutlineColor(sf::Color::White);
 
     text.setCharacterSize(buttonLayout.characterSize);
-    text.setFillColor(sf::Color::Black);
+    text.setFillColor(sf::Color::White);
 
     auto drawText = [&](const Button& button) {
         text.setString(button.name);
@@ -87,6 +72,9 @@ void Render::drawButtonLayout(const ButtonLayout& buttonLayout) {
         drawButton(*button);
         drawText(*button);
     }
+
+    rectangle.setOutlineThickness(0);
+    rectangle.setOutlineColor(sf::Color::Transparent);
 }
 
 void Render::drawAnimationSlider(const Slider& animationSlider) {

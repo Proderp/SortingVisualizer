@@ -213,7 +213,7 @@ void App::render() {
 
     renderer.drawArray(sortingEngine.getArray(), ui.getArrayDimensions(), sortingEngine.getVisualData());
     renderer.drawButtonLayout(ui.getButtonLayout());
-    renderer.drawSliderLayout(ui.getSliderLayout());
+    //renderer.drawSliderLayout(ui.getSliderLayout());
     renderer.drawAnimationSlider(ui.getAnimationSlider());
 
     window.display();
