@@ -6,8 +6,8 @@ App::App() :
     ui(window, windowSize, sortingEngine.getArray()),
     renderer(window, ui)
 {
-    updateArraySizeThumb();
-    updateLatencyThumb();
+    setArraySizeThumb();
+    setLatencyThumb();
 }
 
 void App::run() {
@@ -79,44 +79,52 @@ void App::eventLoop() {
 void App::handleSliderEvent(const sf::Vector2f mousePosition) {
     std::optional<SliderEvent> event = ui.checkSliderClick(mousePosition, draggedSlider, sortingEngine.getActionsSize());
 
-    if (event.has_value()) {
+    if (!event.has_value()) {
+        return;
+    }
 
-        if (event->id == ButtonType::AnimationSlider and sortingEngine.getActionsSize() == 0) {
-            ui.resetAnimationSlider();
-            draggedSlider = ButtonType::None; 
-            return;
+    if (event->id == ButtonType::AnimationSlider and sortingEngine.getActionsSize() == 0) {
+        ui.resetAnimationSlider();
+        draggedSlider = ButtonType::None; 
+        return;
+    }
+
+    draggedSlider = event->id;
+
+    switch (event->id) {
+        case ButtonType::AnimationSlider: {
+            isSorting = false;
+            const Index targetIndex = static_cast<Index>(event->percentage * sortingEngine.getActionsSize());
+            sortingEngine.scrubAnimation(targetIndex);
+            break;
         }
-
-        draggedSlider = event->id;
-
-        switch (event->id) {
-            case ButtonType::AnimationSlider: {
-                isSorting = false;
-                const Index targetIndex = static_cast<Index>(event->percentage * sortingEngine.getActionsSize());
-                sortingEngine.scrubAnimation(targetIndex);
-                break;
-            }
-            case ButtonType::ArraySizeSlider: {
-                const uint16_t potentialSize = static_cast<uint16_t>(MAX_ARRAY_SIZE * event->percentage);
-                const uint16_t newArraySize = std::clamp(potentialSize, MIN_ARRAY_SIZE, MAX_ARRAY_SIZE);
-                
-                if (newArraySize == sortingEngine.getArraySize()) {
-                    break;
-                }
-                
-                stopSorting();
-                sortingEngine.setArraySize(newArraySize);
-                sortingEngine.randomizeArrayConsecutively();
-                ui.updateUI(sortingEngine.getArray());
-                break;
-            }
-            case ButtonType::LatencySlider: {
-                const sf::Time newLatency = sf::milliseconds(MAX_LATENCY * event->percentage);
-                latency = newLatency;
-                break;
-            }
+        case ButtonType::ArraySizeSlider: 
+            updateArraySizeThumb(event.value());
+            break;
+        case ButtonType::LatencySlider: {
+            updateLatencyThumb(event.value());
+            break;
         }
     }
+}
+
+void App::updateArraySizeThumb(const SliderEvent& event) {
+    const uint16_t potentialSize = static_cast<uint16_t>(MAX_ARRAY_SIZE * event.percentage);
+    const uint16_t newArraySize = std::clamp(potentialSize, MIN_ARRAY_SIZE, MAX_ARRAY_SIZE);
+    
+    if (newArraySize == sortingEngine.getArraySize()) {
+        return;
+    }
+    
+    stopSorting();
+    sortingEngine.setArraySize(newArraySize);
+    sortingEngine.randomizeArrayConsecutively();
+    ui.updateUI(sortingEngine.getArray());
+}
+
+void App::updateLatencyThumb(const SliderEvent& event) {
+    const sf::Time newLatency = sf::milliseconds(MAX_LATENCY * event.percentage);
+    latency = newLatency;
 }
 
 void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent) {
@@ -177,13 +185,13 @@ void App::updateAnimationThumb() {
     }
 }
 
-void App::updateArraySizeThumb() {
+void App::setArraySizeThumb() {
     float percentage = static_cast<float>(sortingEngine.getArraySize()) / MAX_ARRAY_SIZE;
     ui.setArraySizePercentage(percentage);
     ui.updateSliderLayout();
 }
 
-void App::updateLatencyThumb() {
+void App::setLatencyThumb() {
     float percentage = latency.asMilliseconds() / MAX_LATENCY;
     ui.setLatencyPercentage(percentage);
     ui.updateSliderLayout();
