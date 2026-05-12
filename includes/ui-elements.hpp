@@ -3,7 +3,7 @@
 struct ArrayDimensions {
     float offsetX;
     float offsetY;
-    
+
     float barWidth;
     float barHeightUnit;
     
@@ -24,15 +24,14 @@ struct Button {
 };
 
 struct ButtonLayout {
-private:
-    Button sortButton;
+public:
+    //Button sortButton;
     Button randomizeNormalButton;
     Button randomizeConsecutiveButton;
 
-public:
     ButtonLayout();
 
-    const std::array<Button*, 3> buttons = {&sortButton, &randomizeNormalButton, &randomizeConsecutiveButton};
+    const std::array<Button*, 2> buttons = {&randomizeNormalButton, &randomizeConsecutiveButton};
 
     float layoutWidth;
     uint32_t characterSize{30};

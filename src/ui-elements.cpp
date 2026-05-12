@@ -3,9 +3,9 @@
 Button::Button(const std::string name, const ButtonType id) : name(name), id(id) {};
 
 ButtonLayout::ButtonLayout() : 
-    sortButton("Sort", ButtonType::Sort),
-    randomizeNormalButton("Randomize", ButtonType::Randomize),
-    randomizeConsecutiveButton("Consecutive", ButtonType::Consecutive)
+    //sortButton("Sort", ButtonType::Sort),
+    randomizeNormalButton("RANDOMIZE", ButtonType::Randomize),
+    randomizeConsecutiveButton("CONSECUTIVE", ButtonType::Consecutive)
 {}
 
 Slider::Slider(const std::string buttonName, const ButtonType buttonID) :
@@ -13,6 +13,6 @@ Slider::Slider(const std::string buttonName, const ButtonType buttonID) :
 {}
 
 SliderLayout::SliderLayout() : 
-    arraySizeSlider("Array Size", ButtonType::ArraySizeSlider),
-    latencySlider("Speed", ButtonType::LatencySlider)
+    arraySizeSlider("ARRAY SIZE", ButtonType::ArraySizeSlider),
+    latencySlider("SPEED", ButtonType::LatencySlider)
 {}
