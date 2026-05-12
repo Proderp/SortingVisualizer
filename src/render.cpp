@@ -62,6 +62,7 @@ void Render::drawButtonLayout(const ButtonLayout& buttonLayout) {
 
     auto drawText = [&](const Button& button) {
         text.setString(button.name);
+        text.setLetterSpacing(3.f);
         setTextOrigin();
 
         text.setPosition(button.position);

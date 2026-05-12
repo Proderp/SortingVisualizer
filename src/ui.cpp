@@ -47,8 +47,8 @@ void UI::updateButtonLayout() {
     const float columnHeight = windowSize.y - columnBegin;
     const float columnCenter = columnBegin + columnHeight / 2.f;
     
-    const float buttonHeight = columnHeight / 2.f - margin;
-    const float buttonWidth =  windowSize.x * 0.15f;
+    const float buttonHeight = columnHeight / 2.2f - margin;
+    const float buttonWidth =  windowSize.x * 0.175f;
     
     const float xPosition = arrayDimensions.offsetX + buttonWidth / 2.f;
     sf::Vector2f position = {xPosition, columnBegin + buttonHeight / 2.f};
