@@ -28,6 +28,7 @@ public:
     UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array);    
     
     void updateUI(const std::vector<Element>& array);
+    void updateAnimationSlider();
     void updateSliderLayout();
 
     const ButtonType findClickedButton(const sf::Vector2f mousePosition);

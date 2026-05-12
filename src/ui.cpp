@@ -78,6 +78,32 @@ void UI::updateCharacterSize() {
     buttonLayout.characterSize = buttonLayout.buttons.at(0)->size.y / 3;
 }
 
+void UI::updateAnimationSlider() {
+    const float xPosition = arrayDimensions.offsetX;
+    const float yPosition = arrayDimensions.offsetY + margin;
+    animationSlider.position = {xPosition, yPosition};
+
+    const float trackHeight = 15;
+    const float trackWidth = windowSize.x - arrayDimensions.offsetX * 2.f;
+    animationSlider.size = {trackHeight, trackWidth};
+
+    const float thumbRadius = trackHeight / 2.f;
+
+    const sf::Vector2f middleLeftOfTrack = {xPosition, yPosition - thumbRadius};
+    animationSlider.trackBounds = sf::FloatRect(middleLeftOfTrack, animationSlider.size);
+
+    const float thumbSize = trackHeight * 1.5f;
+    animationSlider.thumb.size = {thumbSize, thumbSize};
+
+    const float activeTrackWidth = trackWidth - thumbSize;
+    const float activeStartX = xPosition + (thumbSize / 2.f);
+
+    const float thumbXPosition = activeStartX + (activeTrackWidth * animationSlider.percentage);
+    
+    animationSlider.thumb.position = {thumbXPosition, yPosition};
+    updateButtonBounds(animationSlider.thumb);
+}
+
 void UI::updateSliderLayout() {
     const float xPosition = buttonLayout.layoutWidth + margin;
     float sliderDistance = (windowSize.y - arrayDimensions.offsetY) / (sliderLayout.sliders.size() + 1);
@@ -119,6 +145,8 @@ void UI::updateSliderLayout() {
         slider.thumb.position = {thumbXPosition, yPosition};
         updateButtonBounds(slider.thumb);
     }
+
+    updateAnimationSlider();
 }
 
 const ButtonType UI::findClickedButton(const sf::Vector2f mousePosition) {
