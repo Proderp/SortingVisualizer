@@ -10,7 +10,7 @@ struct ArrayDimensions {
     float barSpacing{0.f};
 };
 
-enum class ButtonType { Sort, Randomize, Consecutive, AnimationSlider, ArraySizeSlider, LatencySlider, None };
+enum class ButtonType { Sort, Randomize, Consecutive, StepBack, Play, StepForward, AnimationSlider, ArraySizeSlider, LatencySlider, None };
 
 struct Button {
     sf::Vector2f position;
@@ -24,10 +24,11 @@ struct Button {
 };
 
 struct ButtonLayout {
-public:
-    //Button sortButton;
     Button randomizeNormalButton;
     Button randomizeConsecutiveButton;
+    Button stepBackButton;
+    Button playButton;
+    Button stepForwardButton;
 
     ButtonLayout();
 

@@ -3,9 +3,11 @@
 Button::Button(const std::string name, const ButtonType id) : name(name), id(id) {};
 
 ButtonLayout::ButtonLayout() : 
-    //sortButton("Sort", ButtonType::Sort),
     randomizeNormalButton("RANDOMIZE", ButtonType::Randomize),
-    randomizeConsecutiveButton("CONSECUTIVE", ButtonType::Consecutive)
+    randomizeConsecutiveButton("CONSECUTIVE", ButtonType::Consecutive),
+    stepBackButton("⏮", ButtonType::StepBack),
+    playButton("▶", ButtonType::Play),
+    stepForwardButton("⏭", ButtonType::StepForward)
 {}
 
 Slider::Slider(const std::string buttonName, const ButtonType buttonID) :
