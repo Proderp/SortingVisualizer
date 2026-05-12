@@ -6,8 +6,6 @@ class Render {
 private:
     sf::RenderWindow& window;
 
-    const UI& ui;
-
     sf::Font font;
     sf::Text text;
     sf::RectangleShape rectangle;
@@ -25,7 +23,7 @@ public:
 
     Render(sf::RenderWindow& window, const UI& ui);
 
-    void drawArray(const std::vector<Element>& array, const VisualData& visualData);
+    void drawArray(const std::vector<Element>& array, const ArrayDimensions& arrayDimensions, const VisualData& visualData);
 
     void drawButtonLayout(const ButtonLayout& buttonLayout);
 

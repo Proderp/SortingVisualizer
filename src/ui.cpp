@@ -1,7 +1,7 @@
 #include "ui.hpp"
 
 UI::UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array) :
-    animationSlider("Animation", ButtonType::AnimationSlider),
+    animationSlider("Steps", ButtonType::AnimationSlider),
     window(window),
     windowSize(windowSize)
 {
@@ -126,7 +126,7 @@ void UI::updateSliderLayout() {
         const sf::Vector2f middleLeftOfTrack = {slider.position.x, slider.position.y - trackHeight / 2.f};
         slider.trackBounds = sf::FloatRect(middleLeftOfTrack, slider.size);
     
-        slider.thumb.size = {trackHeight, trackHeight};
+        slider.thumb.size = {trackHeight * 1.5f, trackHeight * 1.5f};
 
         const float minValue = xPosition + thumbRadius;
         const float maxValue = trackWidth - trackHeight;

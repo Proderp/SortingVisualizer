@@ -2,10 +2,9 @@
 
 Render::Render(sf::RenderWindow& window, const UI& ui) : 
     window(window),
-    ui(ui),
     text(font, ""),
-    cold(67, 206, 162),
-    hot(24, 90, 157)
+    cold(24, 90, 157),
+    hot(191, 0, 255)
 {
     loadFont();
 }
@@ -18,10 +17,7 @@ void Render::loadFont() {
     text.setFont(font);
 }
 
-void Render::drawArray(const std::vector<Element>& array, const VisualData& visualData) {
-    const ArrayDimensions& dimensions = ui.getArrayDimensions();
-
-
+void Render::drawArray(const std::vector<Element>& array, const ArrayDimensions& arrayDimensions, const VisualData& visualData) {
     for (Index i{0}; i < array.size(); i++) {
         const float normalizedValue = static_cast<float>(array.at(i)) / array.size();
 
@@ -31,10 +27,10 @@ void Render::drawArray(const std::vector<Element>& array, const VisualData& visu
 
         rectangle.setFillColor(sf::Color(r, g, b));
 
-        const float xPosition = dimensions.offsetX + (i * dimensions.barWidth) + (i * dimensions.barSpacing);
-        rectangle.setPosition({xPosition, dimensions.offsetY});
+        const float xPosition = arrayDimensions.offsetX + (i * arrayDimensions.barWidth) + (i * arrayDimensions.barSpacing);
+        rectangle.setPosition({xPosition, arrayDimensions.offsetY});
 
-        const sf::Vector2f barSize = {dimensions.barWidth, dimensions.barHeightUnit * array.at(i)};
+        const sf::Vector2f barSize = {arrayDimensions.barWidth, arrayDimensions.barHeightUnit * array.at(i)};
         rectangle.setSize(barSize);        
 
         rectangle.setOrigin({0.f, barSize.y});
