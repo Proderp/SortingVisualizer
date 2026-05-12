@@ -83,9 +83,9 @@ void UI::updateAnimationSlider() {
     const float yPosition = arrayDimensions.offsetY + margin;
     animationSlider.position = {xPosition, yPosition};
 
-    const float trackHeight = 15;
     const float trackWidth = windowSize.x - arrayDimensions.offsetX * 2.f;
-    animationSlider.size = {trackHeight, trackWidth};
+    const float trackHeight = 15;
+    animationSlider.size = {trackWidth, trackHeight};
 
     const float thumbRadius = trackHeight / 2.f;
 
@@ -161,6 +161,29 @@ const ButtonType UI::findClickedButton(const sf::Vector2f mousePosition) {
 
 std::optional<SliderEvent> UI::checkSliderClick(const sf::Vector2f mousePosition, const ButtonType activeDragSlider, const uint16_t actionSize) {
 
+    const bool isTimelineDragged = (activeDragSlider == animationSlider.thumb.id);
+    
+    if (animationSlider.thumb.bounds.contains(mousePosition) or 
+        animationSlider.trackBounds.contains(mousePosition) or 
+        isTimelineDragged) {
+        
+        const float trackStartX = animationSlider.position.x;
+        const float trackWidth = animationSlider.size.x;
+        const float thumbRadius = animationSlider.thumb.size.x / 2.f;
+        
+        const float activeTrackWidth = trackWidth - animationSlider.thumb.size.x;
+        const float activeStartX = trackStartX + thumbRadius;
+
+        const float relativeX = mousePosition.x - activeStartX;    
+        
+        float percentage = std::clamp(relativeX / activeTrackWidth, 0.0f, 1.0f);
+        
+        animationSlider.percentage = percentage;
+        updateAnimationSlider();
+        
+        return SliderEvent{animationSlider.thumb.id, percentage};
+    }
+
     for (Slider* slider : sliderLayout.sliders) {
         const bool isBeingDragged = (activeDragSlider == slider->thumb.id);
 
@@ -213,9 +236,9 @@ void UI::resetAnimationSlider() {
 }
 
 void UI::setArraySizePercentage(const float percentage) {
-    sliderLayout.sliders.at(1)->percentage = std::clamp(percentage, 0.0f, 1.0f);
+    sliderLayout.sliders.at(0)->percentage = std::clamp(percentage, 0.0f, 1.0f);
 }
 
 void UI::setLatencyPercentage(const float percentage) {
-    sliderLayout.sliders.at(2)->percentage = std::clamp(percentage, 0.0f, 1.0f);
+    sliderLayout.sliders.at(1)->percentage = std::clamp(percentage, 0.0f, 1.0f);
 }
