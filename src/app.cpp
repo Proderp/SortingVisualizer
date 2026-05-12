@@ -49,29 +49,7 @@ void App::eventLoop() {
         }
 
         if (const sf::Event::KeyPressed* keyPressedEvent = event->getIf<sf::Event::KeyPressed>()) {
-            if (keyPressedEvent->scancode == sf::Keyboard::Scancode::Left) {
-                isSorting = false;
-                sortingEngine.runActionBackward();
-                updateAnimationThumb();
-            }
-
-            if (keyPressedEvent->scancode == sf::Keyboard::Scancode::Right) {
-                isSorting = false;
-                sortingEngine.runActionForward();
-                updateAnimationThumb();
-            }
-
-            if (keyPressedEvent->scancode == sf::Keyboard::Scancode::Space) {
-                isSorting = !isSorting;
-            }
-            
-            if (keyPressedEvent->scancode == sf::Keyboard::Scancode::R) {
-                if (sortingEngine.getActionsSize() > 0) {
-                    sortingEngine.scrubAnimation(0);
-                    updateAnimationThumb();
-                    isSorting = true;
-                }
-            }
+            handleKeyPressedEvent(keyPressedEvent);
         }
     }
 }
@@ -153,6 +131,39 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
     }
     
     handleSliderEvent(mousePosition);
+}
+
+void App::handleKeyPressedEvent(const sf::Event::KeyPressed* keyPressedEvent) {
+    switch (keyPressedEvent->scancode) {
+        using enum sf::Keyboard::Scancode;
+        case Left:
+            isSorting = false;
+            sortingEngine.runActionBackward();
+            updateAnimationThumb();
+            break;
+        
+        case Right:
+            isSorting = false;
+            sortingEngine.runActionForward();
+            updateAnimationThumb();
+            break;
+        
+        case Space:
+            isSorting = !isSorting;
+            break;
+        
+        case R:
+            restartAnimation();
+            break;    
+    }
+}
+
+void App::restartAnimation() {
+    if (sortingEngine.getActionsSize() > 0) {
+        sortingEngine.scrubAnimation(0);
+        updateAnimationThumb();
+        isSorting = true;
+    }
 }
 
 void App::stopSorting() {
