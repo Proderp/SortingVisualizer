@@ -24,6 +24,8 @@ private:
     void updateButtonBounds(Button& button);
     void updateCharacterSize();
 
+    SliderEvent updateSliderPercentage(Slider& slider, const float mouseX);
+
 public:
     UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array);    
     

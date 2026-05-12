@@ -120,17 +120,7 @@ void UI::updateSliderLayout() {
 
         slider.size.y = trackHeight;
         
-        float trackWidth;
-        switch (slider.thumb.id) {
-            // case ButtonType::AnimationSlider:
-            //     trackWidth = windowSize.x - xPosition - arrayDimensions.offsetX;
-            //     break;
-            case ButtonType::ArraySizeSlider:
-            case ButtonType::LatencySlider:
-                trackWidth = 200.f;
-                break;
-        }
-
+        float trackWidth = 200.f;
         slider.size = {trackWidth, trackHeight};
 
         const sf::Vector2f middleLeftOfTrack = {slider.position.x, slider.position.y - trackHeight / 2.f};
@@ -162,52 +152,45 @@ const ButtonType UI::findClickedButton(const sf::Vector2f mousePosition) {
 std::optional<SliderEvent> UI::checkSliderClick(const sf::Vector2f mousePosition, const ButtonType activeDragSlider, const uint16_t actionSize) {
 
     const bool isTimelineDragged = (activeDragSlider == animationSlider.thumb.id);
-    
-    if (animationSlider.thumb.bounds.contains(mousePosition) or 
+    const bool isInteracting = 
+        animationSlider.thumb.bounds.contains(mousePosition) or 
         animationSlider.trackBounds.contains(mousePosition) or 
-        isTimelineDragged) {
-        
-        const float trackStartX = animationSlider.position.x;
-        const float trackWidth = animationSlider.size.x;
-        const float thumbRadius = animationSlider.thumb.size.x / 2.f;
-        
-        const float activeTrackWidth = trackWidth - animationSlider.thumb.size.x;
-        const float activeStartX = trackStartX + thumbRadius;
+        isTimelineDragged;
 
-        const float relativeX = mousePosition.x - activeStartX;    
-        
-        float percentage = std::clamp(relativeX / activeTrackWidth, 0.0f, 1.0f);
-        
-        animationSlider.percentage = percentage;
-        updateAnimationSlider();
-        
-        return SliderEvent{animationSlider.thumb.id, percentage};
+    if (isInteracting) {
+        return updateSliderPercentage(animationSlider, mousePosition.x);
     }
 
     for (Slider* slider : sliderLayout.sliders) {
         const bool isBeingDragged = (activeDragSlider == slider->thumb.id);
+        const bool isInteracting = 
+            slider->thumb.bounds.contains(mousePosition) or 
+            slider->trackBounds.contains(mousePosition) or isBeingDragged;
 
-        if (slider->thumb.bounds.contains(mousePosition) or 
-            slider->trackBounds.contains(mousePosition) or isBeingDragged) {
-            const float trackStartX = slider->position.x;
-            const float trackWidth = slider->size.x;
-            const float thumbRadius = slider->thumb.size.x / 2.f;
-            
-            const float activeTrackWidth = trackWidth - slider->thumb.size.x;
-            const float activeStartX = trackStartX + thumbRadius;
-
-            const float relativeX = mousePosition.x - activeStartX;    
-            
-            const float percentage = std::clamp(relativeX / activeTrackWidth, 0.0f, 1.0f);
-            
-            slider->percentage = percentage;
-            updateSliderLayout();
-
-            return SliderEvent{slider->thumb.id, percentage};
+        if (isInteracting) {
+            return updateSliderPercentage(*slider, mousePosition.x);
         }
     }
     
     return std::nullopt;
+}
+
+SliderEvent UI::updateSliderPercentage(Slider& slider, const float mouseX) {
+    const float trackStartX = slider.position.x;
+    const float trackWidth = slider.size.x;
+    const float thumbRadius = slider.thumb.size.x / 2.f;
+    
+    const float activeTrackWidth = trackWidth - slider.thumb.size.x;
+    const float activeStartX = trackStartX + thumbRadius;
+
+    const float relativeX = mouseX - activeStartX;    
+    
+    const float percentage = std::clamp(relativeX / activeTrackWidth, 0.0f, 1.0f);
+    
+    slider.percentage = percentage;
+    updateSliderLayout();
+
+    return SliderEvent{slider.thumb.id, percentage};
 }
 
 const ArrayDimensions& UI::getArrayDimensions() const {
