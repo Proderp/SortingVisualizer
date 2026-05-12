@@ -14,7 +14,7 @@ private:
     
     const sf::Vector2f& windowSize;
 
-    const float margin{15.f};
+    const float margin{20.f};
 
     void updateView();
     

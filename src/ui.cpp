@@ -37,30 +37,34 @@ void UI::updateArrayDimensions(const std::vector<Element>& array) {
 
     const float distanceFromTop = windowSize.y * 0.02f;
     const float maxBarHeight = arrayDimensions.offsetY - distanceFromTop;
+    
     auto maxElement = *std::max_element(array.begin(), array.end());
     arrayDimensions.barHeightUnit = maxBarHeight / maxElement;
 }
 
 void UI::updateButtonLayout() {
-    const float xSize = (windowSize.y - arrayDimensions.offsetY) / 2.f;
-    const sf::Vector2f size = {xSize, xSize / 2.f};
+    const float columnBegin = arrayDimensions.offsetY + margin * 2.5f;
+    const float columnHeight = windowSize.y - columnBegin;
+    const float columnCenter = columnBegin + columnHeight / 2.f;
     
-    const float yPosition = arrayDimensions.offsetY + xSize;
-    float addedSpacing;
+    const float buttonHeight = columnHeight / 2.f - margin;
+    const float buttonWidth =  windowSize.x * 0.15f;
     
-    for (Index i{0}; i < buttonLayout.buttons.size(); i++) {
-        Button* button = buttonLayout.buttons.at(i);
-        
-        button->size = size;
+    const float xPosition = arrayDimensions.offsetX + buttonWidth / 2.f;
+    sf::Vector2f position = {xPosition, columnBegin + buttonHeight / 2.f};
+    buttonLayout.randomizeNormalButton.position = position;
+    
+    position = {xPosition, columnCenter + buttonHeight / 2.f};
+    buttonLayout.randomizeConsecutiveButton.position = position;
 
-        addedSpacing = xSize * (0.5f + i) + margin * i;
-        button->position = {arrayDimensions.offsetX + addedSpacing, yPosition};
-        
-        updateButtonBounds(*button);
-    }
+    sf::Vector2f size = {buttonWidth, buttonHeight};
+    buttonLayout.randomizeNormalButton.size = size;
+    buttonLayout.randomizeConsecutiveButton.size = size;
 
-    const Button& lastButton = *buttonLayout.buttons.at(2);
-    buttonLayout.layoutWidth = lastButton.position.x + lastButton.size.x;
+    updateButtonBounds(buttonLayout.randomizeNormalButton);
+    updateButtonBounds(buttonLayout.randomizeConsecutiveButton);
+
+    buttonLayout.layoutWidth = arrayDimensions.offsetX + buttonWidth;
 
     updateCharacterSize();
 }
@@ -75,7 +79,7 @@ void UI::updateButtonBounds(Button& button) {
 }
 
 void UI::updateCharacterSize() {
-    buttonLayout.characterSize = buttonLayout.buttons.at(0)->size.y / 3;
+    buttonLayout.characterSize = buttonLayout.randomizeNormalButton.size.y / 4.f;
 }
 
 void UI::updateAnimationSlider() {
@@ -84,7 +88,7 @@ void UI::updateAnimationSlider() {
     animationSlider.position = {xPosition, yPosition};
 
     const float trackWidth = windowSize.x - arrayDimensions.offsetX * 2.f;
-    const float trackHeight = 15;
+    const float trackHeight = 4;
     animationSlider.size = {trackWidth, trackHeight};
 
     const float thumbRadius = trackHeight / 2.f;
@@ -92,11 +96,12 @@ void UI::updateAnimationSlider() {
     const sf::Vector2f middleLeftOfTrack = {xPosition, yPosition - thumbRadius};
     animationSlider.trackBounds = sf::FloatRect(middleLeftOfTrack, animationSlider.size);
 
-    const float thumbSize = trackHeight * 1.5f;
-    animationSlider.thumb.size = {thumbSize, thumbSize};
+    const float thumbHeight = trackHeight * 2.f;
+    const float thumbWidth = thumbHeight * 3.f;
+    animationSlider.thumb.size = {thumbWidth, thumbHeight};
 
-    const float activeTrackWidth = trackWidth - thumbSize;
-    const float activeStartX = xPosition + (thumbSize / 2.f);
+    const float activeTrackWidth = trackWidth - thumbHeight;
+    const float activeStartX = xPosition + (thumbHeight / 2.f);
 
     const float thumbXPosition = activeStartX + (activeTrackWidth * animationSlider.percentage);
     
