@@ -18,7 +18,6 @@ private:
     void loadFont();
 
     void setTextOrigin();
-    void setTextScale(const float width);
 
     void drawButton(const Button& button);
 

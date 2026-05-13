@@ -140,6 +140,17 @@ void Render::drawSortCycler(const SortCycler& sortCycler) {
     drawSortText(sortCycler);
     
     // draw the left button
+    text.setString(sortCycler.leftArrow.name);
+    setTextOrigin();
+
+    text.setPosition(sortCycler.leftArrow.position);
+    window.draw(text);
+
+    text.setString(sortCycler.rightArrow.name);
+    setTextOrigin();
+
+    text.setPosition(sortCycler.rightArrow.position);
+    window.draw(text);
 
     text.setScale({1.f, 1.f});
 }
@@ -161,7 +172,6 @@ void Render::drawSortText(const SortCycler& sortCycler) {
             break;
     }
 
-    setTextScale(sortCycler.size.x);
     setTextOrigin();
     
     text.setPosition(sortCycler.position);
@@ -175,10 +185,4 @@ void Render::setTextOrigin() {
 		std::round(bounds.position.x + bounds.size.x / 2.f),
 		std::round(bounds.position.y + bounds.size.y / 2.f)
 	});
-}
-
-void Render::setTextScale(const float width) {
-    const sf::FloatRect bounds = text.getLocalBounds();
-    const float scale = width / bounds.size.x;
-    text.setScale({scale, scale});
 }
