@@ -31,11 +31,15 @@ void Render::drawArray(const std::vector<Element>& array, const ArrayDimensions&
 
         rectangle.setFillColor(sf::Color(r, g, b));
 
+        if (i == visualData.activeOne or i == visualData.activeTwo or i == visualData.pivot or visualData.isOverwrite) {
+            rectangle.setFillColor(sf::Color::White);
+        }
+
         const float xPosition = arrayDimensions.offsetX + (i * arrayDimensions.barWidth) + (i * arrayDimensions.barSpacing);
         rectangle.setPosition({xPosition, arrayDimensions.offsetY});
 
         const sf::Vector2f barSize = {arrayDimensions.barWidth, arrayDimensions.barHeightUnit * array.at(i)};
-        rectangle.setSize(barSize);        
+        rectangle.setSize(barSize);
 
         rectangle.setOrigin({0.f, barSize.y});
 
@@ -89,10 +93,12 @@ void Render::drawButtonLayout(const ButtonLayout& buttonLayout) {
 void Render::drawAnimationSlider(const Slider& animationSlider) {
     // draw the rectangle up to the point where the thumb is
     rectangle.setFillColor(cold);
-    const float startOfTrack = animationSlider.position.x;
+
+    const float thumbRadius = animationSlider.thumb.size.x / 2.f;
+    const float startOfTrack = animationSlider.position.x + thumbRadius;
     
     const float thumbXPosition = animationSlider.thumb.position.x;
-    const float upToThumbWitdh = thumbXPosition - startOfTrack + animationSlider.thumb.size.x / 2.f;
+    const float upToThumbWitdh = thumbXPosition - startOfTrack;
     
     rectangle.setPosition(animationSlider.position);
     rectangle.setSize({upToThumbWitdh, animationSlider.size.y});
@@ -100,10 +106,11 @@ void Render::drawAnimationSlider(const Slider& animationSlider) {
     
     window.draw(rectangle);
     
-    const float endOfTrack = startOfTrack + animationSlider.size.x;
-    const float thumbToEndWidth = endOfTrack - upToThumbWitdh;
+    const float endOfTrack = startOfTrack + animationSlider.size.x - thumbRadius;
+    const float thumbToEndWidth = endOfTrack - thumbXPosition;
+
     rectangle.setFillColor(hot);
-    rectangle.setPosition({upToThumbWitdh, animationSlider.position.y});
+    rectangle.setPosition({thumbXPosition, animationSlider.position.y});
     rectangle.setSize({thumbToEndWidth, animationSlider.size.y});
     rectangle.setOrigin({0, animationSlider.size.y / 2.f});
 

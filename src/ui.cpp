@@ -134,22 +134,22 @@ void UI::updateAnimationSlider() {
     const float trackHeight = 4;
     animationSlider.size = {trackWidth, trackHeight};
 
-    const float thumbRadius = trackHeight / 2.f;
-
-    const sf::Vector2f middleLeftOfTrack = {xPosition, yPosition - thumbRadius};
-    animationSlider.trackBounds = sf::FloatRect(middleLeftOfTrack, animationSlider.size);
-
-    const float thumbHeight = trackHeight * 2.f;
-    const float thumbWidth = thumbHeight * 3.f;
+    const float thumbHeight = 20.f;
+    const float thumbWidth = 12.f;
     animationSlider.thumb.size = {thumbWidth, thumbHeight};
-
-    const float activeTrackWidth = trackWidth - thumbHeight;
-    const float activeStartX = xPosition + (thumbHeight / 2.f);
-
-    const float thumbXPosition = activeStartX + (activeTrackWidth * animationSlider.percentage);
+    
+    const float thumbRadius = thumbWidth / 2.f;
+    
+    const float activeStartX = xPosition + thumbRadius;
+    const float activeEndX = trackWidth - thumbWidth;
+    
+    const float thumbXPosition = activeStartX + (activeEndX * animationSlider.percentage);
     
     animationSlider.thumb.position = {thumbXPosition, yPosition};
     updateButtonBounds(animationSlider.thumb);
+
+    const sf::Vector2f middleLeftOfTrack = {xPosition, yPosition - thumbRadius};
+    animationSlider.trackBounds = sf::FloatRect(middleLeftOfTrack, animationSlider.size);
 }
 
 void UI::updateSliderLayout() {
