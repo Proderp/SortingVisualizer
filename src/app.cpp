@@ -136,9 +136,16 @@ void App::handlePlayButton() {
         stopSorting();
         sortingEngine.quickSortWrapper();
         isSorting = true;
+        ui.setPlayButtonString(pauseSymbol);
     } else if (sortingEngine.getCurrentActionIndex() >= sortingEngine.getActionsSize()) {
         restartAnimation();
+        ui.setPlayButtonString(pauseSymbol);
     } else {
+        if (isSorting) {
+            ui.setPlayButtonString(playSymbol);
+        } else {
+            ui.setPlayButtonString(pauseSymbol);
+        }
         isSorting = !isSorting;
     }
 }
