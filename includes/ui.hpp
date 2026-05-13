@@ -50,5 +50,5 @@ public:
 
     void setLatencyPercentage(const float percentage);
 
-    void setPlayButtonString(const sf::String newSymbol);
+    void setPlayButtonSymbol(const sf::String newSymbol);
 };

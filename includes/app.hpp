@@ -36,6 +36,8 @@ private:
     
     void stopSorting();
 
+    void updatePlayButtonSymbol();
+
     void render();
 public:
 
