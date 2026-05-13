@@ -74,6 +74,7 @@ void App::handleSliderEvent(const sf::Vector2f mousePosition) {
             isSorting = false;
             const Index targetIndex = static_cast<Index>(event->percentage * sortingEngine.getActionsSize());
             sortingEngine.scrubAnimation(targetIndex);
+            updatePlayButtonSymbol();
             break;
         }
         case ButtonType::ArraySizeSlider: 
