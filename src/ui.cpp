@@ -195,6 +195,14 @@ const ButtonType UI::findClickedButton(const sf::Vector2f mousePosition) {
         }
     }
 
+    if (sortCycler.leftArrow.bounds.contains(mousePosition)) {
+        return sortCycler.leftArrow.id;
+    } 
+
+    if (sortCycler.rightArrow.bounds.contains(mousePosition)) {
+        return sortCycler.rightArrow.id;
+    }
+
     return ButtonType::None;
 }
 
@@ -255,7 +263,6 @@ void UI::updateSortCycler() {
     sf::Vector2f boundsSize = {columnWidth, rowHeight};
     sortCycler.cyclingBounds = sf::FloatRect(boundsPosition, boundsSize);
 
-    // Position the actual text 
     sortCycler.position = {columnCenter, rowCenter};
 
     const float width = columnWidth / 1.5f;
@@ -323,4 +330,8 @@ void UI::setLatencyPercentage(const float percentage) {
 
 void UI::setPlayButtonSymbol(const sf::String newSymbol) {
     buttonLayout.playButton.name = newSymbol;
+}
+
+void UI::setSortCycleAlgorithm(const Index index) {
+    sortCycler.algorithm = algorithms.at(index);
 }
