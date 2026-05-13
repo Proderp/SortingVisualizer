@@ -43,6 +43,13 @@ void UI::updateArrayDimensions(const std::vector<Element>& array) {
 }
 
 void UI::updateButtonLayout() {
+    updateRandomizeButtons();
+    updateControlButtons();
+
+    updateCharacterSize();
+}
+
+void UI::updateRandomizeButtons() {
     const float columnBegin = arrayDimensions.offsetY + margin * 2.5f;
     const float columnHeight = windowSize.y - columnBegin;
     const float columnCenter = columnBegin + columnHeight / 2.f;
@@ -65,8 +72,35 @@ void UI::updateButtonLayout() {
     updateButtonBounds(buttonLayout.randomizeConsecutiveButton);
 
     buttonLayout.layoutWidth = arrayDimensions.offsetX + buttonWidth;
+}
 
-    updateCharacterSize();
+void UI::updateControlButtons() {
+    const float columnBegin = arrayDimensions.offsetY + margin * 1.75f;
+    const float columnHeight = windowSize.y - columnBegin;
+    const float columnCenter = columnBegin + columnHeight / 2.f;
+
+    const float rowBegin = windowSize.x * 0.35f;
+    const float rowWidth = windowSize.x * 0.3f;
+    const float rowCenter = rowBegin + rowWidth / 2.f;
+
+    const float allocatedWidth = rowWidth - margin * 2.f;
+
+    const float width = allocatedWidth * 0.4f;
+    buttonLayout.playButton.size = {width, width};
+    buttonLayout.playButton.position = {rowCenter, columnCenter};
+    updateButtonBounds(buttonLayout.playButton);
+
+    const float smallerWidth = width / 2.f;
+    buttonLayout.stepBackButton.size = {smallerWidth, smallerWidth};
+    buttonLayout.stepForwardButton.size = {smallerWidth, smallerWidth};
+
+    const float stepBackPositionX = rowBegin + smallerWidth / 2.f;
+    buttonLayout.stepBackButton.position = {stepBackPositionX, columnCenter};
+    updateButtonBounds(buttonLayout.stepBackButton);
+
+    const float stepForwardPositionX = rowBegin + rowWidth - smallerWidth / 2.f;
+    buttonLayout.stepForwardButton.position = {stepForwardPositionX, columnCenter};
+    updateButtonBounds(buttonLayout.stepForwardButton);
 }
 
 void UI::updateButtonBounds(Button& button) {
@@ -79,7 +113,16 @@ void UI::updateButtonBounds(Button& button) {
 }
 
 void UI::updateCharacterSize() {
-    buttonLayout.characterSize = buttonLayout.randomizeNormalButton.size.y / 4.f;
+    for (Button* button : buttonLayout.buttons) {
+        if (button->id == ButtonType::Play or 
+            button->id == ButtonType::StepBack or 
+            button->id == ButtonType::StepForward) {
+
+            button->charSize = button->size.y * 0.6f; 
+        } else {
+            button->charSize = button->size.y * 0.25f;
+        }
+    }
 }
 
 void UI::updateAnimationSlider() {

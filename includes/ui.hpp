@@ -21,6 +21,8 @@ private:
     void updateArrayDimensions(const std::vector<Element>& array);
     
     void updateButtonLayout();
+    void updateRandomizeButtons();
+    void updateControlButtons();
     void updateButtonBounds(Button& button);
     void updateCharacterSize();
 
