@@ -44,6 +44,7 @@ public:
     const ButtonLayout& getButtonLayout() const;
     const Slider& getAnimationSlider() const;
     const SliderLayout& getSliderLayout() const;
+    const SortCycler& getSortCycler() const;
 
     void setAnimationPercentage(const float percentage);
     void resetAnimationSlider();

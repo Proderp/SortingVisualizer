@@ -318,6 +318,10 @@ const SliderLayout& UI::getSliderLayout() const {
     return sliderLayout;
 }
 
+const SortCycler& UI::getSortCycler() const {
+    return sortCycler;
+}
+
 void UI::setAnimationPercentage(const float percentage) {
     animationSlider.percentage = std::clamp(percentage, 0.0f, 1.0f);
 }
