@@ -1,16 +1,20 @@
 #include "ui-elements.hpp"
 
-Button::Button(const std::string name, const ButtonType id) : name(name), id(id) {};
+const sf::String stepBack = L"\u23EE";
+const sf::String play = L"\u25B6";
+const sf::String stepForward = L"\u23ED";
+
+Button::Button(const sf::String name, const ButtonType id) : name(name), id(id) {};
 
 ButtonLayout::ButtonLayout() : 
     randomizeNormalButton("RANDOMIZE", ButtonType::Randomize),
     randomizeConsecutiveButton("CONSECUTIVE", ButtonType::Consecutive),
-    stepBackButton("⏮", ButtonType::StepBack),
-    playButton("▶", ButtonType::Play),
-    stepForwardButton("⏭", ButtonType::StepForward)
+    stepBackButton(stepBack, ButtonType::StepBack),
+    playButton(play, ButtonType::Play),
+    stepForwardButton(stepForward, ButtonType::StepForward)
 {}
 
-Slider::Slider(const std::string buttonName, const ButtonType buttonID) :
+Slider::Slider(const sf::String buttonName, const ButtonType buttonID) :
     thumb(buttonName, buttonID)
 {}
 
