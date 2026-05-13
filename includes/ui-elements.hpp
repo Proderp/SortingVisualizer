@@ -1,5 +1,10 @@
 #include "includes.hpp"
 
+enum class ButtonType { Randomize, Consecutive, StepBack, Play, StepForward, AnimationSlider, ArraySizeSlider, LatencySlider, LeftArrow, RightArrow, None };
+
+enum class DataType { Random, Consecutive };
+enum class Algorithm { Bubble, Insertion, Merge, Quick };
+
 struct ArrayDimensions {
     float offsetX;
     float offsetY;
@@ -9,8 +14,6 @@ struct ArrayDimensions {
     
     float barSpacing{0.f};
 };
-
-enum class ButtonType { Randomize, Consecutive, StepBack, Play, StepForward, AnimationSlider, ArraySizeSlider, LatencySlider, LeftArrow, RightArrow, None };
 
 struct Button {
     sf::Vector2f position;
@@ -70,6 +73,7 @@ struct SortCycler {
     sf::Vector2f position;
     sf::Vector2f size;
     sf::FloatRect cyclingBounds;
+    sf::String currentAlgorithm;
 
     Button leftArrow;
     Button rightArrow;
