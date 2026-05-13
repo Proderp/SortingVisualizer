@@ -246,7 +246,7 @@ void UI::updateSortCycler() {
     const float columnBegin = buttonLayout.layoutWidth + margin;
     const float columnWidth = windowSize.x - columnBegin - buttonLayout.stepForwardButton.position.x - buttonLayout.stepForwardButton.size.x / 2.f - margin;
     const float columnCenter = columnBegin + columnWidth / 2.f;
-
+    
     const float rowBegin = arrayDimensions.offsetY + margin * 1.75f;
     const float rowHeight = windowSize.y - rowBegin - margin;
     const float rowCenter = rowBegin + rowHeight / 2.f;
@@ -278,28 +278,8 @@ void UI::updateSortCycler() {
 
     updateButtonBounds(sortCycler.leftArrow);
     updateButtonBounds(sortCycler.rightArrow);
-    
-    sf::RectangleShape dot({columnWidth, rowHeight});
-    dot.setPosition({columnBegin, rowBegin});
-    window.draw(dot);
 
-    sf::RectangleShape textArea(sortCycler.size);
-    textArea.setPosition(sortCycler.position);
-    textArea.setOrigin(textArea.getGeometricCenter());
-    textArea.setFillColor(sf::Color::Cyan);
-    window.draw(textArea);
-
-    textArea.setSize(sortCycler.leftArrow.size);
-    textArea.setPosition(sortCycler.leftArrow.position);
-    textArea.setOrigin(textArea.getGeometricCenter());
-    textArea.setFillColor(sf::Color::Green);
-    window.draw(textArea);
-
-    textArea.setSize(sortCycler.rightArrow.size);
-    textArea.setPosition(sortCycler.rightArrow.position);
-    textArea.setOrigin(textArea.getGeometricCenter());
-    window.draw(textArea);
-
+    sortCycler.charSize = height / 3.f;
 }
 
 const ArrayDimensions& UI::getArrayDimensions() const {
@@ -332,11 +312,13 @@ void UI::resetAnimationSlider() {
 }
 
 void UI::setArraySizePercentage(const float percentage) {
-    sliderLayout.sliders.at(0)->percentage = std::clamp(percentage, 0.0f, 1.0f);
+    Slider& arraySizeSlider = *sliderLayout.sliders.at(0); 
+    arraySizeSlider.percentage = std::clamp(percentage, 0.0f, 1.0f);
 }
 
 void UI::setLatencyPercentage(const float percentage) {
-    sliderLayout.sliders.at(1)->percentage = std::clamp(percentage, 0.0f, 1.0f);
+    Slider& latencySlider = *sliderLayout.sliders.at(1);
+    latencySlider.percentage = std::clamp(percentage, 0.0f, 1.0f);
 }
 
 void UI::setPlayButtonSymbol(const sf::String newSymbol) {

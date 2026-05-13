@@ -73,7 +73,7 @@ struct SortCycler {
     sf::Vector2f position;
     sf::Vector2f size;
     sf::FloatRect cyclingBounds;
-    sf::String currentAlgorithm;
+    Algorithm algorithm{Algorithm::Insertion};
 
     Button leftArrow;
     Button rightArrow;
