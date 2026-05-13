@@ -28,9 +28,15 @@ private:
 
     void eventLoop();
     void handleSliderEvent(const sf::Vector2f mousePosition);
+    
     void handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent);
     void handlePlayButton();
+    
     void handleKeyPressedEvent(const sf::Event::KeyPressed* keyPressedEvent);
+    
+    void stepButtonUpdate();
+    void stepBack();
+    void stepForward();
 
     void restartAnimation();
     

@@ -114,6 +114,12 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
         case Play:
             handlePlayButton();
             break;
+        case StepBack:
+            stepBack();
+            break;
+        case StepForward:
+            stepForward();
+            break;
         case Randomize:
             stopSorting();
             sortingEngine.randomizeArray();
@@ -154,19 +160,11 @@ void App::handleKeyPressedEvent(const sf::Event::KeyPressed* keyPressedEvent) {
     switch (keyPressedEvent->scancode) {
         using enum sf::Keyboard::Scancode;
         case Left:
-            isSorting = false;
-            sortingEngine.runActionBackward();
-            updateAnimationThumb();
-            updatePlayButtonSymbol();
+            stepBack();
             break;
-        
         case Right:
-            isSorting = false;
-            sortingEngine.runActionForward();
-            updateAnimationThumb();
-            updatePlayButtonSymbol();
+            stepForward();
             break;
-        
         case Space:
             handlePlayButton();
             break;
@@ -176,6 +174,22 @@ void App::handleKeyPressedEvent(const sf::Event::KeyPressed* keyPressedEvent) {
             updatePlayButtonSymbol();
             break;    
     }
+}
+
+void App::stepButtonUpdate() {
+    isSorting = false;
+    updateAnimationThumb();
+    updatePlayButtonSymbol();
+}
+
+void App::stepBack() {
+    sortingEngine.runActionBackward();
+    stepButtonUpdate();
+}
+
+void App::stepForward() {
+    sortingEngine.runActionForward();
+    stepButtonUpdate();
 }
 
 void App::restartAnimation() {
