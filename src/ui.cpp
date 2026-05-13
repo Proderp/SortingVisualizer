@@ -148,7 +148,7 @@ void UI::updateAnimationSlider() {
     animationSlider.thumb.position = {thumbXPosition, yPosition};
     updateButtonBounds(animationSlider.thumb);
 
-    const sf::Vector2f middleLeftOfTrack = {xPosition, yPosition - thumbRadius};
+    const sf::Vector2f middleLeftOfTrack = {xPosition, yPosition - trackHeight / 2.f};
     animationSlider.trackBounds = sf::FloatRect(middleLeftOfTrack, animationSlider.size);
 }
 
