@@ -69,6 +69,7 @@ public:
     const size_t getArraySize() const;
     const size_t getActionsSize() const;
     const size_t getCurrentActionIndex() const;
+    const bool isActionsEmpty() const;
 
     void setArraySize(const size_t newArraySize);
 };

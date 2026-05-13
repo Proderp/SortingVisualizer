@@ -392,6 +392,10 @@ const size_t SortEngine::getActionsSize() const {
     return actions.size();
 }
 
+const bool SortEngine::isActionsEmpty() const {
+    return actions.empty();
+}
+
 const size_t SortEngine::getCurrentActionIndex() const {
     return currentActionIndex;
 }
