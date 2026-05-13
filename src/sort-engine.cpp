@@ -31,17 +31,23 @@ SortEngine::SortEngine() :
     randomizeArrayConsecutively();
 }
 
+void SortEngine::copyBaseArray() {
+    array = baseArray;
+}
+
 void SortEngine::randomizeArray() {
-    array.resize(arraySize);
+    baseArray.resize(arraySize);
     for (Index i{0}; i < arraySize; i++) {
-        array.at(i) = distribution(twister);
+        baseArray.at(i) = distribution(twister);
     }
+    array = baseArray;
 }
 
 void SortEngine::randomizeArrayConsecutively() {
-    array.resize(arraySize);
-    std::iota(array.begin(), array.end(), 1);
-    std::shuffle(array.begin(), array.end(), twister);
+    baseArray.resize(arraySize);
+    std::iota(baseArray.begin(), baseArray.end(), 1);
+    std::shuffle(baseArray.begin(), baseArray.end(), twister);
+    array = baseArray;
 }
 
 void SortEngine::bubbleSort() {
