@@ -21,6 +21,10 @@ constexpr uint16_t MAX_ARRAY_SIZE = 1'500;
 
 constexpr float MAX_LATENCY = 500.f;
 
+const sf::String stepBackSymbol = L"\u23EE";
+const sf::String playSymbol = L"\u25B6";
+const sf::String stepForwardSymbol = L"\u23ED";
+
 struct VisualData {
     Index activeOne{INACTIVE}, activeTwo{INACTIVE};
     Index pivot{INACTIVE};
