@@ -49,4 +49,6 @@ public:
     void setArraySizePercentage(const float percentage);
 
     void setLatencyPercentage(const float percentage);
+
+    void setPlayButtonString(const sf::String newSymbol);
 };

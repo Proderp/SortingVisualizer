@@ -273,3 +273,7 @@ void UI::setArraySizePercentage(const float percentage) {
 void UI::setLatencyPercentage(const float percentage) {
     sliderLayout.sliders.at(1)->percentage = std::clamp(percentage, 0.0f, 1.0f);
 }
+
+void UI::setPlayButtonString(const sf::String newSymbol) {
+    buttonLayout.playButton.name = newSymbol;
+}
