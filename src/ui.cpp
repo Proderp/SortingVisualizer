@@ -262,7 +262,8 @@ void UI::updateSortCycler() {
     const float height = rowHeight / 3.f;
     sortCycler.size = {width, height};
 
-    const sf::Vector2f buttonSize = {width, height};
+    const float buttonWidth = (columnWidth - width) / 2.f;
+    const sf::Vector2f buttonSize = {buttonWidth, height};
     sortCycler.leftArrow.size = buttonSize;
     sortCycler.rightArrow.size = buttonSize;
 
@@ -287,6 +288,18 @@ void UI::updateSortCycler() {
     textArea.setOrigin(textArea.getGeometricCenter());
     textArea.setFillColor(sf::Color::Cyan);
     window.draw(textArea);
+
+    textArea.setSize(sortCycler.leftArrow.size);
+    textArea.setPosition(sortCycler.leftArrow.position);
+    textArea.setOrigin(textArea.getGeometricCenter());
+    textArea.setFillColor(sf::Color::Green);
+    window.draw(textArea);
+
+    textArea.setSize(sortCycler.rightArrow.size);
+    textArea.setPosition(sortCycler.rightArrow.position);
+    textArea.setOrigin(textArea.getGeometricCenter());
+    window.draw(textArea);
+
 }
 
 const ArrayDimensions& UI::getArrayDimensions() const {
