@@ -137,6 +137,14 @@ void Render::drawSliderLayout(const SliderLayout& sliderLayout) {
 }
 
 void Render::drawSortCycler(const SortCycler& sortCycler) {
+    drawSortText(sortCycler);
+    
+    // draw the left button
+
+    text.setScale({1.f, 1.f});
+}
+
+void Render::drawSortText(const SortCycler& sortCycler) {
     switch (sortCycler.algorithm) {
         using enum Algorithm;
         case Bubble:
@@ -158,9 +166,6 @@ void Render::drawSortCycler(const SortCycler& sortCycler) {
     
     text.setPosition(sortCycler.position);
     window.draw(text);
-
-
-    text.setScale({1.f, 1.f});
 }
 
 void Render::setTextOrigin() {

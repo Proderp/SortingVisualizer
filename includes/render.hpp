@@ -34,4 +34,5 @@ public:
     void drawSliderLayout(const SliderLayout& sliderLayout);
 
     void drawSortCycler(const SortCycler& sortCycler);
+    void drawSortText(const SortCycler& sortCycler);
 };
