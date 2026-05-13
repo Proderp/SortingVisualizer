@@ -137,7 +137,30 @@ void Render::drawSliderLayout(const SliderLayout& sliderLayout) {
 }
 
 void Render::drawSortCycler(const SortCycler& sortCycler) {
+    switch (sortCycler.algorithm) {
+        using enum Algorithm;
+        case Bubble:
+            text.setString("BUBBLE");
+            break;
+        case Insertion:
+            text.setString("INSERTION");
+            break;
+        case Merge:
+            text.setString("MERGE");
+            break;
+        case Quick:
+            text.setString("QUICK");
+            break;
+    }
+
+    setTextScale(sortCycler.size.x);
+    setTextOrigin();
     
+    text.setPosition(sortCycler.position);
+    window.draw(text);
+
+
+    text.setScale({1.f, 1.f});
 }
 
 void Render::setTextOrigin() {
@@ -147,4 +170,10 @@ void Render::setTextOrigin() {
 		std::round(bounds.position.x + bounds.size.x / 2.f),
 		std::round(bounds.position.y + bounds.size.y / 2.f)
 	});
+}
+
+void Render::setTextScale(const float width) {
+    const sf::FloatRect bounds = text.getLocalBounds();
+    const float scale = width / bounds.size.x;
+    text.setScale({scale, scale});
 }
