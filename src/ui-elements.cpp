@@ -18,3 +18,8 @@ SliderLayout::SliderLayout() :
     arraySizeSlider("ARRAY SIZE", ButtonType::ArraySizeSlider),
     latencySlider("SPEED", ButtonType::LatencySlider)
 {}
+
+SortCycler::SortCycler() :
+    leftArrow(leftSymbol, ButtonType::LeftArrow),
+    rightArrow(rightSymbol, ButtonType::RightArrow)
+{}
