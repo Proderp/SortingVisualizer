@@ -97,7 +97,13 @@ void App::updateArraySizeThumb(const SliderEvent& event) {
     
     stopSorting();
     sortingEngine.setArraySize(newArraySize);
-    sortingEngine.randomizeArrayConsecutively();
+    
+    if (dataType == DataType::Consecutive) {
+        sortingEngine.randomizeArrayConsecutively();
+    } else {
+        sortingEngine.randomizeArray();
+    }
+
     ui.updateUI(sortingEngine.getArray());
 }
 
@@ -147,7 +153,7 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
 void App::handlePlayButton() {
     if (sortingEngine.isActionsEmpty()) {
         stopSorting();
-        sortingEngine.mergeSortWrapper();
+        startSorting();
         isSorting = true;
         ui.setPlayButtonSymbol(pauseSymbol);
     } else if (sortingEngine.getCurrentActionIndex() >= sortingEngine.getActionsSize()) {
@@ -220,6 +226,15 @@ void App::cycleAlgorithms(const bool scrolledRight) {
     }
 
     ui.setSortCycleAlgorithm(algorithmIndex);
+    handleSwitchedAlgorithm();
+    updatePlayButtonSymbol();
+}
+
+void App::handleSwitchedAlgorithm() {
+    stopSorting();
+    sortingEngine.copyBaseArray();
+    startSorting();
+    isSorting = true;
 }
 
 void App::restartAnimation() {
@@ -227,6 +242,23 @@ void App::restartAnimation() {
         sortingEngine.scrubAnimation(0);
         updateAnimationThumb();
         isSorting = true;
+    }
+}
+
+void App::startSorting() {
+    switch (algorithmIndex) {
+        case 0:
+            sortingEngine.bubbleSort();
+            break;
+        case 1:
+            sortingEngine.insertionSort();
+            break;
+        case 2:
+            sortingEngine.mergeSortWrapper();
+            break;
+        case 3:
+            sortingEngine.quickSortWrapper();
+            break;
     }
 }
 

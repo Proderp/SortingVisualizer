@@ -42,9 +42,11 @@ private:
     void stepForward();
 
     void cycleAlgorithms(const bool scrolledRight);
+    void handleSwitchedAlgorithm();
 
     void restartAnimation();
     
+    void startSorting();
     void stopSorting();
 
     void updatePlayButtonSymbol();
