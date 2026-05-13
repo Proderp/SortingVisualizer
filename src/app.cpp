@@ -157,20 +157,23 @@ void App::handleKeyPressedEvent(const sf::Event::KeyPressed* keyPressedEvent) {
             isSorting = false;
             sortingEngine.runActionBackward();
             updateAnimationThumb();
+            updatePlayButtonSymbol();
             break;
         
         case Right:
             isSorting = false;
             sortingEngine.runActionForward();
             updateAnimationThumb();
+            updatePlayButtonSymbol();
             break;
         
         case Space:
-            isSorting = !isSorting;
+            handlePlayButton();
             break;
         
         case R:
             restartAnimation();
+            updatePlayButtonSymbol();
             break;    
     }
 }
@@ -190,6 +193,18 @@ void App::stopSorting() {
     ui.resetAnimationSlider();
 }
 
+void App::updatePlayButtonSymbol() {
+    if (sortingEngine.isActionsEmpty()) {
+        ui.setPlayButtonSymbol(playSymbol);
+    } else if (sortingEngine.getCurrentActionIndex() >= sortingEngine.getActionsSize()) {
+        ui.setPlayButtonSymbol(restartSymbol);
+    } else if (isSorting) {
+        ui.setPlayButtonSymbol(pauseSymbol);
+    } else {
+        ui.setPlayButtonSymbol(playSymbol);
+    }
+}
+
 void App::checkClock() {
     if (clock.getElapsedTime() >= latency and isSorting) {
         clock.restart();
@@ -197,6 +212,7 @@ void App::checkClock() {
         if (!sortingEngine.runActionForward()) {
             isSorting = false;
             updateAnimationThumb();
+            updatePlayButtonSymbol();
             return;
         }
 
