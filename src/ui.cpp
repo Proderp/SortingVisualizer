@@ -13,6 +13,7 @@ void UI::updateUI(const std::vector<Element>& array) {
     updateArrayDimensions(array);
     updateButtonLayout();
     updateSliderLayout();
+    updateSortCycler();
 }
 
 void UI::updateView() {
@@ -239,6 +240,27 @@ SliderEvent UI::updateSliderPercentage(Slider& slider, const float mouseX) {
     updateSliderLayout();
 
     return SliderEvent{slider.thumb.id, percentage};
+}
+
+void UI::updateSortCycler() {
+    const float columnBegin = buttonLayout.layoutWidth + margin;
+    const float columnWidth = windowSize.x - columnBegin - buttonLayout.stepForwardButton.position.x - buttonLayout.stepForwardButton.size.x / 2.f - margin;
+    const float columnCenter = columnBegin + columnWidth / 2.f;
+
+    const float rowBegin = arrayDimensions.offsetY + margin * 1.75f;
+    const float rowHeight = windowSize.y - rowBegin - margin;
+    const float rowCenter = rowBegin + rowHeight / 2.f;
+
+    sf::Vector2f boundsPosition = {columnBegin, rowBegin};
+    sf::Vector2f boundsSize = {columnWidth, rowHeight};
+    sortCycler.cyclingBounds = sf::FloatRect(boundsPosition, boundsSize);
+
+    
+
+
+    sf::RectangleShape dot({columnWidth, rowHeight});
+    dot.setPosition({columnBegin, rowBegin});
+    window.draw(dot);
 }
 
 const ArrayDimensions& UI::getArrayDimensions() const {

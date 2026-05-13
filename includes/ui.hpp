@@ -8,6 +8,7 @@ private:
     ButtonLayout buttonLayout;
     SliderLayout sliderLayout;
     Slider animationSlider;
+    SortCycler sortCycler;
 
     sf::RenderWindow& window;
     sf::View view;
@@ -18,16 +19,17 @@ private:
 
     void updateView();
     
-    void updateArrayDimensions(const std::vector<Element>& array);
-    
     void updateButtonLayout();
     void updateRandomizeButtons();
     void updateControlButtons();
     void updateButtonBounds(Button& button);
     void updateCharacterSize();
 
+    void updateArrayDimensions(const std::vector<Element>& array);
+
     SliderEvent updateSliderPercentage(Slider& slider, const float mouseX);
 
+    void updateSortCycler();
 public:
     UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array);    
     

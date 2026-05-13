@@ -258,6 +258,7 @@ void App::setLatencyThumb() {
 
 void App::render() {
     window.clear(sf::Color(25, 25, 28));
+    ui.updateUI(sortingEngine.getArray());
 
     renderer.drawArray(sortingEngine.getArray(), ui.getArrayDimensions(), sortingEngine.getVisualData());
     renderer.drawButtonLayout(ui.getButtonLayout());
