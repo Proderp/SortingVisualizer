@@ -65,3 +65,14 @@ struct SliderEvent {
     ButtonType id;
     float percentage;
 };
+
+struct SortCycler {
+    sf::Vector2f position;
+    sf::Vector2f size;
+    sf::FloatRect cyclingBounds;
+
+    Button leftArrow;
+    Button rightArrow;
+
+    uint32_t charSize{20};
+};
