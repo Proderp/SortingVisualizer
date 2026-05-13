@@ -31,10 +31,6 @@ void Render::drawArray(const std::vector<Element>& array, const ArrayDimensions&
 
         rectangle.setFillColor(sf::Color(r, g, b));
 
-        if (i == visualData.activeOne or i == visualData.activeTwo or i == visualData.pivot or visualData.isOverwrite) {
-            rectangle.setFillColor(sf::Color::White);
-        }
-
         const float xPosition = arrayDimensions.offsetX + (i * arrayDimensions.barWidth) + (i * arrayDimensions.barSpacing);
         rectangle.setPosition({xPosition, arrayDimensions.offsetY});
 

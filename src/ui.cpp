@@ -76,13 +76,13 @@ void UI::updateRandomizeButtons() {
 }
 
 void UI::updateControlButtons() {
-    const float rowBegin = arrayDimensions.offsetY + margin * 1.75f;
-    const float rowHeight = windowSize.y - rowBegin;
-    const float rowCenter = rowBegin + rowHeight / 2.f;
-
     const float columnBegin = windowSize.x * 0.35f;
     const float columnWidth = windowSize.x * 0.3f;
     const float columnCenter = columnBegin + columnWidth / 2.f;
+
+    const float rowBegin = arrayDimensions.offsetY + margin * 1.75f;
+    const float rowHeight = windowSize.y - rowBegin - margin;
+    const float rowCenter = rowBegin + rowHeight / 2.f;
 
     const float allocatedWidth = columnWidth - margin * 2.f;
 
@@ -255,12 +255,38 @@ void UI::updateSortCycler() {
     sf::Vector2f boundsSize = {columnWidth, rowHeight};
     sortCycler.cyclingBounds = sf::FloatRect(boundsPosition, boundsSize);
 
+    // Position the actual text 
+    sortCycler.position = {columnCenter, rowCenter};
+
+    const float width = columnWidth / 1.5f;
+    const float height = rowHeight / 3.f;
+    sortCycler.size = {width, height};
+
+    const sf::Vector2f buttonSize = {width, height};
+    sortCycler.leftArrow.size = buttonSize;
+    sortCycler.rightArrow.size = buttonSize;
+
+    const float buttonYPosition = rowCenter;
+
+    const float buttonRadius = buttonSize.x / 2.f;
+    const float leftXPosition = columnBegin + buttonRadius;
+    const float rightXPosition = columnBegin + columnWidth - buttonRadius;
+
+    sortCycler.leftArrow.position = {leftXPosition, buttonYPosition};
+    sortCycler.rightArrow.position = {rightXPosition, buttonYPosition};
+
+    updateButtonBounds(sortCycler.leftArrow);
+    updateButtonBounds(sortCycler.rightArrow);
     
-
-
     sf::RectangleShape dot({columnWidth, rowHeight});
     dot.setPosition({columnBegin, rowBegin});
     window.draw(dot);
+
+    sf::RectangleShape textArea(sortCycler.size);
+    textArea.setPosition(sortCycler.position);
+    textArea.setOrigin(textArea.getGeometricCenter());
+    textArea.setFillColor(sf::Color::Cyan);
+    window.draw(textArea);
 }
 
 const ArrayDimensions& UI::getArrayDimensions() const {

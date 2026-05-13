@@ -141,7 +141,7 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
 void App::handlePlayButton() {
     if (sortingEngine.isActionsEmpty()) {
         stopSorting();
-        sortingEngine.quickSortWrapper();
+        sortingEngine.mergeSortWrapper();
         isSorting = true;
         ui.setPlayButtonSymbol(pauseSymbol);
     } else if (sortingEngine.getCurrentActionIndex() >= sortingEngine.getActionsSize()) {
