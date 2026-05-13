@@ -2,7 +2,7 @@
 
 Render::Render(sf::RenderWindow& window, const UI& ui) : 
     window(window),
-    text(ubuntuFont, ""),
+    text(firaCodeFont, ""),
     cold(24, 90, 157),
     hot(191, 0, 255)
 {
@@ -10,12 +10,12 @@ Render::Render(sf::RenderWindow& window, const UI& ui) :
 }
 
 void Render::loadFont() {
-    if (!ubuntuFont.openFromFile("../../fonts/Ubuntu-Regular.ttf")) {
-        std::cerr << "Error loading Ubuntu." << std::endl;
-    }
-
     if (!firaCodeFont.openFromFile("../../fonts/FiraCode-Regular.ttf")) {
         std::cerr << "Error loading Fira Code." << std::endl;
+    }
+
+    if (!segoeFont.openFromFile("../../fonts/seguisym.ttf")) {
+        std::cerr << "Error loading Segoe." << std::endl;
     }
 
     text.setFont(firaCodeFont);
@@ -57,11 +57,19 @@ void Render::drawButtonLayout(const ButtonLayout& buttonLayout) {
     rectangle.setOutlineThickness(2.f);
     rectangle.setOutlineColor(sf::Color::White);
 
-    text.setCharacterSize(buttonLayout.characterSize);
     text.setFillColor(sf::Color::White);
-
+    
     auto drawText = [&](const Button& button) {
         text.setString(button.name);
+        
+        bool isControlButton = button.id == ButtonType::StepBack or button.id == ButtonType::Play or button.id == ButtonType::StepForward;
+        if (isControlButton) {
+            text.setFont(segoeFont);
+        } else {
+            text.setFont(firaCodeFont);
+        }
+
+        text.setCharacterSize(button.charSize);
         text.setLetterSpacing(3.f);
         setTextOrigin();
 

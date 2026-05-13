@@ -6,8 +6,9 @@ class Render {
 private:
     sf::RenderWindow& window;
 
-    sf::Font ubuntuFont;
     sf::Font firaCodeFont;
+    sf::Font segoeFont;
+
     sf::Text text;
     sf::RectangleShape rectangle;
 
