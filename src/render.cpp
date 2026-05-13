@@ -88,7 +88,7 @@ void Render::drawButtonLayout(const ButtonLayout& buttonLayout) {
 
 void Render::drawAnimationSlider(const Slider& animationSlider) {
     // draw the rectangle up to the point where the thumb is
-    rectangle.setFillColor(sf::Color(255, 50, 50));
+    rectangle.setFillColor(cold);
     const float startOfTrack = animationSlider.position.x;
     
     const float thumbXPosition = animationSlider.thumb.position.x;
@@ -102,14 +102,14 @@ void Render::drawAnimationSlider(const Slider& animationSlider) {
     
     const float endOfTrack = startOfTrack + animationSlider.size.x;
     const float thumbToEndWidth = endOfTrack - upToThumbWitdh;
-    rectangle.setFillColor(sf::Color(100, 100, 100));
+    rectangle.setFillColor(hot);
     rectangle.setPosition({upToThumbWitdh, animationSlider.position.y});
     rectangle.setSize({thumbToEndWidth, animationSlider.size.y});
     rectangle.setOrigin({0, animationSlider.size.y / 2.f});
 
     window.draw(rectangle);
 
-    rectangle.setFillColor(sf::Color::Green);
+    rectangle.setFillColor(sf::Color::White);
     rectangle.setPosition(animationSlider.thumb.position);
     rectangle.setSize(animationSlider.thumb.size);
     rectangle.setOrigin(rectangle.getGeometricCenter());
