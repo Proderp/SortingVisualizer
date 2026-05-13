@@ -54,7 +54,7 @@ void Render::drawButton(const Button& button) {
 void Render::drawButtonLayout(const ButtonLayout& buttonLayout) {   
        
     rectangle.setFillColor(sf::Color::Transparent);
-    rectangle.setOutlineThickness(2.f);
+    rectangle.setOutlineThickness(outlineThickness);
     rectangle.setOutlineColor(sf::Color::White);
 
     text.setFillColor(sf::Color::White);
@@ -139,20 +139,31 @@ void Render::drawSliderLayout(const SliderLayout& sliderLayout) {
 void Render::drawSortCycler(const SortCycler& sortCycler) {
     drawSortText(sortCycler);
     
-    // draw the left button
+    rectangle.setPosition(sortCycler.leftArrow.position);
+    rectangle.setSize(sortCycler.leftArrow.size);
+    rectangle.setOutlineThickness(outlineThickness);
+    rectangle.setOutlineColor(sf::Color::White);
+    rectangle.setFillColor(sf::Color::Transparent);
+    rectangle.setOrigin(rectangle.getGeometricCenter());
+    window.draw(rectangle);
+
     text.setString(sortCycler.leftArrow.name);
     setTextOrigin();
-
     text.setPosition(sortCycler.leftArrow.position);
     window.draw(text);
 
+    rectangle.setPosition(sortCycler.rightArrow.position);
+    window.draw(rectangle);
+
     text.setString(sortCycler.rightArrow.name);
     setTextOrigin();
-
     text.setPosition(sortCycler.rightArrow.position);
     window.draw(text);
 
     text.setScale({1.f, 1.f});
+    rectangle.setOutlineThickness(0);
+    rectangle.setOutlineColor(sf::Color::Transparent);
+    rectangle.setFillColor(sf::Color::White);
 }
 
 void Render::drawSortText(const SortCycler& sortCycler) {
@@ -172,6 +183,7 @@ void Render::drawSortText(const SortCycler& sortCycler) {
             break;
     }
 
+    text.setCharacterSize(sortCycler.charSize);
     setTextOrigin();
     
     text.setPosition(sortCycler.position);

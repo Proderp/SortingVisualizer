@@ -15,6 +15,8 @@ private:
     sf::Color cold; 
     sf::Color hot;
 
+    const float outlineThickness{-1.f};
+
     void loadFont();
 
     void setTextOrigin();
