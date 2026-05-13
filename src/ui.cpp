@@ -50,18 +50,18 @@ void UI::updateButtonLayout() {
 }
 
 void UI::updateRandomizeButtons() {
-    const float columnBegin = arrayDimensions.offsetY + margin * 2.5f;
-    const float columnHeight = windowSize.y - columnBegin;
-    const float columnCenter = columnBegin + columnHeight / 2.f;
+    const float rowBegin = arrayDimensions.offsetY + margin * 2.f;
+    const float rowHeight = windowSize.y - rowBegin;
+    const float rowCenter = rowBegin + rowHeight / 2.f;
     
-    const float buttonHeight = columnHeight / 2.2f - margin;
-    const float buttonWidth =  windowSize.x * 0.175f;
+    const float buttonHeight = rowHeight / 2.f - margin;
+    const float buttonWidth =  windowSize.x * 0.125f;
     
     const float xPosition = arrayDimensions.offsetX + buttonWidth / 2.f;
-    sf::Vector2f position = {xPosition, columnBegin + buttonHeight / 2.f};
+    sf::Vector2f position = {xPosition, rowBegin + buttonHeight / 2.f};
     buttonLayout.randomizeNormalButton.position = position;
     
-    position = {xPosition, columnCenter + buttonHeight / 2.f};
+    position = {xPosition, rowCenter + buttonHeight / 2.f};
     buttonLayout.randomizeConsecutiveButton.position = position;
 
     sf::Vector2f size = {buttonWidth, buttonHeight};
@@ -75,31 +75,31 @@ void UI::updateRandomizeButtons() {
 }
 
 void UI::updateControlButtons() {
-    const float columnBegin = arrayDimensions.offsetY + margin * 1.75f;
-    const float columnHeight = windowSize.y - columnBegin;
-    const float columnCenter = columnBegin + columnHeight / 2.f;
+    const float rowBegin = arrayDimensions.offsetY + margin * 1.75f;
+    const float rowHeight = windowSize.y - rowBegin;
+    const float rowCenter = rowBegin + rowHeight / 2.f;
 
-    const float rowBegin = windowSize.x * 0.35f;
-    const float rowWidth = windowSize.x * 0.3f;
-    const float rowCenter = rowBegin + rowWidth / 2.f;
+    const float columnBegin = windowSize.x * 0.35f;
+    const float columnWidth = windowSize.x * 0.3f;
+    const float columnCenter = columnBegin + columnWidth / 2.f;
 
-    const float allocatedWidth = rowWidth - margin * 2.f;
+    const float allocatedWidth = columnWidth - margin * 2.f;
 
     const float width = allocatedWidth * 0.4f;
     buttonLayout.playButton.size = {width, width};
-    buttonLayout.playButton.position = {rowCenter, columnCenter};
+    buttonLayout.playButton.position = {columnCenter, rowCenter};
     updateButtonBounds(buttonLayout.playButton);
 
     const float smallerWidth = width / 2.f;
     buttonLayout.stepBackButton.size = {smallerWidth, smallerWidth};
     buttonLayout.stepForwardButton.size = {smallerWidth, smallerWidth};
 
-    const float stepBackPositionX = rowBegin + smallerWidth / 2.f;
-    buttonLayout.stepBackButton.position = {stepBackPositionX, columnCenter};
+    const float stepBackPositionX = columnBegin + smallerWidth / 2.f;
+    buttonLayout.stepBackButton.position = {stepBackPositionX, rowCenter};
     updateButtonBounds(buttonLayout.stepBackButton);
 
-    const float stepForwardPositionX = rowBegin + rowWidth - smallerWidth / 2.f;
-    buttonLayout.stepForwardButton.position = {stepForwardPositionX, columnCenter};
+    const float stepForwardPositionX = columnBegin + columnWidth - smallerWidth / 2.f;
+    buttonLayout.stepForwardButton.position = {stepForwardPositionX, rowCenter};
     updateButtonBounds(buttonLayout.stepForwardButton);
 }
 
@@ -118,9 +118,9 @@ void UI::updateCharacterSize() {
             button->id == ButtonType::StepBack or 
             button->id == ButtonType::StepForward) {
 
-            button->charSize = button->size.y * 0.6f; 
+            button->charSize = button->size.x * 0.6f; 
         } else {
-            button->charSize = button->size.y * 0.25f;
+            button->charSize = button->size.x * 0.08f;
         }
     }
 }
