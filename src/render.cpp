@@ -136,6 +136,10 @@ void Render::drawSliderLayout(const SliderLayout& sliderLayout) {
     }
 }
 
+void Render::drawSortCycler(const SortCycler& sortCycler) {
+    
+}
+
 void Render::setTextOrigin() {
 	const sf::FloatRect bounds = text.getLocalBounds();
 

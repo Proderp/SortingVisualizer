@@ -31,4 +31,6 @@ public:
 
     void drawAnimationSlider(const Slider& animationSlider);
     void drawSliderLayout(const SliderLayout& sliderLayout);
+
+    void drawSortCycler(const SortCycler& sortCycler);
 };
