@@ -131,6 +131,12 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
             sortingEngine.randomizeArrayConsecutively();
             ui.updateUI(sortingEngine.getArray());
             break;
+        case RightArrow:
+            cycleAlgorithms(true);
+            break;
+        case LeftArrow:
+            cycleAlgorithms(false);
+            break;
         case None:
             break;
     }
@@ -163,9 +169,11 @@ void App::handleKeyPressedEvent(const sf::Event::KeyPressed* keyPressedEvent) {
         case Left:
             stepBack();
             break;
+
         case Right:
             stepForward();
             break;
+        
         case Space:
             handlePlayButton();
             break;
@@ -191,6 +199,27 @@ void App::stepBack() {
 void App::stepForward() {
     sortingEngine.runActionForward();
     stepButtonUpdate();
+}
+
+void App::cycleAlgorithms(const bool scrolledRight) {
+    const bool isOverflowRight = scrolledRight and algorithmIndex == algorithms.size() - 1;
+    const bool isOverflowLeft = !scrolledRight and algorithmIndex == 0;
+
+    if (scrolledRight) {
+        if (isOverflowRight) {
+            algorithmIndex = 0;
+        } else {
+            algorithmIndex++;
+        }
+    } else {
+        if (isOverflowLeft) {
+            algorithmIndex = algorithms.size() - 1;
+        } else {
+            algorithmIndex--;
+        }
+    }
+
+    ui.setSortCycleAlgorithm(algorithmIndex);
 }
 
 void App::restartAnimation() {
@@ -258,7 +287,6 @@ void App::setLatencyThumb() {
 
 void App::render() {
     window.clear(sf::Color(25, 25, 28));
-    // ui.updateUI(sortingEngine.getArray());
 
     renderer.drawArray(sortingEngine.getArray(), ui.getArrayDimensions(), sortingEngine.getVisualData());
     renderer.drawButtonLayout(ui.getButtonLayout());

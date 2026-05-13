@@ -19,6 +19,9 @@ private:
     bool isSorting{false};
     ButtonType draggedSlider{ButtonType::None};
 
+    Index algorithmIndex{0};
+    DataType dataType{DataType::Consecutive};
+
     void checkClock();
     void updateAnimationThumb();
     void updateArraySizeThumb(const SliderEvent& event);
@@ -33,10 +36,12 @@ private:
     void handlePlayButton();
     
     void handleKeyPressedEvent(const sf::Event::KeyPressed* keyPressedEvent);
-    
+
     void stepButtonUpdate();
     void stepBack();
     void stepForward();
+
+    void cycleAlgorithms(const bool scrolledRight);
 
     void restartAnimation();
     
