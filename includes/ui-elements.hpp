@@ -10,14 +10,14 @@ struct ArrayDimensions {
     float barSpacing{0.f};
 };
 
-enum class ButtonType { Sort, Randomize, Consecutive, StepBack, Play, StepForward, AnimationSlider, ArraySizeSlider, LatencySlider, None };
+enum class ButtonType { Randomize, Consecutive, StepBack, Play, StepForward, AnimationSlider, ArraySizeSlider, LatencySlider, None };
 
 struct Button {
     sf::Vector2f position;
     sf::Vector2f size;
     sf::FloatRect bounds;
 
-    const sf::String name;
+    sf::String name;
     const ButtonType id;
     uint32_t charSize{30};
 
