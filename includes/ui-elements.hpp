@@ -3,7 +3,7 @@
 enum class ButtonType { Randomize, Consecutive, StepBack, Play, StepForward, AnimationSlider, ArraySizeSlider, LatencySlider, LeftArrow, RightArrow, None };
 
 enum class DataType { Random, Consecutive };
-enum class Algorithm { Bubble, Insertion, Merge, Quick };
+const std::array<sf::String, 4> algorithms = {"BUBBLE", "INSERTION", "MERGE", "QUICK"};
 
 struct ArrayDimensions {
     float offsetX;
@@ -73,7 +73,7 @@ struct SortCycler {
     sf::Vector2f position;
     sf::Vector2f size;
     sf::FloatRect cyclingBounds;
-    Algorithm algorithm{Algorithm::Insertion};
+    sf::String algorithm{algorithms.at(0)};
 
     Button leftArrow;
     Button rightArrow;
