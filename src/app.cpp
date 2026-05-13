@@ -231,10 +231,17 @@ void App::cycleAlgorithms(const bool scrolledRight) {
 }
 
 void App::handleSwitchedAlgorithm() {
+    if (sortingEngine.isActionsEmpty()) {
+        return; 
+    }
+
+    const bool wasPaused = !isSorting;
+
     stopSorting();
     sortingEngine.copyBaseArray();
-    startSorting();
-    isSorting = true;
+    startSorting(); 
+    
+    isSorting = !wasPaused;
 }
 
 void App::restartAnimation() {
