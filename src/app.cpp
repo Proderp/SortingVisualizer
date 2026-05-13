@@ -61,7 +61,7 @@ void App::handleSliderEvent(const sf::Vector2f mousePosition) {
         return;
     }
 
-    if (event->id == ButtonType::AnimationSlider and sortingEngine.getActionsSize() == 0) {
+    if (event->id == ButtonType::AnimationSlider and sortingEngine.isActionsEmpty()) {
         ui.resetAnimationSlider();
         draggedSlider = ButtonType::None; 
         return;
@@ -111,10 +111,8 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
 
     switch (clickedButton) {
         using enum ButtonType;
-        case Sort:
-            stopSorting();
-            sortingEngine.quickSortWrapper();
-            isSorting = true;
+        case Play:
+            handlePlayButton();
             break;
         case Randomize:
             stopSorting();
@@ -131,6 +129,18 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
     }
     
     handleSliderEvent(mousePosition);
+}
+
+void App::handlePlayButton() {
+    if (sortingEngine.isActionsEmpty()) {
+        stopSorting();
+        sortingEngine.quickSortWrapper();
+        isSorting = true;
+    } else if (sortingEngine.getCurrentActionIndex() >= sortingEngine.getActionsSize()) {
+        restartAnimation();
+    } else {
+        isSorting = !isSorting;
+    }
 }
 
 void App::handleKeyPressedEvent(const sf::Event::KeyPressed* keyPressedEvent) {
@@ -159,7 +169,7 @@ void App::handleKeyPressedEvent(const sf::Event::KeyPressed* keyPressedEvent) {
 }
 
 void App::restartAnimation() {
-    if (sortingEngine.getActionsSize() > 0) {
+    if (!sortingEngine.isActionsEmpty()) {
         sortingEngine.scrubAnimation(0);
         updateAnimationThumb();
         isSorting = true;
@@ -188,7 +198,7 @@ void App::checkClock() {
 }
 
 void App::updateAnimationThumb() {
-    if (sortingEngine.getActionsSize() > 0) {
+    if (!sortingEngine.isActionsEmpty()) {
         float percentage = static_cast<float>(sortingEngine.getCurrentActionIndex()) / sortingEngine.getActionsSize();
         
         ui.setAnimationPercentage(percentage);
