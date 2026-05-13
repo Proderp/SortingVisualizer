@@ -61,7 +61,7 @@ void App::handleSliderEvent(const sf::Vector2f mousePosition) {
         return;
     }
 
-    if (event->id == ButtonType::AnimationSlider and sortingEngine.getActionsSize() == 0) {
+    if (event->id == ButtonType::AnimationSlider and sortingEngine.isActionsEmpty()) {
         ui.resetAnimationSlider();
         draggedSlider = ButtonType::None; 
         return;
@@ -111,10 +111,14 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
 
     switch (clickedButton) {
         using enum ButtonType;
-        case Sort:
-            stopSorting();
-            sortingEngine.quickSortWrapper();
-            isSorting = true;
+        case Play:
+            handlePlayButton();
+            break;
+        case StepBack:
+            stepBack();
+            break;
+        case StepForward:
+            stepForward();
             break;
         case Randomize:
             stopSorting();
@@ -133,33 +137,63 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
     handleSliderEvent(mousePosition);
 }
 
+void App::handlePlayButton() {
+    if (sortingEngine.isActionsEmpty()) {
+        stopSorting();
+        sortingEngine.quickSortWrapper();
+        isSorting = true;
+        ui.setPlayButtonSymbol(pauseSymbol);
+    } else if (sortingEngine.getCurrentActionIndex() >= sortingEngine.getActionsSize()) {
+        restartAnimation();
+        ui.setPlayButtonSymbol(pauseSymbol);
+    } else {
+        if (isSorting) {
+            ui.setPlayButtonSymbol(playSymbol);
+        } else {
+            ui.setPlayButtonSymbol(pauseSymbol);
+        }
+        isSorting = !isSorting;
+    }
+}
+
 void App::handleKeyPressedEvent(const sf::Event::KeyPressed* keyPressedEvent) {
     switch (keyPressedEvent->scancode) {
         using enum sf::Keyboard::Scancode;
         case Left:
-            isSorting = false;
-            sortingEngine.runActionBackward();
-            updateAnimationThumb();
+            stepBack();
             break;
-        
         case Right:
-            isSorting = false;
-            sortingEngine.runActionForward();
-            updateAnimationThumb();
+            stepForward();
             break;
-        
         case Space:
-            isSorting = !isSorting;
+            handlePlayButton();
             break;
         
         case R:
             restartAnimation();
+            updatePlayButtonSymbol();
             break;    
     }
 }
 
+void App::stepButtonUpdate() {
+    isSorting = false;
+    updateAnimationThumb();
+    updatePlayButtonSymbol();
+}
+
+void App::stepBack() {
+    sortingEngine.runActionBackward();
+    stepButtonUpdate();
+}
+
+void App::stepForward() {
+    sortingEngine.runActionForward();
+    stepButtonUpdate();
+}
+
 void App::restartAnimation() {
-    if (sortingEngine.getActionsSize() > 0) {
+    if (!sortingEngine.isActionsEmpty()) {
         sortingEngine.scrubAnimation(0);
         updateAnimationThumb();
         isSorting = true;
@@ -173,6 +207,18 @@ void App::stopSorting() {
     ui.resetAnimationSlider();
 }
 
+void App::updatePlayButtonSymbol() {
+    if (sortingEngine.isActionsEmpty()) {
+        ui.setPlayButtonSymbol(playSymbol);
+    } else if (sortingEngine.getCurrentActionIndex() >= sortingEngine.getActionsSize()) {
+        ui.setPlayButtonSymbol(restartSymbol);
+    } else if (isSorting) {
+        ui.setPlayButtonSymbol(pauseSymbol);
+    } else {
+        ui.setPlayButtonSymbol(playSymbol);
+    }
+}
+
 void App::checkClock() {
     if (clock.getElapsedTime() >= latency and isSorting) {
         clock.restart();
@@ -180,6 +226,7 @@ void App::checkClock() {
         if (!sortingEngine.runActionForward()) {
             isSorting = false;
             updateAnimationThumb();
+            updatePlayButtonSymbol();
             return;
         }
 
@@ -188,7 +235,7 @@ void App::checkClock() {
 }
 
 void App::updateAnimationThumb() {
-    if (sortingEngine.getActionsSize() > 0) {
+    if (!sortingEngine.isActionsEmpty()) {
         float percentage = static_cast<float>(sortingEngine.getCurrentActionIndex()) / sortingEngine.getActionsSize();
         
         ui.setAnimationPercentage(percentage);

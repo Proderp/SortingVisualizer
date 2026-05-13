@@ -2,7 +2,7 @@
 
 Render::Render(sf::RenderWindow& window, const UI& ui) : 
     window(window),
-    text(ubuntuFont, ""),
+    text(firaCodeFont, ""),
     cold(24, 90, 157),
     hot(191, 0, 255)
 {
@@ -10,12 +10,12 @@ Render::Render(sf::RenderWindow& window, const UI& ui) :
 }
 
 void Render::loadFont() {
-    if (!ubuntuFont.openFromFile("../../fonts/Ubuntu-Regular.ttf")) {
-        std::cerr << "Error loading Ubuntu." << std::endl;
-    }
-
     if (!firaCodeFont.openFromFile("../../fonts/FiraCode-Regular.ttf")) {
         std::cerr << "Error loading Fira Code." << std::endl;
+    }
+
+    if (!segoeFont.openFromFile("../../fonts/seguisym.ttf")) {
+        std::cerr << "Error loading Segoe." << std::endl;
     }
 
     text.setFont(firaCodeFont);
@@ -57,11 +57,19 @@ void Render::drawButtonLayout(const ButtonLayout& buttonLayout) {
     rectangle.setOutlineThickness(2.f);
     rectangle.setOutlineColor(sf::Color::White);
 
-    text.setCharacterSize(buttonLayout.characterSize);
     text.setFillColor(sf::Color::White);
-
+    
     auto drawText = [&](const Button& button) {
         text.setString(button.name);
+        
+        bool isControlButton = button.id == ButtonType::StepBack or button.id == ButtonType::Play or button.id == ButtonType::StepForward;
+        if (isControlButton) {
+            text.setFont(segoeFont);
+        } else {
+            text.setFont(firaCodeFont);
+        }
+
+        text.setCharacterSize(button.charSize);
         text.setLetterSpacing(3.f);
         setTextOrigin();
 
@@ -80,7 +88,7 @@ void Render::drawButtonLayout(const ButtonLayout& buttonLayout) {
 
 void Render::drawAnimationSlider(const Slider& animationSlider) {
     // draw the rectangle up to the point where the thumb is
-    rectangle.setFillColor(sf::Color(255, 50, 50));
+    rectangle.setFillColor(cold);
     const float startOfTrack = animationSlider.position.x;
     
     const float thumbXPosition = animationSlider.thumb.position.x;
@@ -94,14 +102,14 @@ void Render::drawAnimationSlider(const Slider& animationSlider) {
     
     const float endOfTrack = startOfTrack + animationSlider.size.x;
     const float thumbToEndWidth = endOfTrack - upToThumbWitdh;
-    rectangle.setFillColor(sf::Color(100, 100, 100));
+    rectangle.setFillColor(hot);
     rectangle.setPosition({upToThumbWitdh, animationSlider.position.y});
     rectangle.setSize({thumbToEndWidth, animationSlider.size.y});
     rectangle.setOrigin({0, animationSlider.size.y / 2.f});
 
     window.draw(rectangle);
 
-    rectangle.setFillColor(sf::Color::Green);
+    rectangle.setFillColor(sf::Color::White);
     rectangle.setPosition(animationSlider.thumb.position);
     rectangle.setSize(animationSlider.thumb.size);
     rectangle.setOrigin(rectangle.getGeometricCenter());
