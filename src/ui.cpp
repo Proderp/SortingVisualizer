@@ -13,6 +13,7 @@ void UI::updateUI(const std::vector<Element>& array) {
     updateArrayDimensions(array);
     updateButtonLayout();
     updateSliderLayout();
+    updateSortCycler();
 }
 
 void UI::updateView() {
@@ -75,13 +76,13 @@ void UI::updateRandomizeButtons() {
 }
 
 void UI::updateControlButtons() {
-    const float rowBegin = arrayDimensions.offsetY + margin * 1.75f;
-    const float rowHeight = windowSize.y - rowBegin;
-    const float rowCenter = rowBegin + rowHeight / 2.f;
-
     const float columnBegin = windowSize.x * 0.35f;
     const float columnWidth = windowSize.x * 0.3f;
     const float columnCenter = columnBegin + columnWidth / 2.f;
+
+    const float rowBegin = arrayDimensions.offsetY + margin * 1.75f;
+    const float rowHeight = windowSize.y - rowBegin - margin;
+    const float rowCenter = rowBegin + rowHeight / 2.f;
 
     const float allocatedWidth = columnWidth - margin * 2.f;
 
@@ -94,11 +95,11 @@ void UI::updateControlButtons() {
     buttonLayout.stepBackButton.size = {smallerWidth, smallerWidth};
     buttonLayout.stepForwardButton.size = {smallerWidth, smallerWidth};
 
-    const float stepBackPositionX = columnBegin + smallerWidth / 2.f;
+    const float stepBackPositionX = columnBegin + smallerWidth / 2.f + margin * 1.5f;
     buttonLayout.stepBackButton.position = {stepBackPositionX, rowCenter};
     updateButtonBounds(buttonLayout.stepBackButton);
 
-    const float stepForwardPositionX = columnBegin + columnWidth - smallerWidth / 2.f;
+    const float stepForwardPositionX = columnBegin + columnWidth - smallerWidth / 2.f - margin * 1.5f;
     buttonLayout.stepForwardButton.position = {stepForwardPositionX, rowCenter};
     updateButtonBounds(buttonLayout.stepForwardButton);
 }
@@ -134,22 +135,22 @@ void UI::updateAnimationSlider() {
     const float trackHeight = 4;
     animationSlider.size = {trackWidth, trackHeight};
 
-    const float thumbRadius = trackHeight / 2.f;
-
-    const sf::Vector2f middleLeftOfTrack = {xPosition, yPosition - thumbRadius};
-    animationSlider.trackBounds = sf::FloatRect(middleLeftOfTrack, animationSlider.size);
-
-    const float thumbHeight = trackHeight * 2.f;
-    const float thumbWidth = thumbHeight * 3.f;
+    const float thumbHeight = 20.f;
+    const float thumbWidth = 12.f;
     animationSlider.thumb.size = {thumbWidth, thumbHeight};
-
-    const float activeTrackWidth = trackWidth - thumbHeight;
-    const float activeStartX = xPosition + (thumbHeight / 2.f);
-
-    const float thumbXPosition = activeStartX + (activeTrackWidth * animationSlider.percentage);
+    
+    const float thumbRadius = thumbWidth / 2.f;
+    
+    const float activeStartX = xPosition + thumbRadius;
+    const float activeEndX = trackWidth - thumbWidth;
+    
+    const float thumbXPosition = activeStartX + (activeEndX * animationSlider.percentage);
     
     animationSlider.thumb.position = {thumbXPosition, yPosition};
     updateButtonBounds(animationSlider.thumb);
+
+    const sf::Vector2f middleLeftOfTrack = {xPosition, yPosition - trackHeight / 2.f};
+    animationSlider.trackBounds = sf::FloatRect(middleLeftOfTrack, animationSlider.size);
 }
 
 void UI::updateSliderLayout() {
@@ -192,6 +193,14 @@ const ButtonType UI::findClickedButton(const sf::Vector2f mousePosition) {
         if (button->bounds.contains(mousePosition)) {
             return button->id;
         }
+    }
+
+    if (sortCycler.leftArrow.bounds.contains(mousePosition)) {
+        return sortCycler.leftArrow.id;
+    } 
+
+    if (sortCycler.rightArrow.bounds.contains(mousePosition)) {
+        return sortCycler.rightArrow.id;
     }
 
     return ButtonType::None;
@@ -241,6 +250,45 @@ SliderEvent UI::updateSliderPercentage(Slider& slider, const float mouseX) {
     return SliderEvent{slider.thumb.id, percentage};
 }
 
+void UI::updateSortCycler() {
+    const float columnBegin = buttonLayout.layoutWidth + margin;
+    const float columnWidth = windowSize.x - columnBegin - buttonLayout.stepForwardButton.position.x - buttonLayout.stepForwardButton.size.x / 2.f - margin;
+    const float columnCenter = columnBegin + columnWidth / 2.f;
+    
+    const float rowBegin = arrayDimensions.offsetY + margin * 1.75f;
+    const float rowHeight = windowSize.y - rowBegin - margin;
+    const float rowCenter = rowBegin + rowHeight / 2.f;
+
+    sf::Vector2f boundsPosition = {columnBegin, rowBegin};
+    sf::Vector2f boundsSize = {columnWidth, rowHeight};
+    sortCycler.cyclingBounds = sf::FloatRect(boundsPosition, boundsSize);
+
+    sortCycler.position = {columnCenter, rowCenter};
+
+    const float width = columnWidth / 1.5f;
+    const float height = rowHeight / 3.f;
+    sortCycler.size = {width, height};
+
+    const float buttonWidth = (columnWidth - width) / 2.f;
+    const sf::Vector2f buttonSize = {buttonWidth, height};
+    sortCycler.leftArrow.size = buttonSize;
+    sortCycler.rightArrow.size = buttonSize;
+
+    const float buttonYPosition = rowCenter;
+
+    const float buttonRadius = buttonSize.x / 2.f;
+    const float leftXPosition = columnBegin + buttonRadius;
+    const float rightXPosition = columnBegin + columnWidth - buttonRadius;
+
+    sortCycler.leftArrow.position = {leftXPosition, buttonYPosition};
+    sortCycler.rightArrow.position = {rightXPosition, buttonYPosition};
+
+    updateButtonBounds(sortCycler.leftArrow);
+    updateButtonBounds(sortCycler.rightArrow);
+
+    sortCycler.charSize = height / 2.5f;
+}
+
 const ArrayDimensions& UI::getArrayDimensions() const {
     return arrayDimensions;
 }
@@ -257,6 +305,10 @@ const SliderLayout& UI::getSliderLayout() const {
     return sliderLayout;
 }
 
+const SortCycler& UI::getSortCycler() const {
+    return sortCycler;
+}
+
 void UI::setAnimationPercentage(const float percentage) {
     animationSlider.percentage = std::clamp(percentage, 0.0f, 1.0f);
 }
@@ -267,13 +319,19 @@ void UI::resetAnimationSlider() {
 }
 
 void UI::setArraySizePercentage(const float percentage) {
-    sliderLayout.sliders.at(0)->percentage = std::clamp(percentage, 0.0f, 1.0f);
+    Slider& arraySizeSlider = *sliderLayout.sliders.at(0); 
+    arraySizeSlider.percentage = std::clamp(percentage, 0.0f, 1.0f);
 }
 
-void UI::setLatencyPercentage(const float percentage) {
-    sliderLayout.sliders.at(1)->percentage = std::clamp(percentage, 0.0f, 1.0f);
+void UI::setDelayPercentage(const float percentage) {
+    Slider& delaySlider = *sliderLayout.sliders.at(1);
+    delaySlider.percentage = std::clamp(percentage, 0.0f, 1.0f);
 }
 
 void UI::setPlayButtonSymbol(const sf::String newSymbol) {
     buttonLayout.playButton.name = newSymbol;
+}
+
+void UI::setSortCycleAlgorithm(const Algorithm algorithm) {
+    sortCycler.algorithm = algorithm;
 }

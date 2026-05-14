@@ -15,6 +15,8 @@ private:
     sf::Color cold; 
     sf::Color hot;
 
+    const float outlineThickness{-1.f};
+
     void loadFont();
 
     void setTextOrigin();
@@ -31,4 +33,7 @@ public:
 
     void drawAnimationSlider(const Slider& animationSlider);
     void drawSliderLayout(const SliderLayout& sliderLayout);
+
+    void drawSortCycler(const SortCycler& sortCycler);
+    void drawSortText(const SortCycler& sortCycler);
 };

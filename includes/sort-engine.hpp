@@ -23,6 +23,7 @@ struct Action {
 
 class SortEngine {
 private:
+    std::vector<Element> baseArray;
     std::vector<Element> array;
     size_t arraySize{500};
     uint16_t range{500};
@@ -45,6 +46,8 @@ private:
     void quickSort(std::vector<Element>& tempArray, const Index rightEnd, const Index leftEnd);
 public:
     SortEngine();
+
+    void copyBaseArray();
 
     void randomizeArray();
     void randomizeArrayConsecutively();

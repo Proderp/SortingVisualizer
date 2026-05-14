@@ -35,7 +35,7 @@ void Render::drawArray(const std::vector<Element>& array, const ArrayDimensions&
         rectangle.setPosition({xPosition, arrayDimensions.offsetY});
 
         const sf::Vector2f barSize = {arrayDimensions.barWidth, arrayDimensions.barHeightUnit * array.at(i)};
-        rectangle.setSize(barSize);        
+        rectangle.setSize(barSize);
 
         rectangle.setOrigin({0.f, barSize.y});
 
@@ -54,7 +54,7 @@ void Render::drawButton(const Button& button) {
 void Render::drawButtonLayout(const ButtonLayout& buttonLayout) {   
        
     rectangle.setFillColor(sf::Color::Transparent);
-    rectangle.setOutlineThickness(2.f);
+    rectangle.setOutlineThickness(outlineThickness);
     rectangle.setOutlineColor(sf::Color::White);
 
     text.setFillColor(sf::Color::White);
@@ -89,10 +89,12 @@ void Render::drawButtonLayout(const ButtonLayout& buttonLayout) {
 void Render::drawAnimationSlider(const Slider& animationSlider) {
     // draw the rectangle up to the point where the thumb is
     rectangle.setFillColor(cold);
-    const float startOfTrack = animationSlider.position.x;
+
+    const float thumbRadius = animationSlider.thumb.size.x / 2.f;
+    const float startOfTrack = animationSlider.position.x + thumbRadius;
     
     const float thumbXPosition = animationSlider.thumb.position.x;
-    const float upToThumbWitdh = thumbXPosition - startOfTrack + animationSlider.thumb.size.x / 2.f;
+    const float upToThumbWitdh = thumbXPosition - startOfTrack;
     
     rectangle.setPosition(animationSlider.position);
     rectangle.setSize({upToThumbWitdh, animationSlider.size.y});
@@ -100,10 +102,11 @@ void Render::drawAnimationSlider(const Slider& animationSlider) {
     
     window.draw(rectangle);
     
-    const float endOfTrack = startOfTrack + animationSlider.size.x;
-    const float thumbToEndWidth = endOfTrack - upToThumbWitdh;
+    const float endOfTrack = startOfTrack + animationSlider.size.x - thumbRadius;
+    const float thumbToEndWidth = endOfTrack - thumbXPosition;
+
     rectangle.setFillColor(hot);
-    rectangle.setPosition({upToThumbWitdh, animationSlider.position.y});
+    rectangle.setPosition({thumbXPosition, animationSlider.position.y});
     rectangle.setSize({thumbToEndWidth, animationSlider.size.y});
     rectangle.setOrigin({0, animationSlider.size.y / 2.f});
 
@@ -131,6 +134,60 @@ void Render::drawSliderLayout(const SliderLayout& sliderLayout) {
         rectangle.setFillColor(sf::Color::Green);
         drawButton(slider->thumb);
     }
+}
+
+void Render::drawSortCycler(const SortCycler& sortCycler) {
+    drawSortText(sortCycler);
+    
+    rectangle.setPosition(sortCycler.leftArrow.position);
+    rectangle.setSize(sortCycler.leftArrow.size);
+    rectangle.setOutlineThickness(outlineThickness);
+    rectangle.setOutlineColor(sf::Color::White);
+    rectangle.setFillColor(sf::Color::Transparent);
+    rectangle.setOrigin(rectangle.getGeometricCenter());
+    window.draw(rectangle);
+
+    text.setString(sortCycler.leftArrow.name);
+    setTextOrigin();
+    text.setPosition(sortCycler.leftArrow.position);
+    window.draw(text);
+
+    rectangle.setPosition(sortCycler.rightArrow.position);
+    window.draw(rectangle);
+
+    text.setString(sortCycler.rightArrow.name);
+    setTextOrigin();
+    text.setPosition(sortCycler.rightArrow.position);
+    window.draw(text);
+
+    text.setScale({1.f, 1.f});
+    rectangle.setOutlineThickness(0);
+    rectangle.setOutlineColor(sf::Color::Transparent);
+    rectangle.setFillColor(sf::Color::White);
+}
+
+void Render::drawSortText(const SortCycler& sortCycler) {
+    switch (sortCycler.algorithm) {
+        using enum Algorithm;
+        case Bubble:
+            text.setString("BUBBLE");
+            break;
+        case Insertion:
+            text.setString("INSERTION");
+            break;
+        case Merge:
+            text.setString("MERGE");
+            break;
+        case Quick:
+            text.setString("QUICK");
+            break;
+    }
+
+    text.setCharacterSize(sortCycler.charSize);
+    setTextOrigin();
+    
+    text.setPosition(sortCycler.position);
+    window.draw(text);
 }
 
 void Render::setTextOrigin() {

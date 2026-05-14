@@ -27,6 +27,10 @@ const sf::String stepForwardSymbol = L"\u23ED";
 const sf::String pauseSymbol = L"\u23F8";
 const sf::String restartSymbol = L"\u21BB";
 
+const sf::String leftSymbol = L"\u25C0";
+const sf::String rightSymbol = L"\u25B6";
+
+
 struct VisualData {
     Index activeOne{INACTIVE}, activeTwo{INACTIVE};
     Index pivot{INACTIVE};
