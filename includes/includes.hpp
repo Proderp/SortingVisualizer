@@ -29,3 +29,9 @@ const sf::String restartSymbol = L"\u21BB";
 
 const sf::String leftSymbol = L"\u25C0";
 const sf::String rightSymbol = L"\u25B6";
+
+const sf::String oOfOne = "O(1)";
+const sf::String logN = L"O(log\u2082n)";
+const sf::String n = L"O(n)";
+const sf::String nLogN = L"O(n log\u2082n)";
+const sf::String nSquared = L"O(n\u00B2)";
