@@ -1,6 +1,7 @@
 #pragma once
 #include "includes.hpp"
 #include "ui.hpp"
+#include "sort-engine.hpp"
 
 class Render {
 private:
@@ -23,6 +24,8 @@ private:
 
     void drawButton(const Button& button);
 
+    sf::Color getComplexityColor(const sf::String& complexity);
+
 public:
 
     Render(sf::RenderWindow& window, const UI& ui);
@@ -36,4 +39,6 @@ public:
 
     void drawSortCycler(const SortCycler& sortCycler);
     void drawSortText(const SortCycler& sortCycler);
+
+    void drawHUD(const HUD& hud, const VisualData& visualData);
 };

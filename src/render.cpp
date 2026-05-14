@@ -190,6 +190,97 @@ void Render::drawSortText(const SortCycler& sortCycler) {
     window.draw(text);
 }
 
+void Render::drawHUD(const HUD& hud, const VisualData& visualData) {
+    rectangle.setFillColor(sf::Color(255, 255, 255, 40));
+    rectangle.setSize(hud.area.size);
+    rectangle.setPosition(hud.area.position);
+    rectangle.setOrigin({0.f, 0.f});
+    window.draw(rectangle);
+
+    text.setFont(firaCodeFont);
+    text.setCharacterSize(hud.charSize);
+    text.setLetterSpacing(2.f);
+
+    float xPosition = hud.initalPosition.x;
+    float yPosition = hud.initalPosition.y;
+
+    const float endOfArea = hud.area.position.x + hud.area.size.x - hud.padding;
+
+    const size_t maxDigits = std::to_string(MAX_ARRAY_SIZE * MAX_ARRAY_SIZE).length();
+    const std::string dummyZeros(maxDigits, '0');
+    text.setString(dummyZeros);
+
+    const float numberBlockWidth = text.getLocalBounds().size.x;
+    const float staticNumberAnchorX = endOfArea - numberBlockWidth;
+
+    const float lockedYOrigin = std::round(text.getLocalBounds().position.y + text.getLocalBounds().size.y / 2.f);
+    
+    auto setRightAlign = [&]() {
+        const sf::FloatRect bounds = text.getLocalBounds();
+        text.setOrigin({bounds.position.x + bounds.size.x, lockedYOrigin}); 
+    };
+
+    auto setLeftAlign = [&]() {
+        const sf::FloatRect bounds = text.getLocalBounds();
+        text.setOrigin({0.f, lockedYOrigin});
+    };
+    
+    auto drawLine = [&](const sf::String& name, const sf::String& stat, const bool isNumber = false) {
+        text.setString(name);
+        setLeftAlign();
+        text.setPosition({xPosition, yPosition});
+        window.draw(text);
+        
+        text.setString(stat);
+        if (isNumber) {
+            size_t numberOfZeroes = maxDigits - stat.getSize();
+            std::string zeroes(numberOfZeroes, '0');
+            text.setString(zeroes);
+            text.setFillColor(sf::Color(200, 200, 200));
+            setLeftAlign();
+            text.setPosition({staticNumberAnchorX, yPosition});
+            window.draw(text);
+
+            text.setString(zeroes + stat); 
+            sf::Vector2f exactRedStartPos = text.findCharacterPos(numberOfZeroes);
+            text.setString(stat);
+            text.setOrigin({0.f, 0.f});
+            text.setFillColor(sf::Color::Red);
+            text.setPosition(exactRedStartPos); 
+            window.draw(text);
+        } else {
+            text.setFillColor(getComplexityColor(stat));
+            setRightAlign();
+            text.setPosition({endOfArea, yPosition});
+        }
+        
+        yPosition += hud.lineSpacing;
+        window.draw(text);
+        text.setFillColor(sf::Color::White);
+    };
+
+    drawLine("COMPARISONS", std::to_string(visualData.comparisons), true);
+    drawLine("ARRAY ACCESSES", std::to_string(visualData.arrayAccesses), true);
+    drawLine("TIME COMPLEXITY", hud.stats.timeComplexity);
+    drawLine("WORST CASE", hud.stats.worstCase);
+    drawLine("BEST CASE", hud.stats.bestCase);
+    drawLine("SPACE COMPLEXITY", hud.stats.spaceComplexity);
+}
+
+sf::Color Render::getComplexityColor(const sf::String& complexity) {
+    if (complexity == oOfOne or complexity == logN) {
+        return sf::Color::Green; 
+    } 
+    else if (complexity == n or complexity == nLogN) {
+        return sf::Color::Yellow; 
+    } 
+    else if (complexity == nSquared) {
+        return sf::Color::Red; 
+    }
+    
+    return sf::Color::White;
+}
+
 void Render::setTextOrigin() {
 	const sf::FloatRect bounds = text.getLocalBounds();
 

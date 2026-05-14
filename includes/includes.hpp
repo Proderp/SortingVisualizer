@@ -7,6 +7,9 @@
 #include <numeric>
 #include <algorithm>
 #include <string>
+#include <sstream>
+#include <iomanip>
+#include <unordered_map>
 
 using Element = uint32_t;
 using Index = uint32_t;
@@ -30,12 +33,8 @@ const sf::String restartSymbol = L"\u21BB";
 const sf::String leftSymbol = L"\u25C0";
 const sf::String rightSymbol = L"\u25B6";
 
-
-struct VisualData {
-    Index activeOne{INACTIVE}, activeTwo{INACTIVE};
-    Index pivot{INACTIVE};
-    bool isOverwrite{false};
-
-    bool isSorted{false};
-    std::vector<bool> sortedElements; 
-};
+const sf::String oOfOne = "O(1)";
+const sf::String logN = L"O(log\u2082n)";
+const sf::String n = L"O(n)";
+const sf::String nLogN = L"O(n log\u2082n)";
+const sf::String nSquared = L"O(n\u00B2)";

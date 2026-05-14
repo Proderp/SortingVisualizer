@@ -23,3 +23,14 @@ SortCycler::SortCycler() :
     leftArrow(leftSymbol, ButtonType::LeftArrow),
     rightArrow(rightSymbol, ButtonType::RightArrow)
 {}
+
+AlgorithmStats::AlgorithmStats(sf::String time, sf::String worst, sf::String best, sf::String space) :
+    timeComplexity(time),
+    worstCase(worst),
+    bestCase(best),
+    spaceComplexity(space)
+{}
+
+HUD::HUD() :
+    stats(nSquared, nSquared, n, oOfOne)
+{}

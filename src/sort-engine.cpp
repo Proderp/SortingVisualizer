@@ -50,6 +50,23 @@ void SortEngine::randomizeArrayConsecutively() {
     array = baseArray;
 }
 
+bool SortEngine::isArraySorted(const std::vector<Element>& tempArray) {
+    for (Index i{0}; i < arraySize - 1; i++) {
+        if (tempArray.at(i) > tempArray.at(i + 1)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void SortEngine::createCoolAnimation() {
+    for (Index i{0}; i < arraySize; i++) {
+        actions.push_back(Action(ActionType::MarkSorted, i));
+    }
+    actions.push_back(Action(ActionType::Sorted));
+}
+
 void SortEngine::bubbleSort() {
     std::vector<Element> newArray(array);
 
@@ -80,21 +97,25 @@ void SortEngine::bubbleSort() {
     actions.push_back(Action(ActionType::Sorted));
 }
 
-bool SortEngine::isArraySorted(const std::vector<Element>& tempArray) {
-    for (Index i{0}; i < arraySize - 1; i++) {
-        if (tempArray.at(i) > tempArray.at(i + 1)) {
-            return false;
+void SortEngine::insertionSort() {
+    std::vector<Element> tempArray(array);
+
+    for (Index i{1}; i < arraySize; i++) {
+        int j = i - 1;
+
+        while (j >= 0) {
+            actions.push_back(Action(ActionType::Compare, j, j + 1));
+            if (tempArray.at(j + 1) < tempArray.at(j)) {
+                actions.push_back(Action(ActionType::Swap, j, j + 1));
+                std::swap(tempArray.at(j), tempArray.at(j + 1));            
+                j--;
+            } else {
+                break;
+            }
         }
     }
 
-    return true;
-}
-
-void SortEngine::createCoolAnimation() {
-    for (Index i{0}; i < arraySize; i++) {
-        actions.push_back(Action(ActionType::MarkSorted, i));
-    }
-    actions.push_back(Action(ActionType::Sorted));
+    createCoolAnimation();
 }
 
 void SortEngine::mergeSortWrapper() {
@@ -237,27 +258,6 @@ void SortEngine::quickSort(std::vector<Element>& tempArray, const Index leftEnd,
     } 
 }
 
-void SortEngine::insertionSort() {
-    std::vector<Element> tempArray(array);
-
-    for (Index i{1}; i < arraySize; i++) {
-        int j = i - 1;
-
-        while (j >= 0) {
-            actions.push_back(Action(ActionType::Compare, j, j + 1));
-            if (tempArray.at(j + 1) < tempArray.at(j)) {
-                actions.push_back(Action(ActionType::Swap, j, j + 1));
-                std::swap(tempArray.at(j), tempArray.at(j + 1));            
-                j--;
-            } else {
-                break;
-            }
-        }
-    }
-
-    createCoolAnimation();
-}
-
 bool SortEngine::runActionForward() {
     if (currentActionIndex >= actions.size()) {
         return false;
@@ -273,11 +273,14 @@ bool SortEngine::runActionForward() {
         case ActionType::Compare:
             visualData.activeOne = action.indexOne;
             visualData.activeTwo = action.indexTwo;
+            visualData.comparisons++;
+            visualData.arrayAccesses++;
             break;
 
         case ActionType::Swap:
             visualData.activeOne = action.indexOne;
             visualData.activeTwo = action.indexTwo;
+            visualData.arrayAccesses++;
             std::swap(array.at(action.indexOne), array.at(action.indexTwo));
             break;
         
@@ -289,6 +292,7 @@ bool SortEngine::runActionForward() {
         case ActionType::Overwrite:
             visualData.isOverwrite = true;
             visualData.activeOne = action.indexOne;
+            visualData.arrayAccesses++;
             array.at(action.indexOne) = action.newValue;
             break;
 
@@ -326,10 +330,13 @@ void SortEngine::runActionBackward() {
 
     switch (action.actionType) {
         case ActionType::Compare:
-            // do nothing
+            visualData.comparisons--;
+            visualData.arrayAccesses--;
             break;
         
         case ActionType::Swap:
+            visualData.comparisons--;
+            visualData.arrayAccesses--;
             std::swap(array.at(action.indexOne), array.at(action.indexTwo));
             break;
 
@@ -340,6 +347,7 @@ void SortEngine::runActionBackward() {
         
         case ActionType::Overwrite:
             visualData.isOverwrite = true;
+            visualData.arrayAccesses--;
             array.at(action.indexOne) = action.oldValue;
             break;
 

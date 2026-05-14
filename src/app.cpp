@@ -240,6 +240,7 @@ void App::getPreviousAlgorithm() {
 
 void App::handleSwitchedAlgorithm() {
     if (sortingEngine.isActionsEmpty()) {
+        ui.updateHUDStats(algorithm);
         return; 
     }
 
@@ -264,15 +265,19 @@ void App::startSorting() {
     switch (algorithm) {
         using enum Algorithm;
         case Bubble:
+            ui.setHUDStats(AlgorithmStats(nSquared, nSquared, n, oOfOne));
             sortingEngine.bubbleSort();
             break;
         case Insertion:
+            ui.setHUDStats(AlgorithmStats(nSquared, nSquared, n, oOfOne));
             sortingEngine.insertionSort();
             break;
         case Merge:
+            ui.setHUDStats(AlgorithmStats(nLogN, nLogN, nLogN, n));
             sortingEngine.mergeSortWrapper();
             break;
         case Quick:
+            ui.setHUDStats(AlgorithmStats(nLogN, nSquared, nLogN, logN));
             sortingEngine.quickSortWrapper();
             break;
     }
@@ -341,6 +346,7 @@ void App::render() {
     //renderer.drawSliderLayout(ui.getSliderLayout());
     renderer.drawAnimationSlider(ui.getAnimationSlider());
     renderer.drawSortCycler(ui.getSortCycler());
+    renderer.drawHUD(ui.getHUD(), sortingEngine.getVisualData());
 
     window.display();
 }

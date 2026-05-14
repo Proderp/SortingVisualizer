@@ -9,6 +9,7 @@ private:
     SliderLayout sliderLayout;
     Slider animationSlider;
     SortCycler sortCycler;
+    HUD hud;
 
     sf::RenderWindow& window;
     sf::View view;
@@ -30,13 +31,16 @@ private:
     SliderEvent updateSliderPercentage(Slider& slider, const float mouseX);
 
     void updateSortCycler();
+
 public:
     UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array);    
     
     void updateUI(const std::vector<Element>& array);
     void updateAnimationSlider();
     void updateSliderLayout();
-
+    void updateHUD();
+    void updateHUDStats(const Algorithm algorithm);
+    
     const ButtonType findClickedButton(const sf::Vector2f mousePosition);
     std::optional<SliderEvent> checkSliderClick(const sf::Vector2f mousePosition, const ButtonType activeDragSlider, const uint16_t actionSize);
 
@@ -45,6 +49,7 @@ public:
     const Slider& getAnimationSlider() const;
     const SliderLayout& getSliderLayout() const;
     const SortCycler& getSortCycler() const;
+    const HUD& getHUD() const;
 
     void setAnimationPercentage(const float percentage);
     void resetAnimationSlider();
@@ -56,4 +61,6 @@ public:
     void setPlayButtonSymbol(const sf::String newSymbol);
 
     void setSortCycleAlgorithm(const Algorithm algorithm);
+
+    void setHUDStats(AlgorithmStats stats);
 };

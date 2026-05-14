@@ -14,6 +14,7 @@ void UI::updateUI(const std::vector<Element>& array) {
     updateButtonLayout();
     updateSliderLayout();
     updateSortCycler();
+    updateHUD();
 }
 
 void UI::updateView() {
@@ -289,6 +290,42 @@ void UI::updateSortCycler() {
     sortCycler.charSize = height / 2.5f;
 }
 
+void UI::updateHUD() {
+    const float dynamicFontSize = windowSize.y * 0.015f;
+    hud.charSize = static_cast<uint32_t>(std::clamp(dynamicFontSize, 12.f, 24.f));
+    
+    hud.lineSpacing = hud.charSize * 2.f;
+    
+    const float absoluteMinWidth = 280.f;
+    const float hudWidth = std::max(windowSize.x * 0.20f, absoluteMinWidth);
+    const float hudHeight = hud.lineSpacing * 6.f + hud.padding * 2.f;
+    
+    const sf::Vector2f hudSize = {hudWidth, hudHeight};
+    const sf::Vector2f hudPosition = {arrayDimensions.offsetX, arrayDimensions.offsetX};
+    
+    hud.area = sf::FloatRect(hudPosition, hudSize);
+
+    hud.initalPosition = {hudPosition.x + hud.padding, hudPosition.y + hud.lineSpacing / 2.f + hud.padding};
+}
+
+void UI::updateHUDStats(const Algorithm algorithm) {
+    switch (algorithm) {
+        using enum Algorithm;
+        case Bubble:
+            setHUDStats(AlgorithmStats(nSquared, nSquared, n, oOfOne));
+            break;
+        case Insertion:
+            setHUDStats(AlgorithmStats(nSquared, nSquared, n, oOfOne));
+            break;
+        case Merge:
+            setHUDStats(AlgorithmStats(nLogN, nLogN, nLogN, n));
+            break;
+        case Quick:
+            setHUDStats(AlgorithmStats(nLogN, nSquared, nLogN, logN));
+            break;
+    }
+}
+
 const ArrayDimensions& UI::getArrayDimensions() const {
     return arrayDimensions;
 }
@@ -307,6 +344,10 @@ const SliderLayout& UI::getSliderLayout() const {
 
 const SortCycler& UI::getSortCycler() const {
     return sortCycler;
+}
+
+const HUD& UI::getHUD() const {
+    return hud;
 }
 
 void UI::setAnimationPercentage(const float percentage) {
@@ -334,4 +375,8 @@ void UI::setPlayButtonSymbol(const sf::String newSymbol) {
 
 void UI::setSortCycleAlgorithm(const Algorithm algorithm) {
     sortCycler.algorithm = algorithm;
+}
+
+void UI::setHUDStats(AlgorithmStats stats) {
+    hud.stats = stats;
 }
