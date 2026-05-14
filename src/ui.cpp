@@ -299,9 +299,7 @@ void UI::updateHUD() {
     
     hud.area = sf::FloatRect(hudPosition, hudSize);
 
-    hud.initalPosition = {margin + 15.f, margin + 15.f};
-    hud.lineSpacing = 25.f;
-    hud.charSize = 16;
+    hud.initalPosition = hudPosition + sf::Vector2f(hud.padding, hud.padding);
 }
 
 const ArrayDimensions& UI::getArrayDimensions() const {

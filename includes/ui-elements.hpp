@@ -97,8 +97,9 @@ struct AlgorithmStats {
 struct HUD {
     sf::FloatRect area;
     sf::Vector2f initalPosition;
-    float lineSpacing;
-    uint32_t charSize{10};
+    float lineSpacing{25.f};
+    float padding{15.f};
+    uint32_t charSize{16};
 
     AlgorithmStats stats;
 
