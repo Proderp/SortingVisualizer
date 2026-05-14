@@ -21,6 +21,18 @@ struct Action {
     Action(ActionType action);
 };
 
+struct VisualData {
+    Index activeOne{INACTIVE}, activeTwo{INACTIVE};
+    Index pivot{INACTIVE};
+    bool isOverwrite{false};
+
+    bool isSorted{false};
+    std::vector<bool> sortedElements; 
+
+    size_t comparisons{0};
+    size_t arrayAccesses{0};
+};
+
 class SortEngine {
 private:
     std::vector<Element> baseArray;
