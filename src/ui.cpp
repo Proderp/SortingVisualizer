@@ -57,7 +57,7 @@ void UI::updateRandomizeButtons() {
     const float rowCenter = rowBegin + rowHeight / 2.f;
     
     const float buttonHeight = rowHeight / 2.f - margin;
-    const float buttonWidth =  windowSize.x * 0.125f;
+    const float buttonWidth =  windowSize.x * 0.15f;
     
     const float xPosition = arrayDimensions.offsetX + buttonWidth / 2.f;
     sf::Vector2f position = {xPosition, rowBegin + buttonHeight / 2.f};
@@ -120,9 +120,9 @@ void UI::updateCharacterSize() {
             button->id == ButtonType::StepBack or 
             button->id == ButtonType::StepForward) {
 
-            button->charSize = button->size.x * 0.6f; 
+            button->charSize = button->size.x * 0.6f;
         } else {
-            button->charSize = button->size.x * 0.08f;
+            button->charSize = button->size.x * 0.07f;
         }
     }
 }

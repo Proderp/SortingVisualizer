@@ -131,12 +131,16 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
         case Randomize:
             stopSorting();
             sortingEngine.randomizeArray();
+            dataType = DataType::Random;
             ui.updateUI(sortingEngine.getArray());
+            updatePlayButtonSymbol();
             break;
         case Consecutive:
             stopSorting();
             sortingEngine.randomizeArrayConsecutively();
+            dataType = DataType::Consecutive;
             ui.updateUI(sortingEngine.getArray());
+            updatePlayButtonSymbol();
             break;
         case RightArrow:
             cycleAlgorithms(true);
@@ -149,6 +153,28 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
     }
     
     handleSliderEvent(mousePosition);
+}
+
+void App::handleKeyPressedEvent(const sf::Event::KeyPressed* keyPressedEvent) {
+    switch (keyPressedEvent->scancode) {
+        using enum sf::Keyboard::Scancode;
+        case Left:
+        stepBack();
+        break;
+        
+        case Right:
+        stepForward();
+        break;
+        
+        case Space:
+        handlePlayButton();
+        break;
+        
+        case R:
+        restartAnimation();
+        updatePlayButtonSymbol();
+        break;    
+    }
 }
 
 void App::handlePlayButton() {
@@ -167,28 +193,6 @@ void App::handlePlayButton() {
             ui.setPlayButtonSymbol(pauseSymbol);
         }
         isSorting = !isSorting;
-    }
-}
-
-void App::handleKeyPressedEvent(const sf::Event::KeyPressed* keyPressedEvent) {
-    switch (keyPressedEvent->scancode) {
-        using enum sf::Keyboard::Scancode;
-        case Left:
-            stepBack();
-            break;
-
-        case Right:
-            stepForward();
-            break;
-        
-        case Space:
-            handlePlayButton();
-            break;
-        
-        case R:
-            restartAnimation();
-            updatePlayButtonSymbol();
-            break;    
     }
 }
 

@@ -73,7 +73,12 @@ void Render::drawButtonLayout(const ButtonLayout& buttonLayout) {
         text.setLetterSpacing(3.f);
         setTextOrigin();
 
-        text.setPosition(button.position);
+        if (button.name == playSymbol and button.id == ButtonType::Play) {
+            sf::Vector2f newPosition = button.position + sf::Vector2f(button.size.x * 0.05f, 0.f);
+            text.setPosition(newPosition);
+        } else {
+            text.setPosition(button.position);
+        }
         window.draw(text);
     };
     
@@ -151,15 +156,15 @@ void Render::drawSortCycler(const SortCycler& sortCycler) {
     setTextOrigin();
     text.setPosition(sortCycler.leftArrow.position);
     window.draw(text);
-
+    
     rectangle.setPosition(sortCycler.rightArrow.position);
     window.draw(rectangle);
-
+    
     text.setString(sortCycler.rightArrow.name);
     setTextOrigin();
     text.setPosition(sortCycler.rightArrow.position);
     window.draw(text);
-
+    
     text.setScale({1.f, 1.f});
     rectangle.setOutlineThickness(0);
     rectangle.setOutlineColor(sf::Color::Transparent);
@@ -177,13 +182,15 @@ void Render::drawSortText(const SortCycler& sortCycler) {
             break;
         case Merge:
             text.setString("MERGE");
-            break;
-        case Quick:
+        break;
+            case Quick:
             text.setString("QUICK");
-            break;
+        break;
     }
-
+    
+    text.setFont(firaCodeFont);
     text.setCharacterSize(sortCycler.charSize);
+    text.setLetterSpacing(1.f);
     setTextOrigin();
     
     text.setPosition(sortCycler.position);
@@ -233,7 +240,7 @@ void Render::drawHUD(const HUD& hud, const VisualData& visualData) {
         
         text.setString(stat);
         if (isNumber) {
-            size_t numberOfZeroes = maxDigits - stat.getSize();
+            size_t numberOfZeroes = (maxDigits > stat.getSize()) ? (maxDigits - stat.getSize()) : 0;
             std::string zeroes(numberOfZeroes, '0');
             text.setString(zeroes);
             text.setFillColor(sf::Color(200, 200, 200));
