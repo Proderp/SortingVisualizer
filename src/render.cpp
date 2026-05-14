@@ -196,96 +196,51 @@ void Render::drawHUD(const HUD& hud, const VisualData& visualData) {
     rectangle.setPosition(hud.area.position);
     rectangle.setOrigin({0.f, 0.f});
     window.draw(rectangle);
+    
+    text.setFont(firaCodeFont);
+    text.setCharacterSize(hud.charSize);
+    text.setLetterSpacing(2.f);
 
     float xPosition = hud.initalPosition.x;
     const float endOfArea = hud.area.position.x + hud.area.size.x - hud.padding;
 
-    float yPosition = hud.initalPosition.y;
-
+    float yPosition = 0;
+    
     auto setRightAlign = [&]() {
         const sf::FloatRect bounds = text.getLocalBounds();
         text.setOrigin({bounds.position.x + bounds.size.x, 0.f}); 
     };
-
-    text.setFont(firaCodeFont);
-    text.setCharacterSize(hud.charSize);
-    text.setLetterSpacing(2.f);
     
-    text.setString("COMPARISONS");
-    text.setOrigin({0.f, 0.f});
-    text.setPosition(hud.initalPosition);
-    window.draw(text);
+    auto drawLine = [&](const sf::String& name, const sf::String& stat) {
+        text.setString(name);
+        text.setOrigin({0.f, 0.f});
+        xPosition = hud.initalPosition.x;
+        yPosition += hud.lineSpacing;
+        text.setPosition({xPosition, yPosition});
+        window.draw(text);
 
+        text.setString(stat);
+        setRightAlign();
+        text.setPosition({endOfArea, yPosition});
+        window.draw(text);
+    };
+    
+    
     std::stringstream stream;
     const size_t maxDigits = std::to_string(MAX_ARRAY_SIZE * MAX_ARRAY_SIZE).length();
+
     stream << std::setfill('0') << std::setw(maxDigits) << std::to_string(visualData.comparisons);
-    text.setString(stream.str());
-    setRightAlign();
-    text.setPosition({endOfArea, yPosition});
-    window.draw(text);
-    
-    text.setString("ARRAY ACCESSES");
-    text.setOrigin({0.f, 0.f});
-    xPosition = hud.initalPosition.x;
-    yPosition += hud.lineSpacing;
-    text.setPosition({xPosition, yPosition});
-    window.draw(text);
+    drawLine("COMPARISONS", stream.str());
     
     stream.str("");
     stream.clear();
     stream << std::setw(maxDigits) << std::to_string(visualData.arrayAccesses);
-    text.setString(stream.str());
-    setRightAlign();
-    text.setPosition({endOfArea, yPosition});
-    window.draw(text);
 
-    text.setString("TIME COMPLEXITY");
-    text.setOrigin({0.f, 0.f});
-    xPosition = hud.initalPosition.x;
-    yPosition += hud.lineSpacing;
-    text.setPosition({xPosition, yPosition});
-    window.draw(text);
-
-    text.setString(hud.stats.timeComplexity);
-    setRightAlign();
-    text.setPosition({endOfArea, yPosition});
-    window.draw(text);
-
-    text.setString("WORST CASE");
-    text.setOrigin({0.f, 0.f});
-    xPosition = hud.initalPosition.x;
-    yPosition += hud.lineSpacing;
-    text.setPosition({xPosition, yPosition});
-    window.draw(text);
-
-    text.setString(hud.stats.worstCase);
-    setRightAlign();
-    text.setPosition({endOfArea, yPosition});
-    window.draw(text);
-
-    text.setString("BEST CASE");
-    text.setOrigin({0.f, 0.f});
-    xPosition = hud.initalPosition.x;
-    yPosition += hud.lineSpacing;
-    text.setPosition({xPosition, yPosition});
-    window.draw(text);
-
-    text.setString(hud.stats.bestCase);
-    setRightAlign();
-    text.setPosition({endOfArea, yPosition});
-    window.draw(text);
-
-    text.setString("SPACE COMPLEXITY");
-    text.setOrigin({0.f, 0.f});
-    xPosition = hud.initalPosition.x;
-    yPosition += hud.lineSpacing;
-    text.setPosition({xPosition, yPosition});
-    window.draw(text);
-
-    text.setString(hud.stats.spaceComplexity);
-    setRightAlign();
-    text.setPosition({endOfArea, yPosition});
-    window.draw(text);
+    drawLine("ARRAY ACCESSES", stream.str());
+    drawLine("TIME COMPLEXITY", hud.stats.timeComplexity);
+    drawLine("WORST CASE", hud.stats.worstCase);
+    drawLine("BEST CASE", hud.stats.bestCase);
+    drawLine("SPACE COMPLEXITY", hud.stats.spaceComplexity);
 }
 
 void Render::setTextOrigin() {
