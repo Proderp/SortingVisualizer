@@ -291,7 +291,13 @@ void UI::updateSortCycler() {
 }
 
 void UI::updateHUD() {
-    const float hudWidth = windowSize.x * 0.20f;
+    const float dynamicFontSize = windowSize.y * 0.015f;
+    hud.charSize = static_cast<uint32_t>(std::clamp(dynamicFontSize, 12.f, 22.f));
+    
+    hud.lineSpacing = hud.charSize * 2.f;
+    
+    const float absoluteMinWidth = 280.f;
+    const float hudWidth = std::max(windowSize.x * 0.20f, absoluteMinWidth) + hud.padding;
     const float hudHeight = hud.lineSpacing * 6.f + hud.padding * 2.f;
     
     const sf::Vector2f hudSize = {hudWidth, hudHeight};

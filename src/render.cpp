@@ -198,11 +198,14 @@ void Render::drawHUD(const HUD& hud, const VisualData& visualData) {
     window.draw(rectangle);
 
     float xPosition = hud.initalPosition.x;
-    const float endOfArea = hud.area.position.x + hud.area.size.x - hud.padding * 5.f;
+    const float endOfArea = hud.area.position.x + hud.area.size.x - hud.padding;
 
     float yPosition = hud.initalPosition.y;
 
-    const sf::Vector2f rightMiddle = {text.getLocalBounds().size.x, 0.f};
+    auto setRightAlign = [&]() {
+        const sf::FloatRect bounds = text.getLocalBounds();
+        text.setOrigin({bounds.position.x + bounds.size.x, 0.f}); 
+    };
 
     text.setFont(firaCodeFont);
     text.setCharacterSize(hud.charSize);
@@ -214,7 +217,7 @@ void Render::drawHUD(const HUD& hud, const VisualData& visualData) {
     window.draw(text);
 
     text.setString(std::to_string(visualData.comparisons));
-    text.setOrigin(rightMiddle);
+    setRightAlign();
     text.setPosition({endOfArea, yPosition});
     window.draw(text);
 
@@ -226,7 +229,7 @@ void Render::drawHUD(const HUD& hud, const VisualData& visualData) {
     window.draw(text);
 
     text.setString(std::to_string(visualData.arrayAccesses));
-    text.setOrigin(rightMiddle);
+    setRightAlign();
     text.setPosition({endOfArea, yPosition});
     window.draw(text);
 
@@ -238,7 +241,7 @@ void Render::drawHUD(const HUD& hud, const VisualData& visualData) {
     window.draw(text);
 
     text.setString(hud.stats.timeComplexity);
-    text.setOrigin(rightMiddle);
+    setRightAlign();
     text.setPosition({endOfArea, yPosition});
     window.draw(text);
 
@@ -250,7 +253,7 @@ void Render::drawHUD(const HUD& hud, const VisualData& visualData) {
     window.draw(text);
 
     text.setString(hud.stats.worstCase);
-    text.setOrigin(rightMiddle);
+    setRightAlign();
     text.setPosition({endOfArea, yPosition});
     window.draw(text);
 
@@ -262,7 +265,7 @@ void Render::drawHUD(const HUD& hud, const VisualData& visualData) {
     window.draw(text);
 
     text.setString(hud.stats.bestCase);
-    text.setOrigin(rightMiddle);
+    setRightAlign();
     text.setPosition({endOfArea, yPosition});
     window.draw(text);
 
@@ -274,7 +277,7 @@ void Render::drawHUD(const HUD& hud, const VisualData& visualData) {
     window.draw(text);
 
     text.setString(hud.stats.spaceComplexity);
-    text.setOrigin(rightMiddle);
+    setRightAlign();
     text.setPosition({endOfArea, yPosition});
     window.draw(text);
 }
