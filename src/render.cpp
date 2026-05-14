@@ -216,19 +216,25 @@ void Render::drawHUD(const HUD& hud, const VisualData& visualData) {
     text.setPosition(hud.initalPosition);
     window.draw(text);
 
-    text.setString(std::to_string(visualData.comparisons));
+    std::stringstream stream;
+    const size_t maxDigits = std::to_string(MAX_ARRAY_SIZE * MAX_ARRAY_SIZE).length();
+    stream << std::setfill('0') << std::setw(maxDigits) << std::to_string(visualData.comparisons);
+    text.setString(stream.str());
     setRightAlign();
     text.setPosition({endOfArea, yPosition});
     window.draw(text);
-
+    
     text.setString("ARRAY ACCESSES");
     text.setOrigin({0.f, 0.f});
     xPosition = hud.initalPosition.x;
     yPosition += hud.lineSpacing;
     text.setPosition({xPosition, yPosition});
     window.draw(text);
-
-    text.setString(std::to_string(visualData.arrayAccesses));
+    
+    stream.str("");
+    stream.clear();
+    stream << std::setw(maxDigits) << std::to_string(visualData.arrayAccesses);
+    text.setString(stream.str());
     setRightAlign();
     text.setPosition({endOfArea, yPosition});
     window.draw(text);

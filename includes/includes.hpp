@@ -7,6 +7,8 @@
 #include <numeric>
 #include <algorithm>
 #include <string>
+#include <sstream>
+#include <iomanip>
 
 using Element = uint32_t;
 using Index = uint32_t;
