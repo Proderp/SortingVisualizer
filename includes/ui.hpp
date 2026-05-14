@@ -48,6 +48,7 @@ public:
     const Slider& getAnimationSlider() const;
     const SliderLayout& getSliderLayout() const;
     const SortCycler& getSortCycler() const;
+    const HUD& getHUD() const;
 
     void setAnimationPercentage(const float percentage);
     void resetAnimationSlider();
