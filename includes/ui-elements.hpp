@@ -92,7 +92,7 @@ struct AlgorithmStats {
     sf::String spaceComplexity;
 
     AlgorithmStats(sf::String time, sf::String worst, sf::String best, sf::String space);
-}; 
+};
 
 struct HUD {
     sf::FloatRect area;

@@ -9,6 +9,7 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
+#include <unordered_map>
 
 using Element = uint32_t;
 using Index = uint32_t;

@@ -196,47 +196,61 @@ void Render::drawHUD(const HUD& hud, const VisualData& visualData) {
     rectangle.setPosition(hud.area.position);
     rectangle.setOrigin({0.f, 0.f});
     window.draw(rectangle);
-    
+
     text.setFont(firaCodeFont);
     text.setCharacterSize(hud.charSize);
     text.setLetterSpacing(2.f);
 
     float xPosition = hud.initalPosition.x;
+    float yPosition = hud.initalPosition.y;
+
     const float endOfArea = hud.area.position.x + hud.area.size.x - hud.padding;
 
-    float yPosition = 0;
-    
-    auto setRightAlign = [&]() {
-        const sf::FloatRect bounds = text.getLocalBounds();
-        text.setOrigin({bounds.position.x + bounds.size.x, 0.f}); 
-    };
-    
-    auto drawLine = [&](const sf::String& name, const sf::String& stat) {
-        text.setString(name);
-        text.setOrigin({0.f, 0.f});
-        xPosition = hud.initalPosition.x;
-        yPosition += hud.lineSpacing;
-        text.setPosition({xPosition, yPosition});
-        window.draw(text);
-
-        text.setString(stat);
-        setRightAlign();
-        text.setPosition({endOfArea, yPosition});
-        window.draw(text);
-    };
-    
-    
     std::stringstream stream;
     const size_t maxDigits = std::to_string(MAX_ARRAY_SIZE * MAX_ARRAY_SIZE).length();
 
-    stream << std::setfill('0') << std::setw(maxDigits) << std::to_string(visualData.comparisons);
-    drawLine("COMPARISONS", stream.str());
+    const std::string dummyZeros(maxDigits, '0');
+    text.setString(dummyZeros);
+
+    const float numberBlockWidth = text.getLocalBounds().size.x;
+    const float staticNumberAnchorX = endOfArea - numberBlockWidth;
+    
+    auto setRightAlign = [&]() {
+        const sf::FloatRect bounds = text.getLocalBounds();
+        text.setOrigin({bounds.position.x + bounds.size.x, std::round(bounds.position.y + bounds.size.y / 2.f)}); 
+    };
+
+    auto setLeftAlign = [&]() {
+        const sf::FloatRect bounds = text.getLocalBounds();
+        text.setOrigin({0.f, std::round(bounds.position.y + bounds.size.y / 2.f)});
+    };
+    
+    auto drawLine = [&](const sf::String& name, const sf::String& stat, const bool isNumber = false) {
+        text.setString(name);
+        setLeftAlign();
+        text.setPosition({xPosition, yPosition});
+        window.draw(text);
+        
+        text.setString(stat);
+        if (isNumber) {
+            text.setPosition({staticNumberAnchorX, yPosition});
+        } else {
+            setRightAlign();
+            text.setPosition({endOfArea, yPosition});
+        }
+        
+        yPosition += hud.lineSpacing;
+        window.draw(text);
+    };
+
+    stream << std::setfill('0') << std::setw(maxDigits) << visualData.comparisons;
+    drawLine("COMPARISONS", stream.str(), true);
     
     stream.str("");
     stream.clear();
-    stream << std::setw(maxDigits) << std::to_string(visualData.arrayAccesses);
+    stream << std::setw(maxDigits) << visualData.arrayAccesses;
 
-    drawLine("ARRAY ACCESSES", stream.str());
+    drawLine("ARRAY ACCESSES", stream.str(), true);
     drawLine("TIME COMPLEXITY", hud.stats.timeComplexity);
     drawLine("WORST CASE", hud.stats.worstCase);
     drawLine("BEST CASE", hud.stats.bestCase);
