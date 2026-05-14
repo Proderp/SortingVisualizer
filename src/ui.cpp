@@ -354,3 +354,7 @@ void UI::setPlayButtonSymbol(const sf::String newSymbol) {
 void UI::setSortCycleAlgorithm(const Algorithm algorithm) {
     sortCycler.algorithm = algorithm;
 }
+
+void setHUDStats(AlgorithmStats stats) {
+    hud.stats = stats;
+}

@@ -60,4 +60,6 @@ public:
     void setPlayButtonSymbol(const sf::String newSymbol);
 
     void setSortCycleAlgorithm(const Algorithm algorithm);
+
+    void setHUDStats(AlgorithmStats stats);
 };
