@@ -190,6 +190,10 @@ void Render::drawSortText(const SortCycler& sortCycler) {
     window.draw(text);
 }
 
+void Render::drawHUD(const HUD& hud) {
+    
+}
+
 void Render::setTextOrigin() {
 	const sf::FloatRect bounds = text.getLocalBounds();
 

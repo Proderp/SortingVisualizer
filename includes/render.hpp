@@ -37,4 +37,6 @@ public:
 
     void drawSortCycler(const SortCycler& sortCycler);
     void drawSortText(const SortCycler& sortCycler);
+
+    void drawHUD(const HUD& hud);
 };
