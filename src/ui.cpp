@@ -290,7 +290,14 @@ void UI::updateSortCycler() {
 }
 
 void UI::updateHUD() {
+    const float padding = 20.f;
+    const float hudWidth = windowSize.x * 0.25f;
+    const float hudHeight = windowSize.y * 0.20f;
     
+    hud.hudArea = sf::FloatRect({padding, padding}, {hudWidth, hudHeight});
+    hud.initalPosition = {padding + 15.f, padding + 15.f};
+    hud.lineSpacing = 25.f;
+    hud.charSize = 16;
 }
 
 const ArrayDimensions& UI::getArrayDimensions() const {
