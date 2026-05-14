@@ -38,4 +38,7 @@ struct VisualData {
 
     bool isSorted{false};
     std::vector<bool> sortedElements; 
+
+    size_t comparisons{0};
+    size_t arrayAccesses{0};
 };
