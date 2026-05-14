@@ -83,3 +83,10 @@ struct SortCycler {
 
     SortCycler();
 };
+
+struct HUD {
+    sf::FloatRect hudArea;
+    sf::Vector2f initalPosition;
+    float lineSpacing;
+    uint32_t charSize{10};
+};
