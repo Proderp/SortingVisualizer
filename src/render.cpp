@@ -206,7 +206,7 @@ void Render::drawHUD(const HUD& hud, const VisualData& visualData) {
 
     const float endOfArea = hud.area.position.x + hud.area.size.x - hud.padding;
 
-    std::stringstream stream;
+    //std::stringstream stream;
     const size_t maxDigits = std::to_string(MAX_ARRAY_SIZE * MAX_ARRAY_SIZE).length();
 
     const std::string dummyZeros(maxDigits, '0');
@@ -243,18 +243,16 @@ void Render::drawHUD(const HUD& hud, const VisualData& visualData) {
         window.draw(text);
     };
 
-    stream << std::setfill('0') << std::setw(maxDigits) << visualData.comparisons;
     drawLine("COMPARISONS", stream.str(), true);
-    
-    stream.str("");
-    stream.clear();
-    stream << std::setw(maxDigits) << visualData.arrayAccesses;
-
     drawLine("ARRAY ACCESSES", stream.str(), true);
     drawLine("TIME COMPLEXITY", hud.stats.timeComplexity);
     drawLine("WORST CASE", hud.stats.worstCase);
     drawLine("BEST CASE", hud.stats.bestCase);
     drawLine("SPACE COMPLEXITY", hud.stats.spaceComplexity);
+}
+
+void Render::drawLeadingZeroes(const size_t number) {
+    
 }
 
 void Render::setTextOrigin() {

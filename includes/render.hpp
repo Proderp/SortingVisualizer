@@ -24,6 +24,8 @@ private:
 
     void drawButton(const Button& button);
 
+    void drawLeadingZeroes(const size_t number);
+
 public:
 
     Render(sf::RenderWindow& window, const UI& ui);
