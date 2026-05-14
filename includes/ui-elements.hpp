@@ -54,11 +54,9 @@ struct Slider {
 };
 
 struct SliderLayout {
-private:
     Slider arraySizeSlider;
     Slider delaySlider;
 
-public:
     SliderLayout();
 
     const std::array<Slider*, 2> sliders = {&arraySizeSlider, &delaySlider};
