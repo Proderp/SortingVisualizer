@@ -155,32 +155,36 @@ void UI::updateAnimationSlider() {
 }
 
 void UI::updateSliderLayout() {
-    const float xPosition = buttonLayout.layoutWidth + margin;
-    float sliderDistance = (windowSize.y - arrayDimensions.offsetY) / (sliderLayout.sliders.size() + 1);
-    float startYPosition = arrayDimensions.offsetY + sliderDistance;
+    const float columnBegin = buttonLayout.stepForwardButton.position.x + buttonLayout.stepForwardButton.size.x + margin;
+    const float columnWidth = windowSize.x - arrayDimensions.offsetX - columnBegin;
+
+    const float rowBegin = arrayDimensions.offsetY + margin * 1.75f;
+    const float rowHeight = windowSize.y - rowBegin - margin;
     
-    const float trackHeight = 15;
-    const float thumbRadius = trackHeight / 2.f;
+    const float thumbWidth = 12.f;
+    const float thumbHeight = 20.f;
+    const float thumbRadius = thumbWidth / 2.f;
+
+    const float trackHeight = 4.f;
+    const float trackWidth = columnWidth;
+
+    const float sliderSpacing = rowHeight / 3.f;
+    float yPosition = rowBegin + sliderSpacing;
 
     for (Index i{0}; i < sliderLayout.sliders.size(); i++) {
         Slider& slider = *sliderLayout.sliders.at(i);
 
-        const float yPosition = startYPosition + sliderDistance * i;
-        slider.position = {xPosition, yPosition};
+        yPosition += i * sliderSpacing;
+        slider.position = {columnBegin, yPosition};
 
-        slider.size.y = trackHeight;
-        
-        float trackWidth = 200.f;
         slider.size = {trackWidth, trackHeight};
+        sf::Vector2f middleLeftOfTrack = {columnBegin, yPosition - trackHeight / 2.f};
 
-        const sf::Vector2f middleLeftOfTrack = {slider.position.x, slider.position.y - trackHeight / 2.f};
-        slider.trackBounds = sf::FloatRect(middleLeftOfTrack, slider.size);
-    
-        slider.thumb.size = {trackHeight * 1.5f, trackHeight * 1.5f};
+        slider.thumb.size = {thumbWidth, thumbHeight};
 
-        const float minValue = xPosition + thumbRadius;
-        const float maxValue = trackWidth - trackHeight;
-        const float thumbXPosition = minValue + (maxValue * slider.percentage);
+        const float activeStartX = columnBegin + thumbRadius;
+        const float activeEndX = trackWidth - thumbWidth;
+        const float thumbXPosition = activeStartX + (activeEndX * slider.percentage);
         
         slider.thumb.position = {thumbXPosition, yPosition};
         updateButtonBounds(slider.thumb);
