@@ -74,11 +74,11 @@ public:
 
     void bubbleSort();
 
+    void insertionSort();
+
     void mergeSortWrapper();
 
     void quickSortWrapper();
-
-    void insertionSort();
 
     const std::vector<Element>& getArray() const;
     const size_t getArraySize() const;
