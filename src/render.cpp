@@ -92,57 +92,44 @@ void Render::drawButtonLayout(const ButtonLayout& buttonLayout) {
 }
 
 void Render::drawAnimationSlider(const Slider& animationSlider) {
-    // draw the rectangle up to the point where the thumb is
-    rectangle.setFillColor(cold);
 
-    const float thumbRadius = animationSlider.thumb.size.x / 2.f;
-    const float startOfTrack = animationSlider.position.x + thumbRadius;
-    
-    const float thumbXPosition = animationSlider.thumb.position.x;
-    const float upToThumbWitdh = thumbXPosition - startOfTrack;
-    
-    rectangle.setPosition(animationSlider.position);
-    rectangle.setSize({upToThumbWitdh, animationSlider.size.y});
-    rectangle.setOrigin({0, animationSlider.size.y / 2.f});
-    
-    window.draw(rectangle);
-    
-    const float endOfTrack = startOfTrack + animationSlider.size.x - thumbRadius;
-    const float thumbToEndWidth = endOfTrack - thumbXPosition;
-
-    rectangle.setFillColor(hot);
-    rectangle.setPosition({thumbXPosition, animationSlider.position.y});
-    rectangle.setSize({thumbToEndWidth, animationSlider.size.y});
-    rectangle.setOrigin({0, animationSlider.size.y / 2.f});
-
-    window.draw(rectangle);
-
+    drawTrack(animationSlider);
     rectangle.setFillColor(sf::Color::White);
-    rectangle.setPosition(animationSlider.thumb.position);
-    rectangle.setSize(animationSlider.thumb.size);
-    rectangle.setOrigin(rectangle.getGeometricCenter());
-
-    window.draw(rectangle);
+    drawButton(animationSlider.thumb);
 }
 
 void Render::drawSliderLayout(const SliderLayout& sliderLayout) {
     for (const Slider* slider : sliderLayout.sliders) {
-        rectangle.setFillColor(sf::Color(100, 100, 100));
-        rectangle.setPosition(slider->position);
-        rectangle.setSize(slider->size);
-
-        const sf::Vector2f middleLeft = {0, slider->size.y / 2.f}; 
-        rectangle.setOrigin(middleLeft);
-
-        window.draw(rectangle);
-
-        rectangle.setFillColor(sf::Color::Green);
+        drawTrack(*slider);
+        rectangle.setFillColor(sf::Color::White);
         drawButton(slider->thumb);
     }
 }
 
 void Render::drawTrack(const Slider& slider) {
+    rectangle.setFillColor(cold);
+
+    const float thumbRadius = slider.thumb.size.x / 2.f;
+    const float startOfTrack = slider.position.x + thumbRadius;
     
+    const float thumbXPosition = slider.thumb.position.x;
+    const float upToThumbWitdh = thumbXPosition - startOfTrack;
+    
+    rectangle.setPosition(slider.position);
+    rectangle.setSize({upToThumbWitdh, slider.size.y});
+    rectangle.setOrigin({0, slider.size.y / 2.f});
+    
+    window.draw(rectangle);
+    
+    const float endOfTrack = startOfTrack + slider.size.x - thumbRadius;
+    const float thumbToEndWidth = endOfTrack - thumbXPosition;
+
+    rectangle.setFillColor(hot);
+    rectangle.setPosition({thumbXPosition, slider.position.y});
+    rectangle.setSize({thumbToEndWidth, slider.size.y});
+    rectangle.setOrigin({0, slider.size.y / 2.f});
+
+    window.draw(rectangle);
 }
 
 void Render::drawSortCycler(const SortCycler& sortCycler) {

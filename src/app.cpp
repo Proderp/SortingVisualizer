@@ -106,6 +106,7 @@ void App::updateArraySizeThumb(const SliderEvent& event) {
     }
 
     ui.updateUI(sortingEngine.getArray());
+    updatePlayButtonSymbol();
 }
 
 void App::updateDelayThumb(const SliderEvent& event) {
