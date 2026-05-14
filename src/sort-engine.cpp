@@ -273,11 +273,14 @@ bool SortEngine::runActionForward() {
         case ActionType::Compare:
             visualData.activeOne = action.indexOne;
             visualData.activeTwo = action.indexTwo;
+            visualData.comparisons++;
+            visualData.arrayAccesses++;
             break;
 
         case ActionType::Swap:
             visualData.activeOne = action.indexOne;
             visualData.activeTwo = action.indexTwo;
+            visualData.arrayAccesses++;
             std::swap(array.at(action.indexOne), array.at(action.indexTwo));
             break;
         
@@ -289,6 +292,7 @@ bool SortEngine::runActionForward() {
         case ActionType::Overwrite:
             visualData.isOverwrite = true;
             visualData.activeOne = action.indexOne;
+            visualData.arrayAccesses++;
             array.at(action.indexOne) = action.newValue;
             break;
 
@@ -326,10 +330,13 @@ void SortEngine::runActionBackward() {
 
     switch (action.actionType) {
         case ActionType::Compare:
-            // do nothing
+            visualData.comparisons--;
+            visualData.arrayAccesses--;
             break;
         
         case ActionType::Swap:
+            visualData.comparisons--;
+            visualData.arrayAccesses--;
             std::swap(array.at(action.indexOne), array.at(action.indexTwo));
             break;
 
@@ -340,6 +347,7 @@ void SortEngine::runActionBackward() {
         
         case ActionType::Overwrite:
             visualData.isOverwrite = true;
+            visualData.arrayAccesses--;
             array.at(action.indexOne) = action.oldValue;
             break;
 
