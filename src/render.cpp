@@ -141,6 +141,10 @@ void Render::drawSliderLayout(const SliderLayout& sliderLayout) {
     }
 }
 
+void Render::drawTrack(const Slider& slider) {
+    
+}
+
 void Render::drawSortCycler(const SortCycler& sortCycler) {
     drawSortText(sortCycler);
     

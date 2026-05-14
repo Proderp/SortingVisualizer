@@ -24,6 +24,8 @@ private:
 
     void drawButton(const Button& button);
 
+    void drawTrack(const Slider& slider);
+
     sf::Color getComplexityColor(const sf::String& complexity);
 
 public:
