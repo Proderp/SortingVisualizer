@@ -292,7 +292,7 @@ void UI::updateSortCycler() {
 
 void UI::updateHUD() {
     const float hudWidth = windowSize.x * 0.20f;
-    const float hudHeight = windowSize.y * 0.25f;
+    const float hudHeight = hud.lineSpacing * 6.f + hud.padding * 2.f;
     
     const sf::Vector2f hudSize = {hudWidth, hudHeight};
     const sf::Vector2f hudPosition = {arrayDimensions.offsetX, arrayDimensions.offsetX};
@@ -300,6 +300,24 @@ void UI::updateHUD() {
     hud.area = sf::FloatRect(hudPosition, hudSize);
 
     hud.initalPosition = hudPosition + sf::Vector2f(hud.padding, hud.padding);
+}
+
+void UI::updateHUDStats(const Algorithm algorithm) {
+    switch (algorithm) {
+        using enum Algorithm;
+        case Bubble:
+            setHUDStats(AlgorithmStats(nSquared, nSquared, n, oOfOne));
+            break;
+        case Insertion:
+            setHUDStats(AlgorithmStats(nSquared, nSquared, n, oOfOne));
+            break;
+        case Merge:
+            setHUDStats(AlgorithmStats(nLogN, nLogN, nLogN, n));
+            break;
+        case Quick:
+            setHUDStats(AlgorithmStats(nLogN, nSquared, nLogN, logN));
+            break;
+    }
 }
 
 const ArrayDimensions& UI::getArrayDimensions() const {

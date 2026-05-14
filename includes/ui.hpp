@@ -32,14 +32,15 @@ private:
 
     void updateSortCycler();
 
-    void updateHUD();
 public:
     UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array);    
     
     void updateUI(const std::vector<Element>& array);
     void updateAnimationSlider();
     void updateSliderLayout();
-
+    void updateHUD();
+    void updateHUDStats(const Algorithm algorithm);
+    
     const ButtonType findClickedButton(const sf::Vector2f mousePosition);
     std::optional<SliderEvent> checkSliderClick(const sf::Vector2f mousePosition, const ButtonType activeDragSlider, const uint16_t actionSize);
 

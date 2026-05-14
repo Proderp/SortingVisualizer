@@ -240,6 +240,7 @@ void App::getPreviousAlgorithm() {
 
 void App::handleSwitchedAlgorithm() {
     if (sortingEngine.isActionsEmpty()) {
+        ui.updateHUDStats(algorithm);
         return; 
     }
 
@@ -345,7 +346,7 @@ void App::render() {
     //renderer.drawSliderLayout(ui.getSliderLayout());
     renderer.drawAnimationSlider(ui.getAnimationSlider());
     renderer.drawSortCycler(ui.getSortCycler());
-    renderer.drawHUD(ui.getHUD());
+    renderer.drawHUD(ui.getHUD(), sortingEngine.getVisualData());
 
     window.display();
 }
