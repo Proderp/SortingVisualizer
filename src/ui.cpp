@@ -95,11 +95,11 @@ void UI::updateControlButtons() {
     buttonLayout.stepBackButton.size = {smallerWidth, smallerWidth};
     buttonLayout.stepForwardButton.size = {smallerWidth, smallerWidth};
 
-    const float stepBackPositionX = columnBegin + smallerWidth / 2.f;
+    const float stepBackPositionX = columnBegin + smallerWidth / 2.f + margin * 1.5f;
     buttonLayout.stepBackButton.position = {stepBackPositionX, rowCenter};
     updateButtonBounds(buttonLayout.stepBackButton);
 
-    const float stepForwardPositionX = columnBegin + columnWidth - smallerWidth / 2.f;
+    const float stepForwardPositionX = columnBegin + columnWidth - smallerWidth / 2.f - margin * 1.5f;
     buttonLayout.stepForwardButton.position = {stepForwardPositionX, rowCenter};
     updateButtonBounds(buttonLayout.stepForwardButton);
 }
@@ -286,7 +286,7 @@ void UI::updateSortCycler() {
     updateButtonBounds(sortCycler.leftArrow);
     updateButtonBounds(sortCycler.rightArrow);
 
-    sortCycler.charSize = height / 3.f;
+    sortCycler.charSize = height / 2.5f;
 }
 
 const ArrayDimensions& UI::getArrayDimensions() const {
@@ -323,15 +323,15 @@ void UI::setArraySizePercentage(const float percentage) {
     arraySizeSlider.percentage = std::clamp(percentage, 0.0f, 1.0f);
 }
 
-void UI::setLatencyPercentage(const float percentage) {
-    Slider& latencySlider = *sliderLayout.sliders.at(1);
-    latencySlider.percentage = std::clamp(percentage, 0.0f, 1.0f);
+void UI::setDelayPercentage(const float percentage) {
+    Slider& delaySlider = *sliderLayout.sliders.at(1);
+    delaySlider.percentage = std::clamp(percentage, 0.0f, 1.0f);
 }
 
 void UI::setPlayButtonSymbol(const sf::String newSymbol) {
     buttonLayout.playButton.name = newSymbol;
 }
 
-void UI::setSortCycleAlgorithm(const Index index) {
-    sortCycler.algorithm = algorithms.at(index);
+void UI::setSortCycleAlgorithm(const Algorithm algorithm) {
+    sortCycler.algorithm = algorithm;
 }

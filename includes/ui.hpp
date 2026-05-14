@@ -51,9 +51,9 @@ public:
 
     void setArraySizePercentage(const float percentage);
 
-    void setLatencyPercentage(const float percentage);
+    void setDelayPercentage(const float percentage);
 
     void setPlayButtonSymbol(const sf::String newSymbol);
 
-    void setSortCycleAlgorithm(const Index index);
+    void setSortCycleAlgorithm(const Algorithm algorithm);
 };

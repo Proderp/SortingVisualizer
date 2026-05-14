@@ -7,7 +7,8 @@ App::App() :
     renderer(window, ui)
 {
     setArraySizeThumb();
-    setLatencyThumb();
+    setDelayThumb();
+    ui.setSortCycleAlgorithm(algorithm);
 }
 
 void App::run() {
@@ -80,8 +81,8 @@ void App::handleSliderEvent(const sf::Vector2f mousePosition) {
         case ButtonType::ArraySizeSlider: 
             updateArraySizeThumb(event.value());
             break;
-        case ButtonType::LatencySlider: {
-            updateLatencyThumb(event.value());
+        case ButtonType::DelaySlider: {
+            updateDelayThumb(event.value());
             break;
         }
     }
@@ -107,9 +108,9 @@ void App::updateArraySizeThumb(const SliderEvent& event) {
     ui.updateUI(sortingEngine.getArray());
 }
 
-void App::updateLatencyThumb(const SliderEvent& event) {
-    const sf::Time newLatency = sf::milliseconds(MAX_LATENCY * event.percentage);
-    latency = newLatency;
+void App::updateDelayThumb(const SliderEvent& event) {
+    const sf::Time newDelay = sf::milliseconds(MAX_LATENCY * event.percentage);
+    delay = newDelay;
 }
 
 void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent) {
@@ -208,26 +209,33 @@ void App::stepForward() {
 }
 
 void App::cycleAlgorithms(const bool scrolledRight) {
-    const bool isOverflowRight = scrolledRight and algorithmIndex == algorithms.size() - 1;
-    const bool isOverflowLeft = !scrolledRight and algorithmIndex == 0;
-
     if (scrolledRight) {
-        if (isOverflowRight) {
-            algorithmIndex = 0;
-        } else {
-            algorithmIndex++;
-        }
+        getNextAlgorithm();
     } else {
-        if (isOverflowLeft) {
-            algorithmIndex = algorithms.size() - 1;
-        } else {
-            algorithmIndex--;
-        }
+        getPreviousAlgorithm();
     }
 
-    ui.setSortCycleAlgorithm(algorithmIndex);
+    ui.setSortCycleAlgorithm(algorithm);
     handleSwitchedAlgorithm();
     updatePlayButtonSymbol();
+}
+
+void App::getNextAlgorithm() {
+    int currentIndex = static_cast<int>(algorithm);
+    int totalAlgos = static_cast<int>(Algorithm::Count);
+
+    int nextIndex = (currentIndex + 1) % totalAlgos;
+
+    algorithm = static_cast<Algorithm>(nextIndex);
+}
+
+void App::getPreviousAlgorithm() {
+    int currentIndex = static_cast<int>(algorithm);
+    int totalAlgos = static_cast<int>(Algorithm::Count);
+
+    int prevIndex = (currentIndex - 1 + totalAlgos) % totalAlgos;
+
+    algorithm = static_cast<Algorithm>(prevIndex);
 }
 
 void App::handleSwitchedAlgorithm() {
@@ -253,17 +261,18 @@ void App::restartAnimation() {
 }
 
 void App::startSorting() {
-    switch (algorithmIndex) {
-        case 0:
+    switch (algorithm) {
+        using enum Algorithm;
+        case Bubble:
             sortingEngine.bubbleSort();
             break;
-        case 1:
+        case Insertion:
             sortingEngine.insertionSort();
             break;
-        case 2:
+        case Merge:
             sortingEngine.mergeSortWrapper();
             break;
-        case 3:
+        case Quick:
             sortingEngine.quickSortWrapper();
             break;
     }
@@ -289,7 +298,7 @@ void App::updatePlayButtonSymbol() {
 }
 
 void App::checkClock() {
-    if (clock.getElapsedTime() >= latency and isSorting) {
+    if (clock.getElapsedTime() >= delay and isSorting) {
         clock.restart();
 
         if (!sortingEngine.runActionForward()) {
@@ -318,9 +327,9 @@ void App::setArraySizeThumb() {
     ui.updateSliderLayout();
 }
 
-void App::setLatencyThumb() {
-    float percentage = latency.asMilliseconds() / MAX_LATENCY;
-    ui.setLatencyPercentage(percentage);
+void App::setDelayThumb() {
+    float percentage = delay.asMilliseconds() / MAX_LATENCY;
+    ui.setDelayPercentage(percentage);
     ui.updateSliderLayout();
 }
 

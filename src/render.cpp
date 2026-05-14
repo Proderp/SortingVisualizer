@@ -167,7 +167,22 @@ void Render::drawSortCycler(const SortCycler& sortCycler) {
 }
 
 void Render::drawSortText(const SortCycler& sortCycler) {
-    text.setString(sortCycler.algorithm);
+    switch (sortCycler.algorithm) {
+        using enum Algorithm;
+        case Bubble:
+            text.setString("BUBBLE");
+            break;
+        case Insertion:
+            text.setString("INSERTION");
+            break;
+        case Merge:
+            text.setString("MERGE");
+            break;
+        case Quick:
+            text.setString("QUICK");
+            break;
+    }
+
     text.setCharacterSize(sortCycler.charSize);
     setTextOrigin();
     

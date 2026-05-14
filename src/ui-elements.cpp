@@ -16,7 +16,7 @@ Slider::Slider(const sf::String buttonName, const ButtonType buttonID) :
 
 SliderLayout::SliderLayout() : 
     arraySizeSlider("ARRAY SIZE", ButtonType::ArraySizeSlider),
-    latencySlider("SPEED", ButtonType::LatencySlider)
+    delaySlider("DELAY", ButtonType::DelaySlider)
 {}
 
 SortCycler::SortCycler() :

@@ -1,8 +1,9 @@
 #include "includes.hpp"
 
-enum class ButtonType { Randomize, Consecutive, StepBack, Play, StepForward, AnimationSlider, ArraySizeSlider, LatencySlider, LeftArrow, RightArrow, None };
+enum class ButtonType { Randomize, Consecutive, StepBack, Play, StepForward, AnimationSlider, ArraySizeSlider, DelaySlider, LeftArrow, RightArrow, None };
 
 enum class DataType { Random, Consecutive };
+enum class Algorithm { Bubble, Insertion, Merge, Quick, Count };
 const std::array<sf::String, 4> algorithms = {"BUBBLE", "INSERTION", "MERGE", "QUICK"};
 
 struct ArrayDimensions {
@@ -55,12 +56,12 @@ struct Slider {
 struct SliderLayout {
 private:
     Slider arraySizeSlider;
-    Slider latencySlider;
+    Slider delaySlider;
 
 public:
     SliderLayout();
 
-    const std::array<Slider*, 2> sliders = {&arraySizeSlider, &latencySlider};
+    const std::array<Slider*, 2> sliders = {&arraySizeSlider, &delaySlider};
     uint32_t characterSize{15};
 };
 
@@ -73,7 +74,7 @@ struct SortCycler {
     sf::Vector2f position;
     sf::Vector2f size;
     sf::FloatRect cyclingBounds;
-    sf::String algorithm{algorithms.at(0)};
+    Algorithm algorithm;
 
     Button leftArrow;
     Button rightArrow;
