@@ -191,7 +191,11 @@ void Render::drawSortText(const SortCycler& sortCycler) {
 }
 
 void Render::drawHUD(const HUD& hud) {
-    
+    rectangle.setFillColor(sf::Color(255, 255, 255, 40));
+    rectangle.setSize(hud.area.size);
+    rectangle.setPosition(hud.area.position);
+    rectangle.setOrigin({0.f, 0.f});
+    window.draw(rectangle);
 }
 
 void Render::setTextOrigin() {

@@ -341,6 +341,7 @@ void App::render() {
     //renderer.drawSliderLayout(ui.getSliderLayout());
     renderer.drawAnimationSlider(ui.getAnimationSlider());
     renderer.drawSortCycler(ui.getSortCycler());
+    renderer.drawHUD(ui.getHUD());
 
     window.display();
 }
