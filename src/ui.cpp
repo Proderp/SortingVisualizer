@@ -14,6 +14,7 @@ void UI::updateUI(const std::vector<Element>& array) {
     updateButtonLayout();
     updateSliderLayout();
     updateSortCycler();
+    updateHUD();
 }
 
 void UI::updateView() {
@@ -290,10 +291,14 @@ void UI::updateSortCycler() {
 }
 
 void UI::updateHUD() {
-    const float hudWidth = windowSize.x * 0.25f;
-    const float hudHeight = windowSize.y * 0.20f;
+    const float hudWidth = windowSize.x * 0.20f;
+    const float hudHeight = windowSize.y * 0.25f;
     
-    hud.hudArea = sf::FloatRect({margin, margin}, {hudWidth, hudHeight});
+    const sf::Vector2f hudSize = {hudWidth, hudHeight};
+    const sf::Vector2f hudPosition = {arrayDimensions.offsetX, arrayDimensions.offsetX};
+    
+    hud.area = sf::FloatRect(hudPosition, hudSize);
+
     hud.initalPosition = {margin + 15.f, margin + 15.f};
     hud.lineSpacing = 25.f;
     hud.charSize = 16;

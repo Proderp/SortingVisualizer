@@ -84,9 +84,21 @@ struct SortCycler {
     SortCycler();
 };
 
+struct AlgorithmStats {
+    sf::String timeComplexity;
+    sf::String worstCase;
+    sf::String bestCase;
+
+    sf::String spaceComplexity;
+
+    AlgorithmStats(sf::String time, sf::String worst, sf::String best, sf::String space);
+}; 
+
 struct HUD {
-    sf::FloatRect hudArea;
+    sf::FloatRect area;
     sf::Vector2f initalPosition;
     float lineSpacing;
     uint32_t charSize{10};
+
+    AlgorithmStats stats;
 };
