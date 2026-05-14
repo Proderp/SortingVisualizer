@@ -30,3 +30,7 @@ AlgorithmStats::AlgorithmStats(sf::String time, sf::String worst, sf::String bes
     bestCase(best),
     spaceComplexity(space)
 {}
+
+HUD::HUD() :
+    stats(nSquared, nSquared, n, oOfOne)
+{}

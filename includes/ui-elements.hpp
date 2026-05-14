@@ -101,4 +101,6 @@ struct HUD {
     uint32_t charSize{10};
 
     AlgorithmStats stats;
+
+    HUD();
 };
