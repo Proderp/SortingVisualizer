@@ -355,6 +355,6 @@ void UI::setSortCycleAlgorithm(const Algorithm algorithm) {
     sortCycler.algorithm = algorithm;
 }
 
-void setHUDStats(AlgorithmStats stats) {
+void UI::setHUDStats(AlgorithmStats stats) {
     hud.stats = stats;
 }
