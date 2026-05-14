@@ -289,6 +289,10 @@ void UI::updateSortCycler() {
     sortCycler.charSize = height / 2.5f;
 }
 
+void UI::updateHUD() {
+    
+}
+
 const ArrayDimensions& UI::getArrayDimensions() const {
     return arrayDimensions;
 }

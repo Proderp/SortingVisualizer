@@ -9,6 +9,7 @@ private:
     SliderLayout sliderLayout;
     Slider animationSlider;
     SortCycler sortCycler;
+    HUD hud;
 
     sf::RenderWindow& window;
     sf::View view;
@@ -30,6 +31,8 @@ private:
     SliderEvent updateSliderPercentage(Slider& slider, const float mouseX);
 
     void updateSortCycler();
+
+    void updateHUD();
 public:
     UI(sf::RenderWindow& window, const sf::Vector2f& windowSize, const std::vector<Element>& array);    
     
