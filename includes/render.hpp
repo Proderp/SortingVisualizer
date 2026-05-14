@@ -24,7 +24,8 @@ private:
 
     void drawButton(const Button& button);
 
-    void drawLeadingZeroes(const size_t number);
+    void setLeadingZeroes(const std::string stat);
+    sf::Color getComplexityColor(const sf::String& complexity);
 
 public:
 

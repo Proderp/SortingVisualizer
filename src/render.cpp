@@ -206,9 +206,7 @@ void Render::drawHUD(const HUD& hud, const VisualData& visualData) {
 
     const float endOfArea = hud.area.position.x + hud.area.size.x - hud.padding;
 
-    //std::stringstream stream;
     const size_t maxDigits = std::to_string(MAX_ARRAY_SIZE * MAX_ARRAY_SIZE).length();
-
     const std::string dummyZeros(maxDigits, '0');
     text.setString(dummyZeros);
 
@@ -233,26 +231,60 @@ void Render::drawHUD(const HUD& hud, const VisualData& visualData) {
         
         text.setString(stat);
         if (isNumber) {
+            setLeadingZeroes(stat);
             text.setPosition({staticNumberAnchorX, yPosition});
+            window.draw(text);
+
+            const float newXPosition = staticNumberAnchorX + text.getLocalBounds().size.x + text.getLetterSpacing();
+            text.setString(stat);
+            text.setFillColor(sf::Color::Red);
+            setLeftAlign();
+            text.setPosition({newXPosition, yPosition});
+            window.draw(text);
         } else {
+            text.setFillColor(getComplexityColor(stat));
             setRightAlign();
             text.setPosition({endOfArea, yPosition});
         }
         
         yPosition += hud.lineSpacing;
         window.draw(text);
+        text.setFillColor(sf::Color::White);
     };
 
-    drawLine("COMPARISONS", stream.str(), true);
-    drawLine("ARRAY ACCESSES", stream.str(), true);
+    drawLine("COMPARISONS", std::to_string(visualData.comparisons), true);
+    drawLine("ARRAY ACCESSES", std::to_string(visualData.arrayAccesses), true);
     drawLine("TIME COMPLEXITY", hud.stats.timeComplexity);
     drawLine("WORST CASE", hud.stats.worstCase);
     drawLine("BEST CASE", hud.stats.bestCase);
     drawLine("SPACE COMPLEXITY", hud.stats.spaceComplexity);
 }
 
-void Render::drawLeadingZeroes(const size_t number) {
+void Render::setLeadingZeroes(const std::string stat) {
+    const size_t maxDigits = std::to_string(MAX_ARRAY_SIZE * MAX_ARRAY_SIZE).length();
+
+    size_t numberOfZeroes = maxDigits - stat.length();
+
+    std::string zeroes(numberOfZeroes, '0');
+    text.setString(zeroes);
+    text.setFillColor(sf::Color(200, 200, 200));
+
+    const sf::FloatRect bounds = text.getLocalBounds();
+    text.setOrigin({0.f, std::round(bounds.position.y + bounds.size.y / 2.f)});
+}
+
+sf::Color Render::getComplexityColor(const sf::String& complexity) {
+    if (complexity == oOfOne or complexity == logN) {
+        return sf::Color::Green; 
+    } 
+    else if (complexity == n or complexity == nLogN) {
+        return sf::Color::Yellow; 
+    } 
+    else if (complexity == nSquared) {
+        return sf::Color::Red; 
+    }
     
+    return sf::Color::White;
 }
 
 void Render::setTextOrigin() {
