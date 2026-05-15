@@ -1,41 +1,45 @@
 #include "includes.hpp"
 
+enum class ButtonType { Randomize, Consecutive, StepBack, Play, StepForward, AnimationSlider, ArraySizeSlider, DelaySlider, UpArrow, DownArrow, None };
+
+enum class DataType { Random, Consecutive };
+enum class Algorithm { Bubble, Insertion, Merge, Quick, Count };
+const std::array<sf::String, 4> algorithms = {"BUBBLE", "INSERTION", "MERGE", "QUICK"};
+
 struct ArrayDimensions {
     float offsetX;
     float offsetY;
-    
+
     float barWidth;
     float barHeightUnit;
     
     float barSpacing{0.f};
 };
 
-enum class ButtonType { Sort, Randomize, Consecutive, AnimationSlider, ArraySizeSlider, LatencySlider, None };
-
 struct Button {
     sf::Vector2f position;
     sf::Vector2f size;
     sf::FloatRect bounds;
 
-    const std::string name;
+    sf::String name;
     const ButtonType id;
+    uint32_t charSize{30};
 
-    Button(const std::string name, const ButtonType id);
+    Button(const sf::String name, const ButtonType id);
 };
 
 struct ButtonLayout {
-private:
-    Button sortButton;
     Button randomizeNormalButton;
     Button randomizeConsecutiveButton;
+    Button stepBackButton;
+    Button playButton;
+    Button stepForwardButton;
 
-public:
     ButtonLayout();
 
-    const std::array<Button*, 3> buttons = {&sortButton, &randomizeNormalButton, &randomizeConsecutiveButton};
+    const std::array<Button*, 5> buttons = {&randomizeNormalButton, &randomizeConsecutiveButton, &stepBackButton, &playButton, &stepForwardButton};
 
     float layoutWidth;
-    uint32_t characterSize{30};
 };
 
 struct Slider {
@@ -46,23 +50,56 @@ struct Slider {
     Button thumb;
     float percentage{0.f};
     
-    Slider(const std::string buttonName, const ButtonType buttonID);
+    Slider(const sf::String buttonName, const ButtonType buttonID);
 };
 
 struct SliderLayout {
-private:
-    Slider animationSlider;
     Slider arraySizeSlider;
-    Slider latencySlider;
+    Slider delaySlider;
 
-public:
     SliderLayout();
 
-    const std::array<Slider*, 3> sliders = {&animationSlider, &arraySizeSlider, &latencySlider};
+    const std::array<Slider*, 2> sliders = {&arraySizeSlider, &delaySlider};
     uint32_t characterSize{15};
 };
 
 struct SliderEvent {
     ButtonType id;
     float percentage;
+};
+
+struct SortCycler {
+    sf::Vector2f position;
+    sf::Vector2f size;
+    sf::FloatRect cyclingBounds;
+    Algorithm algorithm;
+
+    Button upArrow;
+    Button downArrow;
+
+    uint32_t charSize{20};
+
+    SortCycler();
+};
+
+struct AlgorithmStats {
+    sf::String timeComplexity;
+    sf::String worstCase;
+    sf::String bestCase;
+
+    sf::String spaceComplexity;
+
+    AlgorithmStats(sf::String time, sf::String worst, sf::String best, sf::String space);
+};
+
+struct HUD {
+    sf::FloatRect area;
+    sf::Vector2f initalPosition;
+    float lineSpacing{25.f};
+    float padding{15.f};
+    uint32_t charSize{16};
+
+    AlgorithmStats stats;
+
+    HUD();
 };

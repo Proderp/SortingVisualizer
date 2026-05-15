@@ -1,19 +1,36 @@
 #include "ui-elements.hpp"
 
-Button::Button(const std::string name, const ButtonType id) : name(name), id(id) {};
+Button::Button(const sf::String name, const ButtonType id) : name(name), id(id) {};
 
 ButtonLayout::ButtonLayout() : 
-    sortButton("Sort", ButtonType::Sort),
-    randomizeNormalButton("Randomize", ButtonType::Randomize),
-    randomizeConsecutiveButton("Consecutive", ButtonType::Consecutive)
+    randomizeNormalButton("RANDOMIZE", ButtonType::Randomize),
+    randomizeConsecutiveButton("CONSECUTIVE", ButtonType::Consecutive),
+    stepBackButton(stepBackSymbol, ButtonType::StepBack),
+    playButton(playSymbol, ButtonType::Play),
+    stepForwardButton(stepForwardSymbol, ButtonType::StepForward)
 {}
 
-Slider::Slider(const std::string buttonName, const ButtonType buttonID) :
+Slider::Slider(const sf::String buttonName, const ButtonType buttonID) :
     thumb(buttonName, buttonID)
 {}
 
 SliderLayout::SliderLayout() : 
-    animationSlider("Animation Slider", ButtonType::AnimationSlider),
-    arraySizeSlider("Array Size", ButtonType::ArraySizeSlider),
-    latencySlider("Speed", ButtonType::LatencySlider)
+    arraySizeSlider("ARRAY SIZE", ButtonType::ArraySizeSlider),
+    delaySlider("DELAY", ButtonType::DelaySlider)
+{}
+
+SortCycler::SortCycler() :
+    upArrow(upSymbol, ButtonType::UpArrow),
+    downArrow(downSymbol, ButtonType::DownArrow)
+{}
+
+AlgorithmStats::AlgorithmStats(sf::String time, sf::String worst, sf::String best, sf::String space) :
+    timeComplexity(time),
+    worstCase(worst),
+    bestCase(best),
+    spaceComplexity(space)
+{}
+
+HUD::HUD() :
+    stats(nSquared, nSquared, n, oOfOne)
 {}

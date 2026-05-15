@@ -1,16 +1,22 @@
 #pragma once
 #include "includes.hpp"
 #include "ui.hpp"
+#include "sort-engine.hpp"
 
 class Render {
 private:
     sf::RenderWindow& window;
 
-    const UI& ui;
+    sf::Font firaCodeFont;
+    sf::Font segoeFont;
 
-    sf::Font font;
     sf::Text text;
     sf::RectangleShape rectangle;
+
+    sf::Color cold; 
+    sf::Color hot;
+
+    const float outlineThickness{-1.f};
 
     void loadFont();
 
@@ -18,14 +24,26 @@ private:
 
     void drawButton(const Button& button);
 
+    void drawTrack(const Slider& slider);
+    void drawSliderName(const Slider& slider, const float distanceAboveSlider);
+    void drawSliderValue(const Slider& slider, const float distanceAboveSlider);
+    void findValue(const Slider& slider);
+
+    sf::Color getComplexityColor(const sf::String& complexity);
+
 public:
 
     Render(sf::RenderWindow& window, const UI& ui);
 
-    void drawArray(const std::vector<Element>& array, const VisualData& visualData);
+    void drawArray(const std::vector<Element>& array, const ArrayDimensions& arrayDimensions, const VisualData& visualData);
 
     void drawButtonLayout(const ButtonLayout& buttonLayout);
 
     void drawAnimationSlider(const Slider& animationSlider);
     void drawSliderLayout(const SliderLayout& sliderLayout);
+
+    void drawSortCycler(const SortCycler& sortCycler);
+    void drawSortText(const SortCycler& sortCycler);
+
+    void drawHUD(const HUD& hud, const VisualData& visualData);
 };

@@ -2,52 +2,47 @@
 
 Render::Render(sf::RenderWindow& window, const UI& ui) : 
     window(window),
-    ui(ui),
-    text(font, "")
+    text(firaCodeFont, ""),
+    cold(24, 90, 157),
+    hot(191, 0, 255)
 {
     loadFont();
 }
 
 void Render::loadFont() {
-    if (!font.openFromFile("../../fonts/Ubuntu-Regular.ttf")) {
-        std::cerr << "Error loading font." << std::endl;
+    if (!firaCodeFont.openFromFile("../../fonts/FiraCode-Regular.ttf")) {
+        std::cerr << "Error loading Fira Code." << std::endl;
     }
 
-    text.setFont(font);
+    if (!segoeFont.openFromFile("../../fonts/seguisym.ttf")) {
+        std::cerr << "Error loading Segoe." << std::endl;
+    }
+
+    firaCodeFont.setSmooth(true);
+    text.setFont(firaCodeFont);
 }
 
-void Render::drawArray(const std::vector<Element>& array, const VisualData& visualData) {
-    const ArrayDimensions& dimensions = ui.getArrayDimensions();
-
+void Render::drawArray(const std::vector<Element>& array, const ArrayDimensions& arrayDimensions, const VisualData& visualData) {
     for (Index i{0}; i < array.size(); i++) {
-        const float xPosition = dimensions.offsetX + (i * dimensions.barWidth) + (i * dimensions.barSpacing);
-        rectangle.setPosition({xPosition, dimensions.offsetY});
+        const float normalizedValue = static_cast<float>(array.at(i)) / array.size();
 
-        const sf::Vector2f barSize = {dimensions.barWidth, dimensions.barHeightUnit * array.at(i)};
-        rectangle.setSize(barSize);        
+        const uint8_t r = cold.r + normalizedValue * (hot.r - cold.r);
+        const uint8_t g = cold.g + normalizedValue * (hot.g - cold.g);
+        const uint8_t b = cold.b + normalizedValue * (hot.b - cold.b);
+
+        rectangle.setFillColor(sf::Color(r, g, b));
+
+        if (i == visualData.activeOne or i == visualData.activeTwo or i == visualData.pivot) {
+            rectangle.setFillColor(sf::Color::White);
+        }
+
+        const float xPosition = arrayDimensions.offsetX + (i * arrayDimensions.barWidth) + (i * arrayDimensions.barSpacing);
+        rectangle.setPosition({xPosition, arrayDimensions.offsetY});
+
+        const sf::Vector2f barSize = {arrayDimensions.barWidth, arrayDimensions.barHeightUnit * array.at(i)};
+        rectangle.setSize(barSize);
 
         rectangle.setOrigin({0.f, barSize.y});
-        
-        rectangle.setFillColor(sf::Color::White);
-        
-        // for swaps and comaprisons
-        if (visualData.activeOne != INACTIVE and visualData.activeTwo != INACTIVE) {
-            if (visualData.activeOne == i or visualData.activeTwo == i) {
-                rectangle.setFillColor(sf::Color::Red);
-            }
-        }
-
-        if (visualData.sortedElements.size() == array.size() and visualData.sortedElements.at(i)) {
-            rectangle.setFillColor(sf::Color::Green);
-        }
-
-        if (visualData.isOverwrite and i == visualData.activeOne) {
-            rectangle.setFillColor(sf::Color::Yellow);
-        } 
-
-        if (visualData.pivot != INACTIVE and i == visualData.pivot) {
-            rectangle.setFillColor(sf::Color(255, 165, 0));
-        }
 
         window.draw(rectangle);
     }
@@ -63,16 +58,32 @@ void Render::drawButton(const Button& button) {
 
 void Render::drawButtonLayout(const ButtonLayout& buttonLayout) {   
        
-    rectangle.setFillColor(sf::Color::White);
+    rectangle.setFillColor(sf::Color::Transparent);
+    rectangle.setOutlineThickness(outlineThickness);
+    rectangle.setOutlineColor(sf::Color::White);
 
-    text.setCharacterSize(buttonLayout.characterSize);
-    text.setFillColor(sf::Color::Black);
-
+    text.setFillColor(sf::Color::White);
+    
     auto drawText = [&](const Button& button) {
         text.setString(button.name);
+        
+        bool isControlButton = button.id == ButtonType::StepBack or button.id == ButtonType::Play or button.id == ButtonType::StepForward;
+        if (isControlButton) {
+            text.setFont(segoeFont);
+        } else {
+            text.setFont(firaCodeFont);
+        }
+
+        text.setCharacterSize(button.charSize);
+        text.setLetterSpacing(3.f);
         setTextOrigin();
 
-        text.setPosition(button.position);
+        if (button.name == playSymbol and button.id == ButtonType::Play) {
+            sf::Vector2f newPosition = button.position + sf::Vector2f(button.size.x * 0.05f, 0.f);
+            text.setPosition(newPosition);
+        } else {
+            text.setPosition(button.position);
+        }
         window.draw(text);
     };
     
@@ -80,38 +91,264 @@ void Render::drawButtonLayout(const ButtonLayout& buttonLayout) {
         drawButton(*button);
         drawText(*button);
     }
+
+    rectangle.setOutlineThickness(0);
+    rectangle.setOutlineColor(sf::Color::Transparent);
 }
 
 void Render::drawAnimationSlider(const Slider& animationSlider) {
-    rectangle.setFillColor(sf::Color(100, 100, 100));
-    rectangle.setPosition(animationSlider.position);
-    rectangle.setSize(animationSlider.size);
-    rectangle.setOrigin({0, animationSlider.size.y / 2.f});
 
+    drawTrack(animationSlider);
+    rectangle.setFillColor(sf::Color::White);
+    drawButton(animationSlider.thumb);
+}
+
+void Render::drawSliderLayout(const SliderLayout& sliderLayout) {
+    text.setCharacterSize(sliderLayout.characterSize);
+    text.setFont(firaCodeFont);
+    text.setFillColor(sf::Color::White);
+    text.setLetterSpacing(1.f);
+
+    for (const Slider* slider : sliderLayout.sliders) {
+        drawTrack(*slider);
+        rectangle.setFillColor(sf::Color::White);
+        drawButton(slider->thumb);
+        
+        const float distanceAboveSlider = slider->thumb.size.y * 1.5f;
+
+        drawSliderName(*slider, distanceAboveSlider);
+        
+        drawSliderValue(*slider, distanceAboveSlider);
+    }
+}
+
+void Render::drawTrack(const Slider& slider) {
+    rectangle.setFillColor(cold);
+
+    const float thumbRadius = slider.thumb.size.x / 2.f;
+    const float startOfTrack = slider.position.x + thumbRadius;
+    
+    const float thumbXPosition = slider.thumb.position.x;
+    const float upToThumbWitdh = thumbXPosition - startOfTrack;
+    
+    rectangle.setPosition(slider.position);
+    rectangle.setSize({upToThumbWitdh, slider.size.y});
+    rectangle.setOrigin({0, slider.size.y / 2.f});
+    
     window.draw(rectangle);
+    
+    const float endOfTrack = startOfTrack + slider.size.x - thumbRadius;
+    const float thumbToEndWidth = endOfTrack - thumbXPosition;
 
-    rectangle.setFillColor(sf::Color::Green);
-    rectangle.setPosition(animationSlider.thumb.position);
-    rectangle.setSize(animationSlider.thumb.size);
-    rectangle.setOrigin(rectangle.getGeometricCenter());
+    rectangle.setFillColor(hot);
+    rectangle.setPosition({thumbXPosition, slider.position.y});
+    rectangle.setSize({thumbToEndWidth, slider.size.y});
+    rectangle.setOrigin({0, slider.size.y / 2.f});
 
     window.draw(rectangle);
 }
 
-void Render::drawSliderLayout(const SliderLayout& sliderLayout) {
-    for (const Slider* slider : sliderLayout.sliders) {
-        rectangle.setFillColor(sf::Color(100, 100, 100));
-        rectangle.setPosition(slider->position);
-        rectangle.setSize(slider->size);
+void Render::drawSliderName(const Slider& slider, const float distanceAboveSlider) {
+    text.setString(slider.thumb.name);
+    
+    sf::FloatRect bounds = text.getLocalBounds();
+    text.setOrigin({0.f, std::round(bounds.position.y + bounds.size.y)});
+    
+    text.setPosition(slider.position - sf::Vector2f(0.f, distanceAboveSlider));
+    window.draw(text);
+}
 
-        const sf::Vector2f middleLeft = {0, slider->size.y / 2.f}; 
-        rectangle.setOrigin(middleLeft);
-
-        window.draw(rectangle);
-
-        rectangle.setFillColor(sf::Color::Green);
-        drawButton(slider->thumb);
+void Render::drawSliderValue(const Slider& slider, const float distanceAboveSlider) {
+    if (slider.thumb.id == ButtonType::ArraySizeSlider) {
+        text.setString(std::to_string(MAX_ARRAY_SIZE)); 
+    } else {
+        text.setString(std::to_string(static_cast<uint16_t>(MAX_DELAY)) + " ms"); 
     }
+    const sf::FloatRect safeBounds = text.getLocalBounds();
+    const float lockedYOrigin = std::round(safeBounds.position.y + safeBounds.size.y / 2.f);
+    const float staticBlockWidth = safeBounds.size.x;
+
+    findValue(slider);
+
+    text.setOrigin({0.f, lockedYOrigin});
+
+    const float anchorX = slider.position.x + slider.size.x;
+
+    text.setPosition({anchorX - staticBlockWidth, slider.position.y - distanceAboveSlider});
+    window.draw(text);
+}
+
+void Render::findValue(const Slider& slider) {
+    std::stringstream ss;
+
+    if (slider.thumb.id == ButtonType::ArraySizeSlider) {
+        const uint16_t potentialSize = static_cast<uint16_t>(MAX_ARRAY_SIZE * slider.percentage);
+        const uint16_t actualSize = std::clamp(potentialSize, MIN_ARRAY_SIZE, MAX_ARRAY_SIZE);
+        
+        uint16_t worstCase = std::to_string(MAX_ARRAY_SIZE).length();
+        ss << std::setw(worstCase) << std::setfill(' ') << actualSize;
+    } else {
+        const uint16_t delay = static_cast<uint16_t>(slider.percentage * MAX_DELAY);
+
+        uint16_t worstCase = std::to_string(static_cast<uint16_t>(MAX_DELAY)).length();
+        ss << std::setw(worstCase) << std::setfill(' ') << delay << " ms";
+    }
+    
+    text.setString(ss.str());
+}
+
+void Render::drawSortCycler(const SortCycler& sortCycler) {
+    drawSortText(sortCycler);
+
+    rectangle.setFillColor(sf::Color::Transparent);
+    
+    rectangle.setPosition(sortCycler.upArrow.position);
+    rectangle.setSize(sortCycler.upArrow.size);
+    rectangle.setOrigin(rectangle.getGeometricCenter());
+    window.draw(rectangle);
+
+    text.setCharacterSize(sortCycler.upArrow.size.x * 2.f);
+    text.setScale({1.f, 0.25f});
+
+    text.setString(sortCycler.upArrow.name);
+    setTextOrigin();
+    text.setPosition(sortCycler.upArrow.position);
+    window.draw(text);
+    
+    rectangle.setPosition(sortCycler.downArrow.position);
+    window.draw(rectangle);
+    
+    text.setString(sortCycler.downArrow.name);
+    setTextOrigin();
+    text.setPosition(sortCycler.downArrow.position);
+    window.draw(text);
+    
+    text.setScale({1.f, 1.f});
+    rectangle.setFillColor(sf::Color::White);
+}
+
+void Render::drawSortText(const SortCycler& sortCycler) {
+    text.setFont(firaCodeFont);
+    text.setCharacterSize(sortCycler.charSize);
+    text.setLetterSpacing(1.f);
+    
+    text.setString("INSERTION");
+    sf::FloatRect bounds = text.getLocalBounds();
+    const float lockedYOrigin = std::round(bounds.position.y + bounds.size.y / 2.f);
+
+    switch (sortCycler.algorithm) {
+        using enum Algorithm;
+        case Bubble:
+            text.setString("BUBBLE");
+            break;
+        case Insertion:
+            text.setString("INSERTION");
+            break;
+        case Merge:
+            text.setString("MERGE");
+        break;
+            case Quick:
+            text.setString("QUICK");
+        break;
+    }
+
+    
+    bounds = text.getLocalBounds();
+    text.setOrigin({std::round(bounds.position.x + bounds.size.x / 2.f), lockedYOrigin});
+
+    text.setPosition(sortCycler.position);
+    window.draw(text);
+}
+
+void Render::drawHUD(const HUD& hud, const VisualData& visualData) {
+    rectangle.setFillColor(sf::Color(255, 255, 255, 40));
+    rectangle.setSize(hud.area.size);
+    rectangle.setPosition(hud.area.position);
+    rectangle.setOrigin({0.f, 0.f});
+    window.draw(rectangle);
+
+    text.setFont(firaCodeFont);
+    text.setCharacterSize(hud.charSize);
+    text.setLetterSpacing(2.f);
+
+    float xPosition = hud.initalPosition.x;
+    float yPosition = hud.initalPosition.y;
+
+    const float endOfArea = hud.area.position.x + hud.area.size.x - hud.padding;
+
+    const size_t maxDigits = std::to_string(MAX_ARRAY_SIZE * MAX_ARRAY_SIZE).length();
+    const std::string dummyZeros(maxDigits, '0');
+    text.setString(dummyZeros);
+
+    const float numberBlockWidth = text.getLocalBounds().size.x;
+    const float staticNumberAnchorX = endOfArea - numberBlockWidth;
+
+    const float lockedYOrigin = std::round(text.getLocalBounds().position.y + text.getLocalBounds().size.y / 2.f);
+    
+    auto setRightAlign = [&]() {
+        const sf::FloatRect bounds = text.getLocalBounds();
+        text.setOrigin({bounds.position.x + bounds.size.x, lockedYOrigin}); 
+    };
+
+    auto setLeftAlign = [&]() {
+        const sf::FloatRect bounds = text.getLocalBounds();
+        text.setOrigin({0.f, lockedYOrigin});
+    };
+    
+    auto drawLine = [&](const sf::String& name, const sf::String& stat, const bool isNumber = false) {
+        text.setString(name);
+        setLeftAlign();
+        text.setPosition({xPosition, yPosition});
+        window.draw(text);
+        
+        text.setString(stat);
+        if (isNumber) {
+            size_t numberOfZeroes = (maxDigits > stat.getSize()) ? (maxDigits - stat.getSize()) : 0;
+            std::string zeroes(numberOfZeroes, '0');
+            text.setString(zeroes);
+            text.setFillColor(sf::Color(200, 200, 200));
+            setLeftAlign();
+            text.setPosition({staticNumberAnchorX, yPosition});
+            window.draw(text);
+
+            text.setString(zeroes + stat); 
+            sf::Vector2f exactRedStartPos = text.findCharacterPos(numberOfZeroes);
+            text.setString(stat);
+            text.setOrigin({0.f, 0.f});
+            text.setFillColor(sf::Color::Red);
+            text.setPosition(exactRedStartPos); 
+            window.draw(text);
+        } else {
+            text.setFillColor(getComplexityColor(stat));
+            setRightAlign();
+            text.setPosition({endOfArea, yPosition});
+        }
+        
+        yPosition += hud.lineSpacing;
+        window.draw(text);
+        text.setFillColor(sf::Color::White);
+    };
+
+    drawLine("COMPARISONS", std::to_string(visualData.comparisons), true);
+    drawLine("ARRAY ACCESSES", std::to_string(visualData.arrayAccesses), true);
+    drawLine("TIME COMPLEXITY", hud.stats.timeComplexity);
+    drawLine("WORST CASE", hud.stats.worstCase);
+    drawLine("BEST CASE", hud.stats.bestCase);
+    drawLine("SPACE COMPLEXITY", hud.stats.spaceComplexity);
+}
+
+sf::Color Render::getComplexityColor(const sf::String& complexity) {
+    if (complexity == oOfOne or complexity == logN) {
+        return sf::Color::Green; 
+    } 
+    else if (complexity == n or complexity == nLogN) {
+        return sf::Color::Yellow; 
+    } 
+    else if (complexity == nSquared) {
+        return sf::Color::Red; 
+    }
+    
+    return sf::Color::White;
 }
 
 void Render::setTextOrigin() {

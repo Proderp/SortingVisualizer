@@ -6,8 +6,9 @@ App::App() :
     ui(window, windowSize, sortingEngine.getArray()),
     renderer(window, ui)
 {
-    updateArraySizeThumb();
-    updateLatencyThumb();
+    setArraySizeThumb();
+    setDelayThumb();
+    ui.setSortCycleAlgorithm(algorithm);
 }
 
 void App::run() {
@@ -49,29 +50,11 @@ void App::eventLoop() {
         }
 
         if (const sf::Event::KeyPressed* keyPressedEvent = event->getIf<sf::Event::KeyPressed>()) {
-            if (keyPressedEvent->scancode == sf::Keyboard::Scancode::Left) {
-                isSorting = false;
-                sortingEngine.runActionBackward();
-                updateAnimationThumb();
-            }
+            handleKeyPressedEvent(keyPressedEvent);
+        }
 
-            if (keyPressedEvent->scancode == sf::Keyboard::Scancode::Right) {
-                isSorting = false;
-                sortingEngine.runActionForward();
-                updateAnimationThumb();
-            }
-
-            if (keyPressedEvent->scancode == sf::Keyboard::Scancode::Space) {
-                isSorting = !isSorting;
-            }
-            
-            if (keyPressedEvent->scancode == sf::Keyboard::Scancode::R) {
-                if (sortingEngine.getActionsSize() > 0) {
-                    sortingEngine.scrubAnimation(0);
-                    updateAnimationThumb();
-                    isSorting = true;
-                }
-            }
+        if (const sf::Event::MouseWheelScrolled* scrollEvent = event->getIf<sf::Event::MouseWheelScrolled>()) {
+            handleScrollEvent(scrollEvent);
         }
     }
 }
@@ -79,44 +62,60 @@ void App::eventLoop() {
 void App::handleSliderEvent(const sf::Vector2f mousePosition) {
     std::optional<SliderEvent> event = ui.checkSliderClick(mousePosition, draggedSlider, sortingEngine.getActionsSize());
 
-    if (event.has_value()) {
+    if (!event.has_value()) {
+        return;
+    }
 
-        if (event->id == ButtonType::AnimationSlider and sortingEngine.getActionsSize() == 0) {
-            ui.resetAnimationSlider();
-            draggedSlider = ButtonType::None; 
-            return;
+    if (event->id == ButtonType::AnimationSlider and sortingEngine.isActionsEmpty()) {
+        ui.resetAnimationSlider();
+        draggedSlider = ButtonType::None; 
+        return;
+    }
+
+    draggedSlider = event->id;
+
+    switch (event->id) {
+        case ButtonType::AnimationSlider: {
+            isSorting = false;
+            const Index targetIndex = static_cast<Index>(event->percentage * sortingEngine.getActionsSize());
+            sortingEngine.scrubAnimation(targetIndex);
+            updatePlayButtonSymbol();
+            break;
         }
-
-        draggedSlider = event->id;
-
-        switch (event->id) {
-            case ButtonType::AnimationSlider: {
-                isSorting = false;
-                const Index targetIndex = static_cast<Index>(event->percentage * sortingEngine.getActionsSize());
-                sortingEngine.scrubAnimation(targetIndex);
-                break;
-            }
-            case ButtonType::ArraySizeSlider: {
-                const uint16_t potentialSize = static_cast<uint16_t>(MAX_ARRAY_SIZE * event->percentage);
-                const uint16_t newArraySize = std::clamp(potentialSize, MIN_ARRAY_SIZE, MAX_ARRAY_SIZE);
-                
-                if (newArraySize == sortingEngine.getArraySize()) {
-                    break;
-                }
-                
-                stopSorting();
-                sortingEngine.setArraySize(newArraySize);
-                sortingEngine.randomizeArrayConsecutively();
-                ui.updateUI(sortingEngine.getArray());
-                break;
-            }
-            case ButtonType::LatencySlider: {
-                const sf::Time newLatency = sf::milliseconds(MAX_LATENCY * event->percentage);
-                latency = newLatency;
-                break;
-            }
+        case ButtonType::ArraySizeSlider: 
+            updateArraySizeThumb(event.value());
+            break;
+        case ButtonType::DelaySlider: {
+            updateDelayThumb(event.value());
+            break;
         }
     }
+}
+
+void App::updateArraySizeThumb(const SliderEvent& event) {
+    const uint16_t potentialSize = static_cast<uint16_t>(MAX_ARRAY_SIZE * event.percentage);
+    const uint16_t newArraySize = std::clamp(potentialSize, MIN_ARRAY_SIZE, MAX_ARRAY_SIZE);
+    
+    if (newArraySize == sortingEngine.getArraySize()) {
+        return;
+    }
+    
+    stopSorting();
+    sortingEngine.setArraySize(newArraySize);
+    
+    if (dataType == DataType::Consecutive) {
+        sortingEngine.randomizeArrayConsecutively();
+    } else {
+        sortingEngine.randomizeArray();
+    }
+
+    ui.updateUI(sortingEngine.getArray());
+    updatePlayButtonSymbol();
+}
+
+void App::updateDelayThumb(const SliderEvent& event) {
+    const sf::Time newDelay = sf::milliseconds(MAX_DELAY * event.percentage);
+    delay = newDelay;
 }
 
 void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent) {
@@ -125,26 +124,192 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
 
     switch (clickedButton) {
         using enum ButtonType;
-        case Sort:
-            stopSorting();
-            sortingEngine.insertionSort();
-            isSorting = true;
+        case Play:
+            handlePlayButton();
+            break;
+        case StepBack:
+            stepBack();
+            break;
+        case StepForward:
+            stepForward();
             break;
         case Randomize:
             stopSorting();
             sortingEngine.randomizeArray();
+            dataType = DataType::Random;
             ui.updateUI(sortingEngine.getArray());
+            updatePlayButtonSymbol();
             break;
         case Consecutive:
             stopSorting();
             sortingEngine.randomizeArrayConsecutively();
+            dataType = DataType::Consecutive;
             ui.updateUI(sortingEngine.getArray());
+            updatePlayButtonSymbol();
+            break;
+        case DownArrow:
+            cycleAlgorithms(false);
+            break;
+        case UpArrow:
+            cycleAlgorithms(true);
             break;
         case None:
             break;
     }
     
     handleSliderEvent(mousePosition);
+}
+
+void App::handleKeyPressedEvent(const sf::Event::KeyPressed* keyPressedEvent) {
+    switch (keyPressedEvent->scancode) {
+        using enum sf::Keyboard::Scancode;
+        case Left:
+            stepBack();
+            break;
+        
+        case Right:
+            stepForward();
+            break;
+
+        case Up:
+            cycleAlgorithms(true);
+            break;
+
+        case Down:
+            cycleAlgorithms(false);
+            break;
+        
+        case Space:
+            handlePlayButton();
+            break;
+        
+        case R:
+            restartAnimation();
+            updatePlayButtonSymbol();
+            break;    
+    }
+}
+
+void App::handleScrollEvent(const sf::Event::MouseWheelScrolled* scrollEvent) {
+    const sf::Vector2f mousePosition = static_cast<sf::Vector2f>(scrollEvent->position);
+    
+    if (!ui.getSortCycler().cyclingBounds.contains(mousePosition)) {
+        return;
+    }
+
+    const float direction = scrollEvent->delta;
+
+    cycleAlgorithms((direction > 0) ? true : false);
+}
+
+void App::handlePlayButton() {
+    if (sortingEngine.isActionsEmpty()) {
+        stopSorting();
+        startSorting();
+        isSorting = true;
+        ui.setPlayButtonSymbol(pauseSymbol);
+    } else if (sortingEngine.getCurrentActionIndex() >= sortingEngine.getActionsSize()) {
+        restartAnimation();
+        ui.setPlayButtonSymbol(pauseSymbol);
+    } else {
+        if (isSorting) {
+            ui.setPlayButtonSymbol(playSymbol);
+        } else {
+            ui.setPlayButtonSymbol(pauseSymbol);
+        }
+        isSorting = !isSorting;
+    }
+}
+
+void App::stepButtonUpdate() {
+    isSorting = false;
+    updateAnimationThumb();
+    updatePlayButtonSymbol();
+}
+
+void App::stepBack() {
+    sortingEngine.runActionBackward();
+    stepButtonUpdate();
+}
+
+void App::stepForward() {
+    sortingEngine.runActionForward();
+    stepButtonUpdate();
+}
+
+void App::cycleAlgorithms(const bool scrolledUp) {
+    if (scrolledUp) {
+        getNextAlgorithm();
+    } else {
+        getPreviousAlgorithm();
+    }
+
+    ui.setSortCycleAlgorithm(algorithm);
+    handleSwitchedAlgorithm();
+    updatePlayButtonSymbol();
+}
+
+void App::getNextAlgorithm() {
+    int currentIndex = static_cast<int>(algorithm);
+    int totalAlgos = static_cast<int>(Algorithm::Count);
+
+    int nextIndex = (currentIndex + 1) % totalAlgos;
+
+    algorithm = static_cast<Algorithm>(nextIndex);
+}
+
+void App::getPreviousAlgorithm() {
+    int currentIndex = static_cast<int>(algorithm);
+    int totalAlgos = static_cast<int>(Algorithm::Count);
+
+    int prevIndex = (currentIndex - 1 + totalAlgos) % totalAlgos;
+
+    algorithm = static_cast<Algorithm>(prevIndex);
+}
+
+void App::handleSwitchedAlgorithm() {
+    if (sortingEngine.isActionsEmpty()) {
+        ui.updateHUDStats(algorithm);
+        return; 
+    }
+
+    const bool wasPaused = !isSorting;
+
+    stopSorting();
+    sortingEngine.copyBaseArray();
+    startSorting(); 
+    
+    isSorting = !wasPaused;
+}
+
+void App::restartAnimation() {
+    if (!sortingEngine.isActionsEmpty()) {
+        sortingEngine.scrubAnimation(0);
+        updateAnimationThumb();
+        isSorting = true;
+    }
+}
+
+void App::startSorting() {
+    switch (algorithm) {
+        using enum Algorithm;
+        case Bubble:
+            ui.setHUDStats(AlgorithmStats(nSquared, nSquared, n, oOfOne));
+            sortingEngine.bubbleSort();
+            break;
+        case Insertion:
+            ui.setHUDStats(AlgorithmStats(nSquared, nSquared, n, oOfOne));
+            sortingEngine.insertionSort();
+            break;
+        case Merge:
+            ui.setHUDStats(AlgorithmStats(nLogN, nLogN, nLogN, n));
+            sortingEngine.mergeSortWrapper();
+            break;
+        case Quick:
+            ui.setHUDStats(AlgorithmStats(nLogN, nSquared, nLogN, logN));
+            sortingEngine.quickSortWrapper();
+            break;
+    }
 }
 
 void App::stopSorting() {
@@ -154,13 +319,26 @@ void App::stopSorting() {
     ui.resetAnimationSlider();
 }
 
+void App::updatePlayButtonSymbol() {
+    if (sortingEngine.isActionsEmpty()) {
+        ui.setPlayButtonSymbol(playSymbol);
+    } else if (sortingEngine.getCurrentActionIndex() >= sortingEngine.getActionsSize()) {
+        ui.setPlayButtonSymbol(restartSymbol);
+    } else if (isSorting) {
+        ui.setPlayButtonSymbol(pauseSymbol);
+    } else {
+        ui.setPlayButtonSymbol(playSymbol);
+    }
+}
+
 void App::checkClock() {
-    if (clock.getElapsedTime() >= latency and isSorting) {
+    if (clock.getElapsedTime() >= delay and isSorting) {
         clock.restart();
 
         if (!sortingEngine.runActionForward()) {
             isSorting = false;
             updateAnimationThumb();
+            updatePlayButtonSymbol();
             return;
         }
 
@@ -169,32 +347,35 @@ void App::checkClock() {
 }
 
 void App::updateAnimationThumb() {
-    if (sortingEngine.getActionsSize() > 0) {
+    if (!sortingEngine.isActionsEmpty()) {
         float percentage = static_cast<float>(sortingEngine.getCurrentActionIndex()) / sortingEngine.getActionsSize();
         
         ui.setAnimationPercentage(percentage);
-        ui.updateSliderLayout();
+        ui.updateAnimationSlider();
     }
 }
 
-void App::updateArraySizeThumb() {
+void App::setArraySizeThumb() {
     float percentage = static_cast<float>(sortingEngine.getArraySize()) / MAX_ARRAY_SIZE;
     ui.setArraySizePercentage(percentage);
     ui.updateSliderLayout();
 }
 
-void App::updateLatencyThumb() {
-    float percentage = latency.asMilliseconds() / MAX_LATENCY;
-    ui.setLatencyPercentage(percentage);
+void App::setDelayThumb() {
+    float percentage = delay.asMilliseconds() / MAX_DELAY;
+    ui.setDelayPercentage(percentage);
     ui.updateSliderLayout();
 }
 
 void App::render() {
     window.clear(sf::Color(25, 25, 28));
 
-    renderer.drawArray(sortingEngine.getArray(), sortingEngine.getVisualData());
+    renderer.drawArray(sortingEngine.getArray(), ui.getArrayDimensions(), sortingEngine.getVisualData());
     renderer.drawButtonLayout(ui.getButtonLayout());
     renderer.drawSliderLayout(ui.getSliderLayout());
+    renderer.drawAnimationSlider(ui.getAnimationSlider());
+    renderer.drawSortCycler(ui.getSortCycler());
+    renderer.drawHUD(ui.getHUD(), sortingEngine.getVisualData());
 
     window.display();
 }

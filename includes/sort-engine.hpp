@@ -21,10 +21,23 @@ struct Action {
     Action(ActionType action);
 };
 
+struct VisualData {
+    Index activeOne{INACTIVE}, activeTwo{INACTIVE};
+    Index pivot{INACTIVE};
+    bool isOverwrite{false};
+
+    bool isSorted{false};
+    std::vector<bool> sortedElements; 
+
+    size_t comparisons{0};
+    size_t arrayAccesses{0};
+};
+
 class SortEngine {
 private:
+    std::vector<Element> baseArray;
     std::vector<Element> array;
-    size_t arraySize{MAX_ARRAY_SIZE};
+    size_t arraySize{500};
     uint16_t range{500};
 
     std::random_device rd;
@@ -46,6 +59,8 @@ private:
 public:
     SortEngine();
 
+    void copyBaseArray();
+
     void randomizeArray();
     void randomizeArrayConsecutively();
     
@@ -59,16 +74,17 @@ public:
 
     void bubbleSort();
 
+    void insertionSort();
+
     void mergeSortWrapper();
 
     void quickSortWrapper();
-
-    void insertionSort();
 
     const std::vector<Element>& getArray() const;
     const size_t getArraySize() const;
     const size_t getActionsSize() const;
     const size_t getCurrentActionIndex() const;
+    const bool isActionsEmpty() const;
 
     void setArraySize(const size_t newArraySize);
 };

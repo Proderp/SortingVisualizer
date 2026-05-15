@@ -14,21 +14,46 @@ private:
     Render renderer;
 
     sf::Clock clock;
-    sf::Time latency{sf::milliseconds(5)};
+    sf::Time delay{sf::milliseconds(0)};
 
     bool isSorting{false};
     ButtonType draggedSlider{ButtonType::None};
 
+    Algorithm algorithm{Algorithm::Bubble};
+    DataType dataType{DataType::Consecutive};
+
     void checkClock();
     void updateAnimationThumb();
-    void updateArraySizeThumb();
-    void updateLatencyThumb();
+    void updateArraySizeThumb(const SliderEvent& event);
+    void updateDelayThumb(const SliderEvent& event);
+    void setArraySizeThumb();
+    void setDelayThumb();
 
     void eventLoop();
     void handleSliderEvent(const sf::Vector2f mousePosition);
-    void handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent);
     
+    void handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent);
+    void handlePlayButton();
+    
+    void handleKeyPressedEvent(const sf::Event::KeyPressed* keyPressedEvent);
+
+    void handleScrollEvent(const sf::Event::MouseWheelScrolled* scrollEvent);
+
+    void stepButtonUpdate();
+    void stepBack();
+    void stepForward();
+
+    void cycleAlgorithms(const bool scrolledUp);
+    void getNextAlgorithm();
+    void getPreviousAlgorithm();
+    void handleSwitchedAlgorithm();
+
+    void restartAnimation();
+    
+    void startSorting();
     void stopSorting();
+
+    void updatePlayButtonSymbol();
 
     void render();
 public:
