@@ -20,8 +20,8 @@ SliderLayout::SliderLayout() :
 {}
 
 SortCycler::SortCycler() :
-    leftArrow(leftSymbol, ButtonType::LeftArrow),
-    rightArrow(rightSymbol, ButtonType::RightArrow)
+    upArrow(upSymbol, ButtonType::UpArrow),
+    downArrow(downSymbol, ButtonType::DownArrow)
 {}
 
 AlgorithmStats::AlgorithmStats(sf::String time, sf::String worst, sf::String best, sf::String space) :

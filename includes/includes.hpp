@@ -30,8 +30,10 @@ const sf::String stepForwardSymbol = L"\u23ED";
 const sf::String pauseSymbol = L"\u23F8";
 const sf::String restartSymbol = L"\u21BB";
 
-const sf::String leftSymbol = L"\u25C0";
-const sf::String rightSymbol = L"\u25B6";
+// const sf::String leftSymbol = L"\u25C0";
+// const sf::String rightSymbol = L"\u25B6";
+const sf::String upSymbol = L"\u25B2";
+const sf::String downSymbol = L"\u25BC";
 
 const sf::String oOfOne = "O(1)";
 const sf::String logN = L"O(log\u2082n)";

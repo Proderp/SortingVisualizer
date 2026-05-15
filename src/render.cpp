@@ -165,25 +165,25 @@ void Render::drawTrack(const Slider& slider) {
 void Render::drawSortCycler(const SortCycler& sortCycler) {
     drawSortText(sortCycler);
     
-    rectangle.setPosition(sortCycler.leftArrow.position);
-    rectangle.setSize(sortCycler.leftArrow.size);
+    rectangle.setPosition(sortCycler.upArrow.position);
+    rectangle.setSize(sortCycler.upArrow.size);
     rectangle.setOutlineThickness(outlineThickness);
     rectangle.setOutlineColor(sf::Color::White);
     rectangle.setFillColor(sf::Color::Transparent);
     rectangle.setOrigin(rectangle.getGeometricCenter());
     window.draw(rectangle);
 
-    text.setString(sortCycler.leftArrow.name);
+    text.setString(sortCycler.upArrow.name);
     setTextOrigin();
-    text.setPosition(sortCycler.leftArrow.position);
+    text.setPosition(sortCycler.upArrow.position);
     window.draw(text);
     
-    rectangle.setPosition(sortCycler.rightArrow.position);
+    rectangle.setPosition(sortCycler.downArrow.position);
     window.draw(rectangle);
     
-    text.setString(sortCycler.rightArrow.name);
+    text.setString(sortCycler.downArrow.name);
     setTextOrigin();
-    text.setPosition(sortCycler.rightArrow.position);
+    text.setPosition(sortCycler.downArrow.position);
     window.draw(text);
     
     text.setScale({1.f, 1.f});

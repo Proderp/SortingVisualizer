@@ -143,11 +143,11 @@ void App::handleLeftClick(const sf::Event::MouseButtonPressed* mousePressedEvent
             ui.updateUI(sortingEngine.getArray());
             updatePlayButtonSymbol();
             break;
-        case RightArrow:
-            cycleAlgorithms(true);
-            break;
-        case LeftArrow:
+        case DownArrow:
             cycleAlgorithms(false);
+            break;
+        case UpArrow:
+            cycleAlgorithms(true);
             break;
         case None:
             break;

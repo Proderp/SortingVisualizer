@@ -1,6 +1,6 @@
 #include "includes.hpp"
 
-enum class ButtonType { Randomize, Consecutive, StepBack, Play, StepForward, AnimationSlider, ArraySizeSlider, DelaySlider, LeftArrow, RightArrow, None };
+enum class ButtonType { Randomize, Consecutive, StepBack, Play, StepForward, AnimationSlider, ArraySizeSlider, DelaySlider, UpArrow, DownArrow, None };
 
 enum class DataType { Random, Consecutive };
 enum class Algorithm { Bubble, Insertion, Merge, Quick, Count };
@@ -74,8 +74,8 @@ struct SortCycler {
     sf::FloatRect cyclingBounds;
     Algorithm algorithm;
 
-    Button leftArrow;
-    Button rightArrow;
+    Button upArrow;
+    Button downArrow;
 
     uint32_t charSize{20};
 

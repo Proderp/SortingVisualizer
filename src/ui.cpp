@@ -205,12 +205,12 @@ const ButtonType UI::findClickedButton(const sf::Vector2f mousePosition) {
         }
     }
 
-    if (sortCycler.leftArrow.bounds.contains(mousePosition)) {
-        return sortCycler.leftArrow.id;
+    if (sortCycler.upArrow.bounds.contains(mousePosition)) {
+        return sortCycler.upArrow.id;
     } 
 
-    if (sortCycler.rightArrow.bounds.contains(mousePosition)) {
-        return sortCycler.rightArrow.id;
+    if (sortCycler.downArrow.bounds.contains(mousePosition)) {
+        return sortCycler.downArrow.id;
     }
 
     return ButtonType::None;
@@ -281,8 +281,8 @@ void UI::updateSortCycler() {
 
     const float buttonWidth = (columnWidth - width) / 2.f;
     const sf::Vector2f buttonSize = {buttonWidth, height};
-    sortCycler.leftArrow.size = buttonSize;
-    sortCycler.rightArrow.size = buttonSize;
+    sortCycler.upArrow.size = buttonSize;
+    sortCycler.downArrow.size = buttonSize;
 
     const float buttonYPosition = rowCenter;
 
@@ -290,11 +290,11 @@ void UI::updateSortCycler() {
     const float leftXPosition = columnBegin + buttonRadius;
     const float rightXPosition = columnBegin + columnWidth - buttonRadius;
 
-    sortCycler.leftArrow.position = {leftXPosition, buttonYPosition};
-    sortCycler.rightArrow.position = {rightXPosition, buttonYPosition};
+    sortCycler.upArrow.position = {leftXPosition, buttonYPosition};
+    sortCycler.downArrow.position = {rightXPosition, buttonYPosition};
 
-    updateButtonBounds(sortCycler.leftArrow);
-    updateButtonBounds(sortCycler.rightArrow);
+    updateButtonBounds(sortCycler.upArrow);
+    updateButtonBounds(sortCycler.downArrow);
 
     sortCycler.charSize = height / 2.5f;
 }
