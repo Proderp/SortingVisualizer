@@ -114,7 +114,7 @@ void Render::drawSliderLayout(const SliderLayout& sliderLayout) {
         rectangle.setFillColor(sf::Color::White);
         drawButton(slider->thumb);
         
-        const float distanceAboveSlider = slider->thumb.size.y;
+        const float distanceAboveSlider = slider->thumb.size.y * 1.5f;
 
         drawSliderName(*slider, distanceAboveSlider);
         
@@ -179,7 +179,7 @@ void Render::findValue(const Slider& slider) {
         const uint16_t actualSize = std::clamp(potentialSize, MIN_ARRAY_SIZE, MAX_ARRAY_SIZE);
         value = std::to_string(actualSize);
     } else {
-        value = std::to_string(static_cast<uint16_t>(slider.percentage * MAX_DELAY));
+        value = std::to_string(static_cast<uint16_t>(slider.percentage * MAX_DELAY)) + " ms";
     }
     text.setString(value);
 }
