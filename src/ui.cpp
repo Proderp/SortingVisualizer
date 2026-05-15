@@ -53,7 +53,7 @@ void UI::updateButtonLayout() {
 
 void UI::updateRandomizeButtons() {
     const float rowBegin = arrayDimensions.offsetY + margin * 2.f;
-    const float rowHeight = windowSize.y - rowBegin;
+    const float rowHeight = windowSize.y - rowBegin - margin;
     const float rowCenter = rowBegin + rowHeight / 2.f;
     
     const float buttonHeight = rowHeight / 2.f - margin;
@@ -81,7 +81,7 @@ void UI::updateControlButtons() {
     const float columnWidth = windowSize.x * 0.3f;
     const float columnCenter = columnBegin + columnWidth / 2.f;
 
-    const float rowBegin = arrayDimensions.offsetY + margin * 1.75f;
+    const float rowBegin = arrayDimensions.offsetY + margin * 2.f;
     const float rowHeight = windowSize.y - rowBegin - margin;
     const float rowCenter = rowBegin + rowHeight / 2.f;
 
