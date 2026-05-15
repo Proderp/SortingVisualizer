@@ -41,7 +41,7 @@ private:
     void stepBack();
     void stepForward();
 
-    void cycleAlgorithms(const bool scrolledRight);
+    void cycleAlgorithms(const bool scrolledUp);
     void getNextAlgorithm();
     void getPreviousAlgorithm();
     void handleSwitchedAlgorithm();

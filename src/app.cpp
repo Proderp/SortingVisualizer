@@ -213,8 +213,8 @@ void App::stepForward() {
     stepButtonUpdate();
 }
 
-void App::cycleAlgorithms(const bool scrolledRight) {
-    if (scrolledRight) {
+void App::cycleAlgorithms(const bool scrolledUp) {
+    if (scrolledUp) {
         getNextAlgorithm();
     } else {
         getPreviousAlgorithm();
