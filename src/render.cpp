@@ -32,6 +32,10 @@ void Render::drawArray(const std::vector<Element>& array, const ArrayDimensions&
 
         rectangle.setFillColor(sf::Color(r, g, b));
 
+        if (i == visualData.activeOne or i == visualData.activeTwo or i == visualData.pivot) {
+            rectangle.setFillColor(sf::Color::White);
+        }
+
         const float xPosition = arrayDimensions.offsetX + (i * arrayDimensions.barWidth) + (i * arrayDimensions.barSpacing);
         rectangle.setPosition({xPosition, arrayDimensions.offsetY});
 
@@ -155,8 +159,6 @@ void Render::drawSliderName(const Slider& slider, const float distanceAboveSlide
 }
 
 void Render::drawSliderValue(const Slider& slider, const float distanceAboveSlider) {
-
-    // before we get the actual text, we assume the worst (1500)
     text.setString(std::to_string(MAX_ARRAY_SIZE));
     sf::FloatRect bounds = text.getLocalBounds();
     const float lockedYOrigin = std::round(bounds.position.y + bounds.size.y / 2.f);
