@@ -13,6 +13,7 @@ void UI::updateUI(const std::vector<Element>& array) {
     updateArrayDimensions(array);
     updateButtonLayout();
     updateSliderLayout();
+    updateAnimationSlider();
     updateSortCycler();
     updateHUD();
 }
@@ -94,11 +95,11 @@ void UI::updateControlButtons() {
     buttonLayout.stepBackButton.size = {smallerWidth, smallerWidth};
     buttonLayout.stepForwardButton.size = {smallerWidth, smallerWidth};
 
-    const float stepBackPositionX = columnBegin + smallerWidth / 2.f;
+    const float stepBackPositionX = columnBegin + smallerWidth / 2.f - margin;
     buttonLayout.stepBackButton.position = {stepBackPositionX, rowCenter};
     updateButtonBounds(buttonLayout.stepBackButton);
 
-    const float stepForwardPositionX = columnBegin + columnWidth - smallerWidth / 2.f;
+    const float stepForwardPositionX = columnBegin + columnWidth - smallerWidth / 2.f + margin;
     buttonLayout.stepForwardButton.position = {stepForwardPositionX, rowCenter};
     updateButtonBounds(buttonLayout.stepForwardButton);
 }
@@ -156,7 +157,7 @@ void UI::updateSliderLayout() {
     const float columnBegin = buttonLayout.stepForwardButton.position.x + buttonLayout.stepForwardButton.size.x + margin * 2.f;
     const float columnWidth = windowSize.x - arrayDimensions.offsetX - columnBegin;
 
-    const float rowBegin = arrayDimensions.offsetY + margin * 1.75f;
+    const float rowBegin = arrayDimensions.offsetY + margin * 2.f;
     const float rowHeight = windowSize.y - rowBegin - margin;
     
     const float thumbWidth = 10.f;
@@ -192,8 +193,6 @@ void UI::updateSliderLayout() {
         slider.thumb.position = {thumbXPosition, yPosition};
         updateButtonBounds(slider.thumb);
     }
-
-    updateAnimationSlider();
 }
 
 const ButtonType UI::findClickedButton(const sf::Vector2f mousePosition) {
@@ -278,7 +277,7 @@ void UI::updateSortCycler() {
     sortCycler.size = {width, height};
 
     const float buttonHeight = (rowHeight - height) / 3.f;
-    const sf::Vector2f buttonSize = {width / 2.f, buttonHeight};
+    const sf::Vector2f buttonSize = {width / 2.5f, buttonHeight};
     sortCycler.upArrow.size = buttonSize;
     sortCycler.downArrow.size = buttonSize;
 
