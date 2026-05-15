@@ -173,6 +173,9 @@ void UI::updateSliderLayout() {
     
     const float sliderSpacing = rowHeight / 3.f + dynamicFontSize / 2.f;
     float yPosition = rowBegin + sliderSpacing;
+    
+    const float activeStartX = columnBegin + thumbRadius;
+    const float activeEndX = trackWidth - thumbWidth;
 
     for (Index i{0}; i < sliderLayout.sliders.size(); i++) {
         Slider& slider = *sliderLayout.sliders.at(i);
@@ -186,14 +189,11 @@ void UI::updateSliderLayout() {
 
         slider.thumb.size = {thumbWidth, thumbHeight};
 
-        const float activeStartX = columnBegin + thumbRadius;
-        const float activeEndX = trackWidth - thumbWidth;
         const float thumbXPosition = activeStartX + (activeEndX * slider.percentage);
         
         slider.thumb.position = {thumbXPosition, yPosition};
         updateButtonBounds(slider.thumb);
     }
-
 
     updateAnimationSlider();
 }
