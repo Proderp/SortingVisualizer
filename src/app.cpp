@@ -52,6 +52,10 @@ void App::eventLoop() {
         if (const sf::Event::KeyPressed* keyPressedEvent = event->getIf<sf::Event::KeyPressed>()) {
             handleKeyPressedEvent(keyPressedEvent);
         }
+
+        if (const sf::Event::MouseWheelScrolled* scrollEvent = event->getIf<sf::Event::MouseWheelScrolled>()) {
+            handleScrollEvent(scrollEvent);
+        }
     }
 }
 
@@ -160,22 +164,34 @@ void App::handleKeyPressedEvent(const sf::Event::KeyPressed* keyPressedEvent) {
     switch (keyPressedEvent->scancode) {
         using enum sf::Keyboard::Scancode;
         case Left:
-        stepBack();
-        break;
+            stepBack();
+            break;
         
         case Right:
-        stepForward();
-        break;
+            stepForward();
+            break;
+
+        case Up:
+            cycleAlgorithms(true);
+            break;
+
+        case Down:
+            cycleAlgorithms(false);
+            break;
         
         case Space:
-        handlePlayButton();
-        break;
+            handlePlayButton();
+            break;
         
         case R:
-        restartAnimation();
-        updatePlayButtonSymbol();
-        break;    
+            restartAnimation();
+            updatePlayButtonSymbol();
+            break;    
     }
+}
+
+void App::handleScrollEvent(const sf::Event::MouseWheelScrolled* scrollEvent) {
+    
 }
 
 void App::handlePlayButton() {

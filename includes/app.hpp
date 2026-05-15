@@ -37,6 +37,8 @@ private:
     
     void handleKeyPressedEvent(const sf::Event::KeyPressed* keyPressedEvent);
 
+    void handleScrollEvent(const sf::Event::MouseWheelScrolled* scrollEvent);
+
     void stepButtonUpdate();
     void stepBack();
     void stepForward();
