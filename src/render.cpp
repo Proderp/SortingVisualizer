@@ -159,29 +159,42 @@ void Render::drawSliderName(const Slider& slider, const float distanceAboveSlide
 }
 
 void Render::drawSliderValue(const Slider& slider, const float distanceAboveSlider) {
-    text.setString(std::to_string(MAX_ARRAY_SIZE));
-    sf::FloatRect bounds = text.getLocalBounds();
-    const float lockedYOrigin = std::round(bounds.position.y + bounds.size.y / 2.f);
+    if (slider.thumb.id == ButtonType::ArraySizeSlider) {
+        text.setString(std::to_string(MAX_ARRAY_SIZE)); 
+    } else {
+        text.setString(std::to_string(static_cast<uint16_t>(MAX_DELAY)) + " ms"); 
+    }
+    const sf::FloatRect safeBounds = text.getLocalBounds();
+    const float lockedYOrigin = std::round(safeBounds.position.y + safeBounds.size.y / 2.f);
+    const float staticBlockWidth = safeBounds.size.x;
 
     findValue(slider);
 
-    bounds = text.getLocalBounds();
-    text.setOrigin({std::round(bounds.position.x + bounds.size.x), lockedYOrigin});
+    text.setOrigin({0.f, lockedYOrigin});
 
-    text.setPosition({slider.position.x + slider.size.x, slider.position.y - distanceAboveSlider});
+    const float anchorX = slider.position.x + slider.size.x;
+
+    text.setPosition({anchorX - staticBlockWidth, slider.position.y - distanceAboveSlider});
     window.draw(text);
 }
 
 void Render::findValue(const Slider& slider) {
-    sf::String value;
+    std::stringstream ss;
+
     if (slider.thumb.id == ButtonType::ArraySizeSlider) {
         const uint16_t potentialSize = static_cast<uint16_t>(MAX_ARRAY_SIZE * slider.percentage);
         const uint16_t actualSize = std::clamp(potentialSize, MIN_ARRAY_SIZE, MAX_ARRAY_SIZE);
-        value = std::to_string(actualSize);
+        
+        uint16_t worstCase = std::to_string(MAX_ARRAY_SIZE).length();
+        ss << std::setw(worstCase) << std::setfill(' ') << actualSize;
     } else {
-        value = std::to_string(static_cast<uint16_t>(slider.percentage * MAX_DELAY)) + " ms";
+        const uint16_t delay = static_cast<uint16_t>(slider.percentage * MAX_DELAY);
+
+        uint16_t worstCase = std::to_string(static_cast<uint16_t>(MAX_DELAY)).length();
+        ss << std::setw(worstCase) << std::setfill(' ') << delay << " ms";
     }
-    text.setString(value);
+    
+    text.setString(ss.str());
 }
 
 void Render::drawSortCycler(const SortCycler& sortCycler) {
