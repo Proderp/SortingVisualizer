@@ -279,19 +279,20 @@ void UI::updateSortCycler() {
     const float height = rowHeight / 3.f;
     sortCycler.size = {width, height};
 
-    const float buttonWidth = (columnWidth - width) / 2.f;
-    const sf::Vector2f buttonSize = {buttonWidth, height};
+    const float buttonHeight = (rowHeight - height) / 3.f;
+    const sf::Vector2f buttonSize = {width / 2.f, buttonHeight};
     sortCycler.upArrow.size = buttonSize;
     sortCycler.downArrow.size = buttonSize;
 
-    const float buttonYPosition = rowCenter;
+    // const float buttonYPosition = rowCenter;
+    const float buttonXPosition = columnCenter;
 
-    const float buttonRadius = buttonSize.x / 2.f;
-    const float leftXPosition = columnBegin + buttonRadius;
-    const float rightXPosition = columnBegin + columnWidth - buttonRadius;
+    const float buttonRadius = buttonSize.y / 2.f;
+    const float upYPosition = rowBegin + buttonRadius + margin;
+    const float downYPosition = rowBegin + rowHeight - buttonRadius - margin;
 
-    sortCycler.upArrow.position = {leftXPosition, buttonYPosition};
-    sortCycler.downArrow.position = {rightXPosition, buttonYPosition};
+    sortCycler.upArrow.position = {buttonXPosition, upYPosition};
+    sortCycler.downArrow.position = {buttonXPosition, downYPosition};
 
     updateButtonBounds(sortCycler.upArrow);
     updateButtonBounds(sortCycler.downArrow);

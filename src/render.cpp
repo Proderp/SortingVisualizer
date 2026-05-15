@@ -18,6 +18,7 @@ void Render::loadFont() {
         std::cerr << "Error loading Segoe." << std::endl;
     }
 
+    firaCodeFont.setSmooth(true);
     text.setFont(firaCodeFont);
 }
 
@@ -164,14 +165,16 @@ void Render::drawTrack(const Slider& slider) {
 
 void Render::drawSortCycler(const SortCycler& sortCycler) {
     drawSortText(sortCycler);
+
+    rectangle.setFillColor(sf::Color::Transparent);
     
     rectangle.setPosition(sortCycler.upArrow.position);
     rectangle.setSize(sortCycler.upArrow.size);
-    rectangle.setOutlineThickness(outlineThickness);
-    rectangle.setOutlineColor(sf::Color::White);
-    rectangle.setFillColor(sf::Color::Transparent);
     rectangle.setOrigin(rectangle.getGeometricCenter());
     window.draw(rectangle);
+
+    text.setCharacterSize(sortCycler.upArrow.size.x * 2.f);
+    text.setScale({1.f, 0.25f});
 
     text.setString(sortCycler.upArrow.name);
     setTextOrigin();
@@ -187,8 +190,6 @@ void Render::drawSortCycler(const SortCycler& sortCycler) {
     window.draw(text);
     
     text.setScale({1.f, 1.f});
-    rectangle.setOutlineThickness(0);
-    rectangle.setOutlineColor(sf::Color::Transparent);
     rectangle.setFillColor(sf::Color::White);
 }
 
