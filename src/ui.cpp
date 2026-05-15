@@ -161,14 +161,17 @@ void UI::updateSliderLayout() {
     const float rowBegin = arrayDimensions.offsetY + margin * 1.75f;
     const float rowHeight = windowSize.y - rowBegin - margin;
     
-    const float thumbWidth = 12.f;
-    const float thumbHeight = 20.f;
+    const float thumbWidth = 10.f;
+    const float thumbHeight = 16.f;
     const float thumbRadius = thumbWidth / 2.f;
 
-    const float trackHeight = 4.f;
+    const float trackHeight = 2.f;
     const float trackWidth = columnWidth;
-
-    const float sliderSpacing = rowHeight / 3.f;
+    
+    const float dynamicFontSize = windowSize.y * 0.0175f;
+    sliderLayout.characterSize = static_cast<uint32_t>(std::clamp(dynamicFontSize, 14.f, 24.f));
+    
+    const float sliderSpacing = rowHeight / 3.f + dynamicFontSize / 2.f;
     float yPosition = rowBegin + sliderSpacing;
 
     for (Index i{0}; i < sliderLayout.sliders.size(); i++) {
@@ -179,6 +182,7 @@ void UI::updateSliderLayout() {
 
         slider.size = {trackWidth, trackHeight};
         sf::Vector2f middleLeftOfTrack = {columnBegin, yPosition - trackHeight / 2.f};
+        slider.trackBounds = sf::FloatRect(middleLeftOfTrack, slider.size);
 
         slider.thumb.size = {thumbWidth, thumbHeight};
 
@@ -189,6 +193,7 @@ void UI::updateSliderLayout() {
         slider.thumb.position = {thumbXPosition, yPosition};
         updateButtonBounds(slider.thumb);
     }
+
 
     updateAnimationSlider();
 }

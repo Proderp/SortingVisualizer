@@ -99,10 +99,25 @@ void Render::drawAnimationSlider(const Slider& animationSlider) {
 }
 
 void Render::drawSliderLayout(const SliderLayout& sliderLayout) {
+    text.setCharacterSize(sliderLayout.characterSize);
+    text.setFont(firaCodeFont);
+    text.setFillColor(sf::Color::White);
+    text.setLetterSpacing(1.f);
+
     for (const Slider* slider : sliderLayout.sliders) {
         drawTrack(*slider);
         rectangle.setFillColor(sf::Color::White);
         drawButton(slider->thumb);
+
+        // draw the necessary text, starting with the name
+        text.setString(slider->thumb.name);
+
+        sf::FloatRect bounds = text.getLocalBounds();
+        text.setOrigin({0.f, std::round(bounds.position.y + bounds.size.y)});
+
+        const float distanceAboveSlider = slider->thumb.size.y;
+        text.setPosition(slider->position - sf::Vector2f(0.f, distanceAboveSlider));
+        window.draw(text);
     }
 }
 
