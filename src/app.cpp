@@ -191,7 +191,15 @@ void App::handleKeyPressedEvent(const sf::Event::KeyPressed* keyPressedEvent) {
 }
 
 void App::handleScrollEvent(const sf::Event::MouseWheelScrolled* scrollEvent) {
+    const sf::Vector2f mousePosition = static_cast<sf::Vector2f>(scrollEvent->position);
     
+    if (!ui.getSortCycler().cyclingBounds.contains(mousePosition)) {
+        return;
+    }
+
+    const float direction = scrollEvent->delta;
+
+    cycleAlgorithms((direction > 0) ? true : false);
 }
 
 void App::handlePlayButton() {
