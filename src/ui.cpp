@@ -53,11 +53,11 @@ void UI::updateButtonLayout() {
 
 void UI::updateRandomizeButtons() {
     const float rowBegin = arrayDimensions.offsetY + margin * 2.f;
-    const float rowHeight = windowSize.y - rowBegin - margin;
+    const float rowHeight = windowSize.y - rowBegin;
     const float rowCenter = rowBegin + rowHeight / 2.f;
     
-    const float buttonHeight = rowHeight / 2.f - margin;
     const float buttonWidth =  windowSize.x * 0.15f;
+    const float buttonHeight = rowHeight / 2.f - margin;
     
     const float xPosition = arrayDimensions.offsetX + buttonWidth / 2.f;
     sf::Vector2f position = {xPosition, rowBegin + buttonHeight / 2.f};
@@ -85,9 +85,7 @@ void UI::updateControlButtons() {
     const float rowHeight = windowSize.y - rowBegin - margin;
     const float rowCenter = rowBegin + rowHeight / 2.f;
 
-    const float allocatedWidth = columnWidth - margin * 2.f;
-
-    const float width = allocatedWidth * 0.4f;
+    const float width = rowHeight;
     buttonLayout.playButton.size = {width, width};
     buttonLayout.playButton.position = {columnCenter, rowCenter};
     updateButtonBounds(buttonLayout.playButton);
@@ -96,11 +94,11 @@ void UI::updateControlButtons() {
     buttonLayout.stepBackButton.size = {smallerWidth, smallerWidth};
     buttonLayout.stepForwardButton.size = {smallerWidth, smallerWidth};
 
-    const float stepBackPositionX = columnBegin + smallerWidth / 2.f + margin * 1.5f;
+    const float stepBackPositionX = columnBegin + smallerWidth / 2.f;
     buttonLayout.stepBackButton.position = {stepBackPositionX, rowCenter};
     updateButtonBounds(buttonLayout.stepBackButton);
 
-    const float stepForwardPositionX = columnBegin + columnWidth - smallerWidth / 2.f - margin * 1.5f;
+    const float stepForwardPositionX = columnBegin + columnWidth - smallerWidth / 2.f;
     buttonLayout.stepForwardButton.position = {stepForwardPositionX, rowCenter};
     updateButtonBounds(buttonLayout.stepForwardButton);
 }
