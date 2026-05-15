@@ -79,6 +79,7 @@ void App::handleSliderEvent(const sf::Vector2f mousePosition) {
             isSorting = false;
             const Index targetIndex = static_cast<Index>(event->percentage * sortingEngine.getActionsSize());
             sortingEngine.scrubAnimation(targetIndex);
+            ui.updateAnimationSlider();
             updatePlayButtonSymbol();
             break;
         }
@@ -273,13 +274,13 @@ void App::handleSwitchedAlgorithm() {
         return; 
     }
 
-    const bool wasPaused = !isSorting;
+    const bool wasSorting = isSorting;
 
     stopSorting();
     sortingEngine.copyBaseArray();
     startSorting(); 
     
-    isSorting = !wasPaused;
+    isSorting = wasSorting;
 }
 
 void App::restartAnimation() {
@@ -317,6 +318,7 @@ void App::stopSorting() {
     sortingEngine.resetActions();
     sortingEngine.resetVisualData();
     ui.resetAnimationSlider();
+    ui.updateAnimationSlider();
 }
 
 void App::updatePlayButtonSymbol() {

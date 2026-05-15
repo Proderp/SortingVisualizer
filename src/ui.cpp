@@ -357,7 +357,7 @@ const HUD& UI::getHUD() const {
 }
 
 void UI::setAnimationPercentage(const float percentage) {
-    animationSlider.percentage = std::clamp(percentage, 0.0f, 1.0f);
+    animationSlider.percentage = std::clamp(percentage, 0.f, 1.f);
 }
 
 void UI::resetAnimationSlider() {
@@ -366,13 +366,11 @@ void UI::resetAnimationSlider() {
 }
 
 void UI::setArraySizePercentage(const float percentage) {
-    Slider& arraySizeSlider = *sliderLayout.sliders.at(0); 
-    arraySizeSlider.percentage = std::clamp(percentage, 0.0f, 1.0f);
+    sliderLayout.arraySizeSlider.percentage = std::clamp(percentage, 0.f, 1.f);
 }
 
 void UI::setDelayPercentage(const float percentage) {
-    Slider& delaySlider = *sliderLayout.sliders.at(1);
-    delaySlider.percentage = std::clamp(percentage, 0.0f, 1.0f);
+    sliderLayout.delaySlider.percentage = std::clamp(percentage, 0.f, 1.f);
 }
 
 void UI::setPlayButtonSymbol(const sf::String newSymbol) {
