@@ -73,7 +73,12 @@ void Render::drawButtonLayout(const ButtonLayout& buttonLayout) {
         text.setLetterSpacing(3.f);
         setTextOrigin();
 
-        text.setPosition(button.position);
+        if (button.name == playSymbol and button.id == ButtonType::Play) {
+            sf::Vector2f newPosition = button.position + sf::Vector2f(button.size.x * 0.05f, 0.f);
+            text.setPosition(newPosition);
+        } else {
+            text.setPosition(button.position);
+        }
         window.draw(text);
     };
     
@@ -87,53 +92,74 @@ void Render::drawButtonLayout(const ButtonLayout& buttonLayout) {
 }
 
 void Render::drawAnimationSlider(const Slider& animationSlider) {
-    // draw the rectangle up to the point where the thumb is
-    rectangle.setFillColor(cold);
 
-    const float thumbRadius = animationSlider.thumb.size.x / 2.f;
-    const float startOfTrack = animationSlider.position.x + thumbRadius;
-    
-    const float thumbXPosition = animationSlider.thumb.position.x;
-    const float upToThumbWitdh = thumbXPosition - startOfTrack;
-    
-    rectangle.setPosition(animationSlider.position);
-    rectangle.setSize({upToThumbWitdh, animationSlider.size.y});
-    rectangle.setOrigin({0, animationSlider.size.y / 2.f});
-    
-    window.draw(rectangle);
-    
-    const float endOfTrack = startOfTrack + animationSlider.size.x - thumbRadius;
-    const float thumbToEndWidth = endOfTrack - thumbXPosition;
-
-    rectangle.setFillColor(hot);
-    rectangle.setPosition({thumbXPosition, animationSlider.position.y});
-    rectangle.setSize({thumbToEndWidth, animationSlider.size.y});
-    rectangle.setOrigin({0, animationSlider.size.y / 2.f});
-
-    window.draw(rectangle);
-
+    drawTrack(animationSlider);
     rectangle.setFillColor(sf::Color::White);
-    rectangle.setPosition(animationSlider.thumb.position);
-    rectangle.setSize(animationSlider.thumb.size);
-    rectangle.setOrigin(rectangle.getGeometricCenter());
-
-    window.draw(rectangle);
+    drawButton(animationSlider.thumb);
 }
 
 void Render::drawSliderLayout(const SliderLayout& sliderLayout) {
+    text.setCharacterSize(sliderLayout.characterSize);
+    text.setFont(firaCodeFont);
+    text.setFillColor(sf::Color::White);
+    text.setLetterSpacing(1.f);
+
     for (const Slider* slider : sliderLayout.sliders) {
-        rectangle.setFillColor(sf::Color(100, 100, 100));
-        rectangle.setPosition(slider->position);
-        rectangle.setSize(slider->size);
-
-        const sf::Vector2f middleLeft = {0, slider->size.y / 2.f}; 
-        rectangle.setOrigin(middleLeft);
-
-        window.draw(rectangle);
-
-        rectangle.setFillColor(sf::Color::Green);
+        drawTrack(*slider);
+        rectangle.setFillColor(sf::Color::White);
         drawButton(slider->thumb);
+        
+        text.setString(slider->thumb.name);
+        
+        sf::FloatRect bounds = text.getLocalBounds();
+        text.setOrigin({0.f, std::round(bounds.position.y + bounds.size.y)});
+        
+        const float distanceAboveSlider = slider->thumb.size.y;
+        text.setPosition(slider->position - sf::Vector2f(0.f, distanceAboveSlider));
+        window.draw(text);
+
+        sf::String value;
+        if (slider->thumb.id == ButtonType::ArraySizeSlider) {
+            const uint16_t potentialSize = static_cast<uint16_t>(MAX_ARRAY_SIZE * slider->percentage);
+            const uint16_t actualSize = std::clamp(potentialSize, MIN_ARRAY_SIZE, MAX_ARRAY_SIZE);
+            value = std::to_string(actualSize);
+        } else {
+            value = std::to_string(static_cast<uint16_t>(slider->percentage * MAX_DELAY));
+        }
+        text.setString(value);
+
+        bounds = text.getLocalBounds();
+        text.setOrigin({std::round(bounds.position.x + bounds.size.x), std::round(bounds.position.y + bounds.size.y)});
+
+        text.setPosition({slider->position.x + slider->size.x, slider->position.y - distanceAboveSlider});
+        window.draw(text);
     }
+}
+
+void Render::drawTrack(const Slider& slider) {
+    rectangle.setFillColor(cold);
+
+    const float thumbRadius = slider.thumb.size.x / 2.f;
+    const float startOfTrack = slider.position.x + thumbRadius;
+    
+    const float thumbXPosition = slider.thumb.position.x;
+    const float upToThumbWitdh = thumbXPosition - startOfTrack;
+    
+    rectangle.setPosition(slider.position);
+    rectangle.setSize({upToThumbWitdh, slider.size.y});
+    rectangle.setOrigin({0, slider.size.y / 2.f});
+    
+    window.draw(rectangle);
+    
+    const float endOfTrack = startOfTrack + slider.size.x - thumbRadius;
+    const float thumbToEndWidth = endOfTrack - thumbXPosition;
+
+    rectangle.setFillColor(hot);
+    rectangle.setPosition({thumbXPosition, slider.position.y});
+    rectangle.setSize({thumbToEndWidth, slider.size.y});
+    rectangle.setOrigin({0, slider.size.y / 2.f});
+
+    window.draw(rectangle);
 }
 
 void Render::drawSortCycler(const SortCycler& sortCycler) {
@@ -151,15 +177,15 @@ void Render::drawSortCycler(const SortCycler& sortCycler) {
     setTextOrigin();
     text.setPosition(sortCycler.leftArrow.position);
     window.draw(text);
-
+    
     rectangle.setPosition(sortCycler.rightArrow.position);
     window.draw(rectangle);
-
+    
     text.setString(sortCycler.rightArrow.name);
     setTextOrigin();
     text.setPosition(sortCycler.rightArrow.position);
     window.draw(text);
-
+    
     text.setScale({1.f, 1.f});
     rectangle.setOutlineThickness(0);
     rectangle.setOutlineColor(sf::Color::Transparent);
@@ -177,13 +203,15 @@ void Render::drawSortText(const SortCycler& sortCycler) {
             break;
         case Merge:
             text.setString("MERGE");
-            break;
-        case Quick:
+        break;
+            case Quick:
             text.setString("QUICK");
-            break;
+        break;
     }
-
+    
+    text.setFont(firaCodeFont);
     text.setCharacterSize(sortCycler.charSize);
+    text.setLetterSpacing(1.f);
     setTextOrigin();
     
     text.setPosition(sortCycler.position);
@@ -233,7 +261,7 @@ void Render::drawHUD(const HUD& hud, const VisualData& visualData) {
         
         text.setString(stat);
         if (isNumber) {
-            size_t numberOfZeroes = maxDigits - stat.getSize();
+            size_t numberOfZeroes = (maxDigits > stat.getSize()) ? (maxDigits - stat.getSize()) : 0;
             std::string zeroes(numberOfZeroes, '0');
             text.setString(zeroes);
             text.setFillColor(sf::Color(200, 200, 200));

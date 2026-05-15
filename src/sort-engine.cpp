@@ -335,7 +335,6 @@ void SortEngine::runActionBackward() {
             break;
         
         case ActionType::Swap:
-            visualData.comparisons--;
             visualData.arrayAccesses--;
             std::swap(array.at(action.indexOne), array.at(action.indexTwo));
             break;
