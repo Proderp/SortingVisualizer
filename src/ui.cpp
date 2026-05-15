@@ -155,7 +155,7 @@ void UI::updateAnimationSlider() {
 }
 
 void UI::updateSliderLayout() {
-    const float columnBegin = buttonLayout.stepForwardButton.position.x + buttonLayout.stepForwardButton.size.x + margin;
+    const float columnBegin = buttonLayout.stepForwardButton.position.x + buttonLayout.stepForwardButton.size.x + margin * 2.f;
     const float columnWidth = windowSize.x - arrayDimensions.offsetX - columnBegin;
 
     const float rowBegin = arrayDimensions.offsetY + margin * 1.75f;
@@ -165,7 +165,7 @@ void UI::updateSliderLayout() {
     const float thumbHeight = 16.f;
     const float thumbRadius = thumbWidth / 2.f;
 
-    const float trackHeight = 2.f;
+    const float trackHeight = 3.f;
     const float trackWidth = columnWidth;
     
     const float dynamicFontSize = windowSize.y * 0.0175f;
@@ -284,7 +284,6 @@ void UI::updateSortCycler() {
     sortCycler.upArrow.size = buttonSize;
     sortCycler.downArrow.size = buttonSize;
 
-    // const float buttonYPosition = rowCenter;
     const float buttonXPosition = columnCenter;
 
     const float buttonRadius = buttonSize.y / 2.f;
