@@ -120,10 +120,19 @@ void Render::drawSliderLayout(const SliderLayout& sliderLayout) {
 
         sf::String value;
         if (slider->thumb.id == ButtonType::ArraySizeSlider) {
-            value = std::to_string(static_cast<size_t>(slider->percentage * MAX_ARRAY_SIZE));
+            const uint16_t potentialSize = static_cast<uint16_t>(MAX_ARRAY_SIZE * slider->percentage);
+            const uint16_t actualSize = std::clamp(potentialSize, MIN_ARRAY_SIZE, MAX_ARRAY_SIZE);
+            value = std::to_string(actualSize);
         } else {
-            value = std::to_string(static_cast<size_t>(MAX_DELAY))
+            value = std::to_string(static_cast<uint16_t>(slider->percentage * MAX_DELAY));
         }
+        text.setString(value);
+
+        bounds = text.getLocalBounds();
+        text.setOrigin({std::round(bounds.position.x + bounds.size.x), std::round(bounds.position.y + bounds.size.y)});
+
+        text.setPosition({slider->position.x + slider->size.x, slider->position.y - distanceAboveSlider});
+        window.draw(text);
     }
 }
 

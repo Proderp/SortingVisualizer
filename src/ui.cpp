@@ -169,7 +169,7 @@ void UI::updateSliderLayout() {
     const float trackWidth = columnWidth;
     
     const float dynamicFontSize = windowSize.y * 0.0175f;
-    sliderLayout.characterSize = static_cast<uint32_t>(std::clamp(dynamicFontSize, 14.f, 24.f));
+    sliderLayout.characterSize = static_cast<uint32_t>(std::clamp(dynamicFontSize, 15.f, 30.f));
     
     const float sliderSpacing = rowHeight / 3.f + dynamicFontSize / 2.f;
     float yPosition = rowBegin + sliderSpacing;
