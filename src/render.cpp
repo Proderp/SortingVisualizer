@@ -194,6 +194,14 @@ void Render::drawSortCycler(const SortCycler& sortCycler) {
 }
 
 void Render::drawSortText(const SortCycler& sortCycler) {
+    text.setFont(firaCodeFont);
+    text.setCharacterSize(sortCycler.charSize);
+    text.setLetterSpacing(1.f);
+    
+    text.setString("INSERTION");
+    sf::FloatRect bounds = text.getLocalBounds();
+    const float lockedYOrigin = std::round(bounds.position.y + bounds.size.y / 2.f);
+
     switch (sortCycler.algorithm) {
         using enum Algorithm;
         case Bubble:
@@ -209,12 +217,11 @@ void Render::drawSortText(const SortCycler& sortCycler) {
             text.setString("QUICK");
         break;
     }
+
     
-    text.setFont(firaCodeFont);
-    text.setCharacterSize(sortCycler.charSize);
-    text.setLetterSpacing(1.f);
-    setTextOrigin();
-    
+    bounds = text.getLocalBounds();
+    text.setOrigin({std::round(bounds.position.x + bounds.size.x / 2.f), lockedYOrigin});
+
     text.setPosition(sortCycler.position);
     window.draw(text);
 }
