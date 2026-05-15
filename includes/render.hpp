@@ -25,6 +25,8 @@ private:
     void drawButton(const Button& button);
 
     void drawTrack(const Slider& slider);
+    void drawSliderName(const Slider& slider, const float distanceAboveSlider);
+    void drawSliderValue(const Slider& slider, const float distanceAboveSlider);
 
     sf::Color getComplexityColor(const sf::String& complexity);
 

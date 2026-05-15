@@ -110,30 +110,11 @@ void Render::drawSliderLayout(const SliderLayout& sliderLayout) {
         rectangle.setFillColor(sf::Color::White);
         drawButton(slider->thumb);
         
-        text.setString(slider->thumb.name);
-        
-        sf::FloatRect bounds = text.getLocalBounds();
-        text.setOrigin({0.f, std::round(bounds.position.y + bounds.size.y)});
-        
         const float distanceAboveSlider = slider->thumb.size.y;
-        text.setPosition(slider->position - sf::Vector2f(0.f, distanceAboveSlider));
-        window.draw(text);
-
-        sf::String value;
-        if (slider->thumb.id == ButtonType::ArraySizeSlider) {
-            const uint16_t potentialSize = static_cast<uint16_t>(MAX_ARRAY_SIZE * slider->percentage);
-            const uint16_t actualSize = std::clamp(potentialSize, MIN_ARRAY_SIZE, MAX_ARRAY_SIZE);
-            value = std::to_string(actualSize);
-        } else {
-            value = std::to_string(static_cast<uint16_t>(slider->percentage * MAX_DELAY));
-        }
-        text.setString(value);
-
-        bounds = text.getLocalBounds();
-        text.setOrigin({std::round(bounds.position.x + bounds.size.x), std::round(bounds.position.y + bounds.size.y)});
-
-        text.setPosition({slider->position.x + slider->size.x, slider->position.y - distanceAboveSlider});
-        window.draw(text);
+        
+        drawSliderName(*slider, distanceAboveSlider);
+        
+        drawSliderValue(*slider, distanceAboveSlider);
     }
 }
 
@@ -161,6 +142,34 @@ void Render::drawTrack(const Slider& slider) {
     rectangle.setOrigin({0, slider.size.y / 2.f});
 
     window.draw(rectangle);
+}
+
+void Render::drawSliderName(const Slider& slider, const float distanceAboveSlider) {
+    text.setString(slider.thumb.name);
+    
+    sf::FloatRect bounds = text.getLocalBounds();
+    text.setOrigin({0.f, std::round(bounds.position.y + bounds.size.y)});
+    
+    text.setPosition(slider.position - sf::Vector2f(0.f, distanceAboveSlider));
+    window.draw(text);
+}
+
+void Render::drawSliderValue(const Slider& slider, const float distanceAboveSlider) {
+    sf::String value;
+    if (slider.thumb.id == ButtonType::ArraySizeSlider) {
+        const uint16_t potentialSize = static_cast<uint16_t>(MAX_ARRAY_SIZE * slider.percentage);
+        const uint16_t actualSize = std::clamp(potentialSize, MIN_ARRAY_SIZE, MAX_ARRAY_SIZE);
+        value = std::to_string(actualSize);
+    } else {
+        value = std::to_string(static_cast<uint16_t>(slider.percentage * MAX_DELAY));
+    }
+    text.setString(value);
+
+    sf::FloatRect bounds = text.getLocalBounds();
+    text.setOrigin({std::round(bounds.position.x + bounds.size.x), std::round(bounds.position.y + bounds.size.y)});
+
+    text.setPosition({slider.position.x + slider.size.x, slider.position.y - distanceAboveSlider});
+    window.draw(text);
 }
 
 void Render::drawSortCycler(const SortCycler& sortCycler) {
