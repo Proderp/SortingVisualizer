@@ -110,7 +110,7 @@ void App::updateArraySizeThumb(const SliderEvent& event) {
 }
 
 void App::updateDelayThumb(const SliderEvent& event) {
-    const sf::Time newDelay = sf::milliseconds(MAX_LATENCY * event.percentage);
+    const sf::Time newDelay = sf::milliseconds(MAX_DELAY * event.percentage);
     delay = newDelay;
 }
 
@@ -338,7 +338,7 @@ void App::setArraySizeThumb() {
 }
 
 void App::setDelayThumb() {
-    float percentage = delay.asMilliseconds() / MAX_LATENCY;
+    float percentage = delay.asMilliseconds() / MAX_DELAY;
     ui.setDelayPercentage(percentage);
     ui.updateSliderLayout();
 }

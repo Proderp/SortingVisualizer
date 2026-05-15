@@ -22,7 +22,7 @@ constexpr Index INACTIVE = std::numeric_limits<Index>::max();
 constexpr uint16_t MIN_ARRAY_SIZE = 10;
 constexpr uint16_t MAX_ARRAY_SIZE = 1'500;
 
-constexpr float MAX_LATENCY = 500.f;
+constexpr float MAX_DELAY = 500.f;
 
 const sf::String stepBackSymbol = L"\u23EE";
 const sf::String playSymbol = L"\u25B6";
