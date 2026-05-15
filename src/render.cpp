@@ -111,7 +111,7 @@ void Render::drawSliderLayout(const SliderLayout& sliderLayout) {
         drawButton(slider->thumb);
         
         const float distanceAboveSlider = slider->thumb.size.y;
-        
+
         drawSliderName(*slider, distanceAboveSlider);
         
         drawSliderValue(*slider, distanceAboveSlider);
@@ -155,6 +155,22 @@ void Render::drawSliderName(const Slider& slider, const float distanceAboveSlide
 }
 
 void Render::drawSliderValue(const Slider& slider, const float distanceAboveSlider) {
+
+    // before we get the actual text, we assume the worst (1500)
+    text.setString(std::to_string(MAX_ARRAY_SIZE));
+    sf::FloatRect bounds = text.getLocalBounds();
+    const float lockedYOrigin = std::round(bounds.position.y + bounds.size.y / 2.f);
+
+    findValue(slider);
+
+    bounds = text.getLocalBounds();
+    text.setOrigin({std::round(bounds.position.x + bounds.size.x), lockedYOrigin});
+
+    text.setPosition({slider.position.x + slider.size.x, slider.position.y - distanceAboveSlider});
+    window.draw(text);
+}
+
+void Render::findValue(const Slider& slider) {
     sf::String value;
     if (slider.thumb.id == ButtonType::ArraySizeSlider) {
         const uint16_t potentialSize = static_cast<uint16_t>(MAX_ARRAY_SIZE * slider.percentage);
@@ -164,12 +180,6 @@ void Render::drawSliderValue(const Slider& slider, const float distanceAboveSlid
         value = std::to_string(static_cast<uint16_t>(slider.percentage * MAX_DELAY));
     }
     text.setString(value);
-
-    sf::FloatRect bounds = text.getLocalBounds();
-    text.setOrigin({std::round(bounds.position.x + bounds.size.x), std::round(bounds.position.y + bounds.size.y)});
-
-    text.setPosition({slider.position.x + slider.size.x, slider.position.y - distanceAboveSlider});
-    window.draw(text);
 }
 
 void Render::drawSortCycler(const SortCycler& sortCycler) {
