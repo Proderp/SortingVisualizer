@@ -10,11 +10,11 @@ Render::Render(sf::RenderWindow& window, const UI& ui) :
 }
 
 void Render::loadFont() {
-    if (!firaCodeFont.openFromFile("../../fonts/FiraCode-Regular.ttf")) {
+    if (!firaCodeFont.openFromFile("fonts/FiraCode-Regular.ttf")) {
         std::cerr << "Error loading Fira Code." << std::endl;
     }
 
-    if (!segoeFont.openFromFile("../../fonts/seguisym.ttf")) {
+    if (!segoeFont.openFromFile("fonts/seguisym.ttf")) {
         std::cerr << "Error loading Segoe." << std::endl;
     }
 

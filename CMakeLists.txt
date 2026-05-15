@@ -24,6 +24,12 @@ add_library(lib ${SOURCE_FILES})
 target_include_directories(lib PUBLIC includes/)
 target_link_libraries(lib PUBLIC SFML::Graphics SFML::Window SFML::System)
 
-add_executable(app src/main.cpp)
+add_executable(app WIN32 src/main.cpp)
 
 target_link_libraries(app PRIVATE lib SFML::Main)
+
+add_custom_command(TARGET app POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_CURRENT_SOURCE_DIR}/fonts"
+    "$<TARGET_FILE_DIR:app>/fonts"
+)
