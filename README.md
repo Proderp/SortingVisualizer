@@ -6,7 +6,7 @@ A high-performance sorting algorithm visualizer built from scratch using C++ and
 
 ## The Architecture (Overview)
 
-The core, unique feature of this program is its custom timeline scrubber. Most visualizers force the user to watch a sort from start to end. This project changes that, using **delta encoding** to perfectly record changes in the array as it sorts as reversible actions. 
+The core, unique feature of this program is its custom animation timeline. Most visualizers force the user to watch a sort from start to end. This project changes that, using **delta encoding** to perfectly record changes in the array as reversible actions.
 
 This architecture allows the user to: 
 - Pause and resume the animation at any moment
@@ -52,7 +52,7 @@ Unix-based systems can natively resolve SFML if installed via a package manager.
     cd SortingVisualizer
     ```
 
-3. Generate the build files. You do not need to provide a Unix-based system with the directory to your SFML.
+3. Generate the build files. You do not need to provide the directory to your SFML on a Unix-based system.
 
     ```bash
     cmake -B build -DCMAKE_BUILD_TYPE=Release
@@ -87,11 +87,11 @@ Unix-based systems can natively resolve SFML if installed via a package manager.
 
 You should now have an executable, but it still needs to be linked. If you are compiling on Windows using dynamic linking, app.exe requires the SFML .dll files to run. If you attempt to launch the executable directly and receive a "Missing DLL" error, choose one of the following solutions:
 
->**Option A**: Add the bin directory of your SFML installation (e.g., C:/SFML/bin) to your Windows System PATH environment variable. This allows Windows to locate the DLLs automatically for all future projects.
+**Option A**: Add the bin directory of your SFML installation (e.g., C:/SFML/bin) to your Windows System PATH environment variable. This allows Windows to locate the .dlls automatically.
 
->**Option B (Manual)**: Copy `sfml-graphics-3.dll`, `sfml-window-3.dll`, and `sfml-system-3.dll` from your SFML bin directory and paste them directly into your build/Release folder right next to app.exe.
+**Option B**: Copy `sfml-graphics-3.dll`, `sfml-window-3.dll`, and `sfml-system-3.dll` from your SFML bin directory and paste them directly into your build/Release folder right next to app.exe.
 
-Once you have done all of that, you can now run app.exe by just double-clicking it or running: 
+Once you have done that, you can now run app.exe by just double-clicking it or running: 
 
 ```bash
 .\build\Release\app.exe
@@ -99,4 +99,4 @@ Once you have done all of that, you can now run app.exe by just double-clicking 
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) for details.
