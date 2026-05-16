@@ -107,13 +107,13 @@ I coded this whole project by myself, and no Generative AI was used in making th
 
 ## [ /// AUTHOR /// ]
 
-I am **Jalwin Grayser Jas Winston** (he/him) and I am a computer science student at Lakehead University. As of the writing of this README.md (May 15th, 2026), I am currently moving into my second year. Check out my other projects!
+**Jalwin Grayser Jas Winston** (he/him) - HBSc Computer Science Co-op Program, Lakehead University. Check out my other projects!
 
-**My GitHub**: [My Repositories](https://github.com/Proderp)
+**My GitHub**: [My Repositories!](https://github.com/Proderp)
 
-**My LinkedIn:**: [LinkedIn](https://www.linkedin.com/in/jalwin-grayser-jas-winston-1103a2401/)
+**My LinkedIn**: [LinkedIn](https://www.linkedin.com/in/jalwin-grayser-jas-winston-1103a2401/)
 
-## [ /// ACKOWLEDGEMENTS /// ]
+## [ /// ACKNOWLEDGEMENTS /// ]
 
 * [SFML](https://www.sfml-dev.org/) - The underlying C++ multimedia API I used for graphics rendering.
 * [Fira Code](https://github.com/tonsky/FiraCode) - The monospaced font powering the jitter-free HUD.
