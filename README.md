@@ -48,7 +48,7 @@ Unix-based systems can natively resolve SFML if installed via a package manager.
 2. Clone the repository:
 
     ```bash
-    git clone https://github.com/YOUR_USERNAME/SortingVisualizer.git
+    git clone https://github.com/Proderp/SortingVisualizer.git
     cd SortingVisualizer
     ```
 
