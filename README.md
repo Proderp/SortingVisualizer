@@ -101,12 +101,9 @@ Once you have done that, you can now run app.exe by just double-clicking it or r
 
 I made this project to learn about sorting algorithms as an exposition to Data Structures and Algorithms. I also learned much more about graphics rendering, data representation, and C++ as a whole. 
 
-I also made this because when looking for online resources for sorting algorithm visualizers, many of them lacked good educational features. They would lack the ability to pause/resume and look at the visualization at your own pace. I was pretty disappointed in this. After all, what is the point of an 'educational' sorting visualizer if the user cannot control the flow of the animation and experiment. I wanted to solve that by making my own visualizer that aims to have the necessary features to be an educational tool and satisfying at the same time.
+I also made this because when looking for online resources for sorting algorithm visualizers, many of them lacked good educational features. Most lacked a critical feature: the ability to pause/resume and look at the visualization at your own pace. I was pretty disappointed in this. After all, what is the point of an 'educational' sorting visualizer if the user cannot control the flow of the animation and experiment with it? I wanted to solve that by making my own visualizer that aims to have the necessary features to be an educational tool for students like me (and still super satisfying).
 
-## [ /// ACKOWLEDGEMENTS /// ]
-
-* [SFML](https://www.sfml-dev.org/) - The underlying C++ multimedia API I used for graphics rendering.
-* [Fira Code](https://github.com/tonsky/FiraCode) - The monospaced font powering the jitter-free HUD.
+I coded this whole project by myself, and no Generative AI was used in making this project!
 
 ## [ /// AUTHOR /// ]
 
@@ -115,6 +112,11 @@ I am **Jalwin Grayser Jas Winston** (he/him) and I am a computer science student
 **My GitHub**: [My Repositories](https://github.com/Proderp)
 
 **My LinkedIn:**: [LinkedIn](https://www.linkedin.com/in/jalwin-grayser-jas-winston-1103a2401/)
+
+## [ /// ACKOWLEDGEMENTS /// ]
+
+* [SFML](https://www.sfml-dev.org/) - The underlying C++ multimedia API I used for graphics rendering.
+* [Fira Code](https://github.com/tonsky/FiraCode) - The monospaced font powering the jitter-free HUD.
 
 ## [ /// LICENSE /// ]
 
