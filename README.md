@@ -19,8 +19,8 @@ Using this program is as simple as clicking on the screen with your mouse! Inter
 
 Beyond the GUI, you can also control certain aspects with shortcuts:
 - **Up/Down Arrows**: Cycle algorithms
-- **Left/Right Arrows**: Step forward or backwards in time, respectively
-- **Space Bar**: Pause or play animation
+- **Left/Right Arrows**: Step backwards or forwards in time by one frame, respectively
+- **Space Bar**: Play, pause, or resume animation
 - **R**: Restart animation
 - **Scroll Wheel**: If the mouse is near the sorting algorithm's name, scroll to cycle algorithms
 
